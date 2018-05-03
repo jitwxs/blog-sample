@@ -1,0 +1,53 @@
+From 4d1ba1a6b796baf70e52b709b952ffc88917b02f Mon Sep 17 00:00:00 2001
+From: jitwxs <jitwxs@foxmail.com>
+Date: Sun, 26 Nov 2017 17:13:44 +0800
+Subject: [PATCH 5/6] Convert mmap05 to new API
+
+Signed-off-by: jitwxs <jitwxs@foxmail.com>
+---
+ testcases/kernel/syscalls/mmap/mmap05.c | 15 ++++++++-------
+ 1 file changed, 8 insertions(+), 7 deletions(-)
+
+diff --git a/testcases/kernel/syscalls/mmap/mmap05.c b/testcases/kernel/syscalls/mmap/mmap05.c
+index 435420f..371d31a 100644
+--- a/testcases/kernel/syscalls/mmap/mmap05.c
++++ b/testcases/kernel/syscalls/mmap/mmap05.c
+@@ -23,19 +23,19 @@
+  *						  <jitwxs@foxmail.com>
+  *
+  *    DESCRIPTION
+- *		Call mmap() to map a file creating mapped memory with no access under
+- *		the following conditions -
++ *		Call mmap() to map a file creating mapped memory with no access
++ *		under the following conditions -
+  *		- The prot parameter is set to PROT_NONE
+  *		- The file descriptor is open for read(any mode other than write)
+  *		- The minimum file permissions should be 0444.
+  *
+- *		The call should succeed to map the file creating mapped memory with
+- *		the required attributes.
++ *		The call should succeed to map the file creating mapped memory
++ *		with the required attributes.
+  *
+  *    EXPECTED RESULT
+  *		mmap() should succeed returning the address of the mapped region,
+- *		and an attempt to access the contents of the mapped region should give
+- *		rise to the signal SIGSEGV.
++ *		and an attempt to access the contents of the mapped region
++ *		should give rise to the signal SIGSEGV.
+  *
+  ********************************************************/
+ 
+@@ -96,7 +96,8 @@ static void setup(void)
+ 
+ 	fd = open(TEMPFILE, O_RDONLY);
+ 	if (fd < 0)
+-		tst_brk(TFAIL | TERRNO, "opening %s read-only failed", TEMPFILE);
++		tst_brk(TFAIL | TERRNO,
++				"opening %s read-only failed", TEMPFILE);
+ }
+ 
+ static void cleanup(void)
+-- 
+1.9.1
+

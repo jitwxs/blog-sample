@@ -1,0 +1,134 @@
+From 723af96792f70c6561b53232a25121f2e0f69207 Mon Sep 17 00:00:00 2001
+From: jitwxs <jitwxs@foxmail.com>
+Date: Mon, 9 Oct 2017 10:54:46 +0800
+Subject: [PATCH 1/4] kernel/syscalls/getpagesize:Convert to new API to test
+ getpagesize(2)
+
+Signed-off-by: jitwxs <jitwxs@foxmail.com>
+---
+ .../kernel/syscalls/getpagesize/getpagesize01.c    | 83 ++++++----------------
+ 1 file changed, 20 insertions(+), 63 deletions(-)
+
+diff --git a/testcases/kernel/syscalls/getpagesize/getpagesize01.c b/testcases/kernel/syscalls/getpagesize/getpagesize01.c
+index 0d04658..08def09 100644
+--- a/testcases/kernel/syscalls/getpagesize/getpagesize01.c
++++ b/testcases/kernel/syscalls/getpagesize/getpagesize01.c
+@@ -1,7 +1,4 @@
+ /*
+- * Copyright (c) International Business Machines  Corp., 2005
+- * Copyright (c) Wipro Technologies Ltd, 2005.  All Rights Reserved.
+- *
+  * This program is free software; you can redistribute it and/or modify it
+  * under the terms of version 2 of the GNU General Public License as
+  * published by the Free Software Foundation.
+@@ -19,16 +16,12 @@
+  *
+  *    TEST IDENTIFIER   : getpagesize01
+  *
+- *    EXECUTED BY       : root / superuser
+- *
+  *    TEST TITLE        : Basic tests for getpagesize(2)
+  *
+  *    TEST CASE TOTAL   : 1
+  *
+- *    AUTHOR            : Prashant P Yendigeri
+- *                        <prashant.yendigeri@wipro.com>
+- *			  Robbie Williamson
+- *			  <robbiew@us.ibm.com>
++ *    AUTHOR            : jitwxs
++ *						  <jitwxs@foxmail.com>
+  *
+  *    DESCRIPTION
+  *      This is a Phase I test for the getpagesize(2) system call.
+@@ -36,70 +29,34 @@
+  *
+  **********************************************************/
+ 
+-#include <stdio.h>
+-#include <unistd.h>
+ #include <errno.h>
++#include <string.h>
++#include <sys/mount.h>
++#include "tst_test.h"
+ 
+-#include "test.h"
+-
+-void setup();
+-void cleanup();
+-
+-char *TCID = "getpagesize01";
+-int TST_TOTAL = 1;
+-
+-int main(int ac, char **av)
++static void testGetpagesize(void)
+ {
+-	int lc;
+-
+ 	int size, ret_sysconf;
+-	/***************************************************************
+-	 * parse standard options
+-	 ***************************************************************/
+-	tst_parse_opts(ac, av, NULL, NULL);
+-
+-	setup();
+-
+-	for (lc = 0; TEST_LOOPING(lc); lc++) {
+-
+-		tst_count = 0;
+ 
+-		TEST(getpagesize());
+-
+-		if (TEST_RETURN == -1) {
+-			tst_resm(TFAIL | TTERRNO, "getpagesize failed");
+-			continue;	/* next loop for MTKERNEL */
+-		}
++	TEST(getpagesize());
+ 
++	if (TEST_RETURN == -1) {
++		tst_res(TFAIL | TTERRNO, "getpagesize failed");
++	} else {
+ 		size = getpagesize();
+-		tst_resm(TINFO, "Page Size is %d", size);
++		tst_res(TINFO, "Page Size is %d", size);
+ 		ret_sysconf = sysconf(_SC_PAGESIZE);
+-#ifdef DEBUG
+-		tst_resm(TINFO,
+-			 "Checking whether getpagesize returned same as sysconf");
+-#endif
+ 		if (size == ret_sysconf)
+-			tst_resm(TPASS,
+-				 "getpagesize - Page size returned %d",
+-				 ret_sysconf);
++			tst_res(TPASS,
++					"getpagesize - Page size returned %d",
++					ret_sysconf);
+ 		else
+-			tst_resm(TFAIL,
+-				 "getpagesize - Page size returned %d",
+-				 ret_sysconf);
++			tst_res(TFAIL,
++					"getpagesize - Page size returned %d",
++					ret_sysconf);
+ 	}
+-
+-	cleanup();
+-	tst_exit();
+ }
+ 
+-void setup(void)
+-{
+-
+-	tst_sig(NOFORK, DEF_HANDLER, cleanup);
+-
+-	TEST_PAUSE;
+-}
+-
+-void cleanup(void)
+-{
+-}
++static struct tst_test test = {
++	.test_all = testGetpagesize
++};
+-- 
+1.8.3.1
+

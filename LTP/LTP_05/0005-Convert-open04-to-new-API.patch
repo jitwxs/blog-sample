@@ -1,0 +1,101 @@
+From bb7ceb9e45225ab8dd203f5da8ee3e76739e92e7 Mon Sep 17 00:00:00 2001
+From: jitwxs <jitwxs@foxmail.com>
+Date: Fri, 10 Nov 2017 15:45:41 +0800
+Subject: [PATCH 5/5] Convert open04 to new API
+
+Signed-off-by: jitwxs <jitwxs@foxmail.com>
+---
+ testcases/kernel/syscalls/open/open04_new.c | 81 +++++++++++++++++++++++++++++
+ 1 file changed, 81 insertions(+)
+ create mode 100644 testcases/kernel/syscalls/open/open04_new.c
+
+diff --git a/testcases/kernel/syscalls/open/open04_new.c b/testcases/kernel/syscalls/open/open04_new.c
+new file mode 100644
+index 0000000..57cdfd0
+--- /dev/null
++++ b/testcases/kernel/syscalls/open/open04_new.c
+@@ -0,0 +1,81 @@
++/*
++ * This program is free software; you can redistribute it and/or modify it
++ * under the terms of version 2 of the GNU General Public License as
++ * published by the Free Software Foundation.
++ *
++ * This program is distributed in the hope that it would be useful, but
++ * WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
++ *
++ * You should have received a copy of the GNU General Public License along
++ * with this program; if not, write the Free Software Foundation, Inc.
++ *
++ */
++/**********************************************************
++ *
++ *    TEST IDENTIFIER   : open04
++ *
++ *    TEST TITLE        : Basic tests for open(2)
++ *
++ *    TEST CASE TOTAL   : 1
++ *
++ *    AUTHOR            : jitwxs
++ *						  <jitwxs@foxmail.com>
++ *
++ *    DESCRIPTION
++ *      This is a Phase I test for the open(2) system call.
++ *      It is intended to provide a limited exposure of the system call.
++ *
++ **********************************************************/
++
++#include <stdio.h>
++#include <stdlib.h>
++#include <errno.h>
++#include <sys/resource.h>
++#include <fcntl.h>
++#include <unistd.h>
++#include "tst_test.h"
++
++#define FILE_A "tmpfileA"
++#define FILE_B "tmpfileB"
++
++static int fd1, fd2;
++
++static void my_test(void)
++{
++	TEST((fd2 = open(FILE_B, O_RDWR | O_CREAT, 0777)));
++
++	if (TEST_RETURN != -1)
++		tst_res(TFAIL, "call succeeded unexpectedly");
++
++	if (TEST_ERRNO != EMFILE)
++		tst_res(TFAIL, "Expected EMFILE, got %d", TEST_ERRNO);
++	else
++		tst_res(TPASS, "call returned expected EMFILE error");
++}
++
++static void setup(void)
++{
++	struct rlimit rlim, r;
++
++	fd1 = SAFE_OPEN(FILE_A, O_RDWR | O_CREAT, 0777);
++	SAFE_GETRLIMIT(RLIMIT_NOFILE, &rlim);
++	r.rlim_cur = fd1;
++	r.rlim_max = rlim.rlim_max;
++	SAFE_SETRLIMIT(RLIMIT_NOFILE, &r);
++}
++
++static void cleanup(void)
++{
++	if (fd1 > 0)
++		SAFE_CLOSE(fd1);
++	if (fd2 > 0)
++		SAFE_CLOSE(fd2);
++}
++
++static struct tst_test test = {
++	.test_all = my_test,
++	.setup = setup,
++	.cleanup = cleanup,
++	.needs_tmpdir = 1
++};
+-- 
+1.9.1
+

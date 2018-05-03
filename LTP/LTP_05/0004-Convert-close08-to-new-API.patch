@@ -1,0 +1,83 @@
+From 3e05d89ac6e10d3b868f15de623a2c32ec5f0bdc Mon Sep 17 00:00:00 2001
+From: jitwxs <jitwxs@foxmail.com>
+Date: Fri, 10 Nov 2017 14:07:14 +0800
+Subject: [PATCH 4/5] Convert close08 to new API
+
+Signed-off-by: jitwxs <jitwxs@foxmail.com>
+---
+ testcases/kernel/syscalls/close/close08_new.c | 63 +++++++++++++++++++++++++++
+ 1 file changed, 63 insertions(+)
+ create mode 100644 testcases/kernel/syscalls/close/close08_new.c
+
+diff --git a/testcases/kernel/syscalls/close/close08_new.c b/testcases/kernel/syscalls/close/close08_new.c
+new file mode 100644
+index 0000000..2678a1a
+--- /dev/null
++++ b/testcases/kernel/syscalls/close/close08_new.c
+@@ -0,0 +1,63 @@
++/*
++ * This program is free software; you can redistribute it and/or modify it
++ * under the terms of version 2 of the GNU General Public License as
++ * published by the Free Software Foundation.
++ *
++ * This program is distributed in the hope that it would be useful, but
++ * WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
++ *
++ * You should have received a copy of the GNU General Public License along
++ * with this program; if not, write the Free Software Foundation, Inc.
++ *
++ */
++/**********************************************************
++ *
++ *    TEST IDENTIFIER   : close08
++ *
++ *    TEST TITLE        : Basic tests for close(2)
++ *
++ *    TEST CASE TOTAL   : 1
++ *
++ *    AUTHOR            : jitwxs
++ *						  <jitwxs@foxmail.com>
++ *
++ *    DESCRIPTION
++ *      This is a Phase I test for the close(2) system call.
++ *      It is intended to provide a limited exposure of the system call.
++ *
++ **********************************************************/
++
++#include <errno.h>
++#include "tst_test.h"
++
++#define FILENAME "tmpFile"
++
++int fd;
++
++static void my_test(void)
++{
++	TEST(close(fd));
++
++	if (TEST_RETURN == -1)
++		tst_res(TFAIL | TTERRNO,
++				"close(%s) failed", FILENAME);
++	else
++		tst_res(TPASS, "close(%s) returned %ld",
++				FILENAME, TEST_RETURN);
++}
++
++static void setup(void)
++{
++	fd = SAFE_OPEN(FILENAME, O_RDWR | O_CREAT, 0700);
++	if (fd == -1)
++		tst_res(TBROK | TTERRNO,
++				"open(%s, O_RDWR|O_CREAT,0700) failed",
++				FILENAME);
++}
++
++static struct tst_test test = {
++	.test_all = my_test,
++	.setup = setup,
++	.needs_tmpdir = 1
++};
+-- 
+1.9.1
+

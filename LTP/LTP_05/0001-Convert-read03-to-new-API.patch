@@ -1,0 +1,95 @@
+From 2f7fb3911be4b93eadb08e89a200e7bb83d09578 Mon Sep 17 00:00:00 2001
+From: jitwxs <jitwxs@foxmail.com>
+Date: Fri, 10 Nov 2017 13:41:37 +0800
+Subject: [PATCH 1/5] Convert read03 to new API
+
+Signed-off-by: jitwxs <jitwxs@foxmail.com>
+---
+ testcases/kernel/syscalls/read/read03_new.c | 75 +++++++++++++++++++++++++++++
+ 1 file changed, 75 insertions(+)
+ create mode 100644 testcases/kernel/syscalls/read/read03_new.c
+
+diff --git a/testcases/kernel/syscalls/read/read03_new.c b/testcases/kernel/syscalls/read/read03_new.c
+new file mode 100644
+index 0000000..a6ca2a5
+--- /dev/null
++++ b/testcases/kernel/syscalls/read/read03_new.c
+@@ -0,0 +1,75 @@
++/*
++ * This program is free software; you can redistribute it and/or modify it
++ * under the terms of version 2 of the GNU General Public License as
++ * published by the Free Software Foundation.
++ *
++ * This program is distributed in the hope that it would be useful, but
++ * WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
++ *
++ * You should have received a copy of the GNU General Public License along
++ * with this program; if not, write the Free Software Foundation, Inc.
++ *
++ */
++/**********************************************************
++ *
++ *    TEST IDENTIFIER   : read03
++ *
++ *    TEST TITLE        : Basic tests for read(2)
++ *
++ *    TEST CASE TOTAL   : 1
++ *
++ *    AUTHOR            : jitwxs
++ *						  <jitwxs@foxmail.com>
++ *
++ *    DESCRIPTION
++ *      This is a Phase I test for the read(2) system call.
++ *      It is intended to provide a limited exposure of the system call.
++ *
++ **********************************************************/
++
++#include <errno.h>
++#include "tst_test.h"
++
++#define FIFONAME "tmpFIFO"
++
++
++int rfd, wfd;
++
++static void my_test(void)
++{
++	int c;
++
++	TEST(read(rfd, &c, 1));
++
++	if (TEST_RETURN != -1)
++		tst_res(TFAIL, "read() failed");
++
++	if (TEST_ERRNO != EAGAIN)
++		tst_res(TFAIL, "read set bad errno, expected EAGAIN, got %d",
++				TEST_ERRNO);
++	else
++		tst_res(TPASS, "read() succeded in setting errno to EAGAIN");
++}
++
++static void setup(void)
++{
++	SAFE_MKFIFO(FIFONAME, 0777);
++	rfd = SAFE_OPEN(FIFONAME, O_RDONLY | O_NONBLOCK);
++	wfd = SAFE_OPEN(FIFONAME, O_WRONLY | O_NONBLOCK);
++}
++
++static void cleanup(void)
++{
++	if (rfd > 0)
++		SAFE_CLOSE(rfd);
++	if (wfd > 0)
++		SAFE_CLOSE(wfd);
++}
++
++static struct tst_test test = {
++	.test_all = my_test,
++	.setup = setup,
++	.cleanup = cleanup,
++	.needs_tmpdir = 1
++};
+-- 
+1.9.1
+

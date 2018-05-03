@@ -1,0 +1,36 @@
+From 6d9bd93862ef07a3824077afe9d72951dfd9a614 Mon Sep 17 00:00:00 2001
+From: jitwxs <jitwxs@foxmail.com>
+Date: Sun, 26 Nov 2017 17:33:37 +0800
+Subject: [PATCH 7/7] Add select05 to test selelct(2)
+
+Signed-off-by: jitwxs <jitwxs@foxmail.com>
+---
+ testcases/kernel/syscalls/select/select05.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/testcases/kernel/syscalls/select/select05.c b/testcases/kernel/syscalls/select/select05.c
+index a340ac1..2cd5b27 100644
+--- a/testcases/kernel/syscalls/select/select05.c
++++ b/testcases/kernel/syscalls/select/select05.c
+@@ -49,7 +49,7 @@ static void my_test(void)
+ 	if (SAFE_FORK() == 0) {
+ 		close(fd[0]);
+ 		write(fd[1], "test", strlen("test"));
+-	
++
+ 		exit(EXIT_SUCCESS);
+ 	}
+ 
+@@ -66,7 +66,8 @@ static void my_test(void)
+ 		tst_res(TFAIL, "select() failed");
+ }
+ 
+-void setup(void) {
++void setup(void)
++{
+ 	if ((pipe(fd)) < 0)
+ 		tst_brk(TBROK | TERRNO, "pipe error");
+ }
+-- 
+1.9.1
+

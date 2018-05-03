@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h1>登陆成功</h1>
+    <h3>当前用户：<span id="username"></span></h3>
+    <h3>拥有权限：<span id="userRoles"></span></h3>
+    <div>
+        <a href="/admin">检测ROLE_ADMIN角色</a>
+    </div>
+    <div>
+        <a href="/user">检测ROLE_USER角色</a>
+    </div>
+    <div>
+        <a href="/teacher">检测ROLE_TEACHER角色</a>
+    </div>
+    <div>
+        <a href="/adminOrTeacher">检测ROLE_ADMIN或ROLE_TEACHER角色</a>
+    </div>
+    <button onclick="window.location.href='/logout'">退出登录</button>
+
+    <script src="js/jquery-3.2.1.min.js"></script>
+    <script>
+        $(function() {
+            $.ajax({
+                type: "get",
+                async: "true",
+                url: "/userInfo",
+                dataType: 'json',
+                data: {},
+                success: function (res) {
+                    $("#username").text(res.data.name);
+                    var roles = "";
+                    for(var i=0;i<res.data.roles.length;i++)
+                        roles += res.data.roles[i].name + " ";
+                    $("#userRoles").text(roles);
+                },
+                error: function () {
+                     alert("获取用户信息错误");
+                }
+            });
+        });
+    </script>
+</body>
+</html>

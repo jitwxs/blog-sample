@@ -1,0 +1,241 @@
+From 9f736751e8ae29312af0a68898288c76b55befd0 Mon Sep 17 00:00:00 2001
+From: jitwxs <jitwxs@foxmail.com>
+Date: Sun, 26 Nov 2017 16:10:24 +0800
+Subject: [PATCH 2/4] Convert epoll_wait03 to new API
+
+Signed-off-by: jitwxs <jitwxs@foxmail.com>
+---
+ .../kernel/syscalls/epoll_wait/epoll_wait03.c      | 172 +++++++++------------
+ 1 file changed, 73 insertions(+), 99 deletions(-)
+
+diff --git a/testcases/kernel/syscalls/epoll_wait/epoll_wait03.c b/testcases/kernel/syscalls/epoll_wait/epoll_wait03.c
+index 47b6d8f..7d9cf7a 100644
+--- a/testcases/kernel/syscalls/epoll_wait/epoll_wait03.c
++++ b/testcases/kernel/syscalls/epoll_wait/epoll_wait03.c
+@@ -1,37 +1,42 @@
+ /*
+- * Copyright (c) 2016 Fujitsu Ltd.
+- * Author: Guangwen Feng <fenggw-fnst@cn.fujitsu.com>
++ * This program is free software; you can redistribute it and/or modify it
++ * under the terms of version 2 of the GNU General Public License as
++ * published by the Free Software Foundation.
+  *
+- * This program is free software; you can redistribute it and/or modify
+- * it under the terms of the GNU General Public License as published by
+- * the Free Software Foundation; either version 2 of the License, or
+- * (at your option) any later version.
++ * This program is distributed in the hope that it would be useful, but
++ * WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See
+- * the GNU General Public License for more details.
+- *
+- * You should have received a copy of the GNU General Public License
+- * along with this program.
++ * You should have received a copy of the GNU General Public License along
++ * with this program; if not, write the Free Software Foundation, Inc.
+  */
+-
+-/*
+- * Description:
+- *  1) epoll_wait(2) fails if epfd is not a valid file descriptor
+- *  2) epoll_wait(2) fails if epfd is not an epoll file descriptor
+- *  3) epoll_wait(2) fails if maxevents is less than zero
+- *  4) epoll_wait(2) fails if maxevents is equal to zero
+- *  5) epoll_wait(2) fails if the memory area pointed to by events
+- *     is not accessible with write permissions.
++/**********************************************************
+  *
+- * Expected Result:
+- *  1) epoll_wait(2) should return -1 and set errno to EBADF
+- *  2) epoll_wait(2) should return -1 and set errno to EINVAL
+- *  3) epoll_wait(2) should return -1 and set errno to EINVAL
+- *  4) epoll_wait(2) should return -1 and set errno to EINVAL
+- *  5) epoll_wait(2) should return -1 and set errno to EFAULT
+- */
++ *    TEST IDENTIFIER   : epoll_wait03
++ *
++ *    TEST TITLE        : Basic tests for epoll_wait(2)
++ *
++ *    TEST CASE TOTAL   : 1
++ *
++ *    AUTHOR            : jitwxs
++ *						<jitwxs@foxmail.com>
++ *
++ *    Description:
++ *		1) epoll_wait(2) fails if epfd is not a valid file descriptor
++ *		2) epoll_wait(2) fails if epfd is not an epoll file descriptor
++ *		3) epoll_wait(2) fails if maxevents is less than zero
++ *		4) epoll_wait(2) fails if maxevents is equal to zero
++ *		5) epoll_wait(2) fails if the memory area pointed to by events
++ *			is not accessible with write permissions.
++ *
++ *    Expected Result:
++ *		1) epoll_wait(2) should return -1 and set errno to EBADF
++ *		2) epoll_wait(2) should return -1 and set errno to EINVAL
++ *		3) epoll_wait(2) should return -1 and set errno to EINVAL
++ *		4) epoll_wait(2) should return -1 and set errno to EINVAL
++ *		5) epoll_wait(2) should return -1 and set errno to EFAULT
++ *
++ **********************************************************/
+ 
+ #include <sys/epoll.h>
+ #include <sys/mman.h>
+@@ -39,8 +44,7 @@
+ #include <string.h>
+ #include <errno.h>
+ 
+-#include "test.h"
+-#include "safe_macros.h"
++#include "tst_test.h"
+ 
+ static int page_size, fds[2], epfd, inv_epfd, bad_epfd = -1;
+ 
+@@ -51,103 +55,73 @@ static struct epoll_event epevs[1] = {
+ static struct epoll_event *ev_rdwr = epevs;
+ static struct epoll_event *ev_rdonly;
+ 
+-static struct test_case_t {
++static struct tcase {
+ 	int *epfd;
+ 	struct epoll_event **ev;
+ 	int maxevents;
+ 	int exp_errno;
+-} tc[] = {
+-	/* test1 */
++} tcases[] = {
+ 	{&bad_epfd, &ev_rdwr, 1, EBADF},
+-	/* test2 */
+-	{&inv_epfd, &ev_rdwr, 1, EINVAL},
+-	/* test3 */
+-	{&epfd, &ev_rdwr, -1, EINVAL},
+-	/* test4 */
+-	{&epfd, &ev_rdwr, 0, EINVAL},
+-	/* test5 */
+-	{&epfd, &ev_rdonly, 1, EFAULT}
++	{&inv_epfd, &ev_rdwr, 1,  EINVAL},
++	{&epfd, &ev_rdwr, -1,  EINVAL},
++	{&epfd, &ev_rdwr, 0,  EINVAL},
++	{&epfd, &ev_rdonly, 1,  EFAULT}
+ };
+ 
+-char *TCID = "epoll_wait03";
+-int TST_TOTAL = ARRAY_SIZE(tc);
+-
+-static void setup(void);
+-static void verify_epoll_wait(struct test_case_t *tc);
+-static void cleanup(void);
+-
+-int main(int ac, char **av)
++static void my_test(unsigned int n)
+ {
+-	int lc, i;
++	struct tcase *tc = &tcases[n];
+ 
+-	tst_parse_opts(ac, av, NULL, NULL);
+-
+-	setup();
+-
+-	for (lc = 0; TEST_LOOPING(lc); lc++) {
+-		tst_count = 0;
+-
+-		for (i = 0; i < TST_TOTAL; i++)
+-			verify_epoll_wait(&tc[i]);
+-	}
++	TEST(epoll_wait(*(tc->epfd), *(tc->ev), tc->maxevents, -1));
+ 
+-	cleanup();
+-	tst_exit();
++	if (TEST_RETURN != -1)
++		tst_res(TFAIL, "epoll_wait() succeed unexpectedly");
++	else
++		if (tc->exp_errno == TEST_ERRNO)
++			tst_res(TPASS | TTERRNO,
++					"epoll_wait() fails as expected");
++		else
++			tst_res(TFAIL | TTERRNO,
++					"epoll_wait() fails unexpectedly, expected %d: %s",
++					tc->exp_errno,
++					strerror(tc->exp_errno));
+ }
+ 
+ static void setup(void)
+ {
+-	tst_sig(NOFORK, DEF_HANDLER, cleanup);
+-
+-	TEST_PAUSE;
+-
+ 	page_size = getpagesize();
+ 
+-	ev_rdonly = SAFE_MMAP(NULL, NULL, page_size, PROT_READ,
+-		MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
++	ev_rdonly = SAFE_MMAP(NULL, page_size, PROT_READ,
++			MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+ 
+-	SAFE_PIPE(NULL, fds);
++	SAFE_PIPE(fds);
+ 
+ 	epfd = epoll_create(1);
+-	if (epfd == -1) {
+-		tst_brkm(TBROK | TERRNO, cleanup,
+-			 "failed to create epoll instance");
+-	}
++	if (epfd == -1)
++		tst_brk(TBROK | TERRNO, "failed to create epoll instance");
+ 
+ 	epevs[0].data.fd = fds[1];
+ 
+-	if (epoll_ctl(epfd, EPOLL_CTL_ADD, fds[1], &epevs[0])) {
+-		tst_brkm(TBROK | TERRNO, cleanup,
+-			 "failed to register epoll target");
+-	}
+-}
+-
+-static void verify_epoll_wait(struct test_case_t *tc)
+-{
+-	TEST(epoll_wait(*(tc->epfd), *(tc->ev), tc->maxevents, -1));
+-	if (TEST_RETURN != -1) {
+-		tst_resm(TFAIL, "epoll_wait() succeed unexpectedly");
+-	} else {
+-		if (tc->exp_errno == TEST_ERRNO) {
+-			tst_resm(TPASS | TTERRNO,
+-				 "epoll_wait() fails as expected");
+-		} else {
+-			tst_resm(TFAIL | TTERRNO,
+-				 "epoll_wait() fails unexpectedly, "
+-				 "expected %d: %s", tc->exp_errno,
+-				 tst_strerrno(tc->exp_errno));
+-		}
+-	}
++	if (epoll_ctl(epfd, EPOLL_CTL_ADD, fds[1], &epevs[0]))
++		tst_brk(TBROK | TERRNO, "failed to register epoll target");
+ }
+ 
+ static void cleanup(void)
+ {
+ 	if (epfd > 0 && close(epfd))
+-		tst_resm(TWARN | TERRNO, "failed to close epfd");
++		tst_res(TWARN | TERRNO, "failed to close epfd");
+ 
+ 	if (close(fds[0]))
+-		tst_resm(TWARN | TERRNO, "close(fds[0]) failed");
++		tst_res(TWARN | TERRNO, "close(fds[0]) failed");
+ 
+ 	if (close(fds[1]))
+-		tst_resm(TWARN | TERRNO, "close(fds[1]) failed");
++		tst_res(TWARN | TERRNO, "close(fds[1]) failed");
+ }
++
++static struct tst_test test = {
++	.tcnt = ARRAY_SIZE(tcases),
++	.test = my_test,
++	.needs_checkpoints = 1,
++	.setup = setup,
++	.cleanup = cleanup
++};
+-- 
+1.9.1
+

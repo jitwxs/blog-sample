@@ -1,0 +1,176 @@
+From c652d215ea96bb19bfbd135f224a4281f750c030 Mon Sep 17 00:00:00 2001
+From: jitwxs <jitwxs@foxmail.com>
+Date: Mon, 9 Oct 2017 15:03:52 +0800
+Subject: [PATCH 4/4] kernel/syscalls/getppid: Convert to new API to test
+ getppid(2)
+
+Signed-off-by: jitwxs <jitwxs@foxmail.com>
+---
+ testcases/kernel/syscalls/getppid/getppid02.c | 139 +++++++++-----------------
+ 1 file changed, 50 insertions(+), 89 deletions(-)
+
+diff --git a/testcases/kernel/syscalls/getppid/getppid02.c b/testcases/kernel/syscalls/getppid/getppid02.c
+index 60181e9..218ee13 100644
+--- a/testcases/kernel/syscalls/getppid/getppid02.c
++++ b/testcases/kernel/syscalls/getppid/getppid02.c
+@@ -1,107 +1,68 @@
+ /*
++ * This program is free software; you can redistribute it and/or modify it
++ * under the terms of version 2 of the GNU General Public License as
++ * published by the Free Software Foundation.
+  *
+- *   Copyright (c) International Business Machines  Corp., 2001
++ * This program is distributed in the hope that it would be useful, but
++ * WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  *
+- *   This program is free software;  you can redistribute it and/or modify
+- *   it under the terms of the GNU General Public License as published by
+- *   the Free Software Foundation; either version 2 of the License, or
+- *   (at your option) any later version.
++ * You should have received a copy of the GNU General Public License along
++ * with this program; if not, write the Free Software Foundation, Inc.,
+  *
+- *   This program is distributed in the hope that it will be useful,
+- *   but WITHOUT ANY WARRANTY;  without even the implied warranty of
+- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See
+- *   the GNU General Public License for more details.
+- *
+- *   You should have received a copy of the GNU General Public License
+- *   along with this program;  if not, write to the Free Software
+- *   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
+  */
+-
+-/*
+- * NAME
+- * 	getppid02.c
++/**********************************************************
+  *
+- * DESCRIPTION
+- * 	Testcase to check the basic functionality of the getppid() syscall.
++ *    TEST IDENTIFIER   : getppid02
+  *
+- * USAGE:  <for command-line>
+- *  getppid02 [-c n] [-f] [-i n] [-I x] [-P x] [-t]
+- *     where,  -c n : Run n copies concurrently.
+- *             -f   : Turn off functionality Testing.
+- *             -i n : Execute test n times.
+- *             -I x : Execute test for x seconds.
+- *             -P x : Pause for x seconds between iterations.
+- *             -t   : Turn on syscall timing.
++ *    TEST TITLE        : Basic tests for getppid(2)
+  *
+- * HISTORY
+- *	07/2001 Ported by Wayne Boyer
++ *    TEST CASE TOTAL   : 1
+  *
+- * RESTRICTIONS
+- * 	None
+- */
+-#include <sys/types.h>
+-#include <sys/wait.h>
+-#include <err.h>
+-#include <errno.h>
+-#include "test.h"
+-
+-char *TCID = "getppid02";
+-int TST_TOTAL = 1;
++ *    AUTHOR            : jitwxs
++ *						  <jitwxs@foxmail.com>
++ *
++ *    DESCRIPTION
++ *      This is a Phase I test for the getppid(2) system call.
++ *      It is intended to provide a limited exposure of the system call.
++ *
++ **********************************************************/
+ 
+-void setup(void);
+-void cleanup(void);
++#include <errno.h>
++#include <sys/wait.h>
++#include "tst_test.h"
+ 
+-int main(int ac, char **av)
++static void testGetppid(void)
+ {
+-
+-	int lc;
+ 	int status;
+ 	pid_t pid, ppid;
+ 
+-	tst_parse_opts(ac, av, NULL, NULL);
+-
+-	setup();
+-
+-	for (lc = 0; TEST_LOOPING(lc); lc++) {
+-		tst_count = 0;
+-
+-		ppid = getpid();
+-		pid = FORK_OR_VFORK();
+-		if (pid == -1)
+-			tst_brkm(TBROK, cleanup, "fork failed");
+-
+-		if (pid == 0) {
+-			TEST(getppid());
+-
+-			if (TEST_RETURN != ppid)
+-				errx(1, "getppid failed (%ld != %d)",
+-				     TEST_RETURN, ppid);
+-			else
+-				printf("return value and parent's pid "
+-				       "value match\n");
+-			exit(0);
+-		} else {
+-			if (wait(&status) == -1)
+-				tst_brkm(TBROK | TERRNO, cleanup,
+-					 "wait failed");
+-			if (!WIFEXITED(status) || WEXITSTATUS(status) != 0)
+-				tst_resm(TFAIL,
+-					 "getppid functionality incorrect");
+-		}
++	ppid = getpid();
++	pid = SAFE_FORK();
++
++	if (pid == -1)
++		tst_res(TFAIL, "fork failed");
++	else if (pid == 0) {
++		TEST(getppid());
++		if (ppid != TEST_RETURN)
++			tst_res(TFAIL | TERRNO,
++					"getppid Failed (%ld != %d)",
++					TEST_RETURN, ppid);
++		else
++			tst_res(TPASS,
++					"getppid Success (%ld == %d)",
++					TEST_RETURN, ppid);
++	} else {
++		if (wait(&status) == -1)
++			tst_res(TBROK | TERRNO,
++					"wait failed");
++		if (!WIFEXITED(status) || WEXITSTATUS(status) != 0)
++			tst_res(TFAIL,
++					"getppid functionality incorrect");
+ 	}
+-	cleanup();
+-
+-	tst_exit();
+-}
+-
+-void setup(void)
+-{
+-
+-	tst_sig(FORK, DEF_HANDLER, cleanup);
+-
+-	TEST_PAUSE;
+ }
+ 
+-void cleanup(void)
+-{
+-}
++static struct tst_test test = {
++	.test_all = testGetppid,
++	.forks_child = 1
++};
+-- 
+1.8.3.1
+

@@ -1,0 +1,51 @@
+From 0988ebb9cfd0cb27a77332c1cb29d2bd38e69756 Mon Sep 17 00:00:00 2001
+From: jitwxs <jitwxs@foxmail.com>
+Date: Sun, 26 Nov 2017 16:52:14 +0800
+Subject: [PATCH 4/5] Convert mmap04 to new API
+
+Signed-off-by: jitwxs <jitwxs@foxmail.com>
+---
+ testcases/kernel/syscalls/mmap/mmap04.c | 14 +++++++++-----
+ 1 file changed, 9 insertions(+), 5 deletions(-)
+
+diff --git a/testcases/kernel/syscalls/mmap/mmap04.c b/testcases/kernel/syscalls/mmap/mmap04.c
+index fe8f2c1..cacb2a9 100644
+--- a/testcases/kernel/syscalls/mmap/mmap04.c
++++ b/testcases/kernel/syscalls/mmap/mmap04.c
+@@ -55,12 +55,14 @@ static void setup(void)
+ 
+ 	page_sz = getpagesize();
+ 
+-	if ((buf = calloc(page_sz, sizeof(char))) == NULL)
++	buf = calloc(page_sz, sizeof(char));
++	if (buf == NULL)
+ 		tst_brk(TFAIL, "calloc() failed (tst_buff)");
+ 
+ 	memset(buf, 'A', page_sz);
+ 
+-	if ((fd = open(TEMPFILE, O_WRONLY | O_CREAT, 0666)) < 0) {
++	fd = open(TEMPFILE, O_WRONLY | O_CREAT, 0666);
++	if (fd < 0) {
+ 		free(buf);
+ 		tst_brk(TFAIL, "opening %s failed", TEMPFILE);
+ 	}
+@@ -76,11 +78,13 @@ static void setup(void)
+ 
+ 	if (close(fd) < 0)
+ 		tst_brk(TFAIL, "closing %s failed", TEMPFILE);
+-	
+-	if ((dummy = calloc(page_sz, sizeof(char))) == NULL)
++
++	dummy = calloc(page_sz, sizeof(char));
++	if (dummy == NULL)
+ 		tst_brk(TFAIL, "calloc failed (dummy)");
+ 
+-	if ((fd = open(TEMPFILE, O_RDONLY)) < 0)
++	fd = open(TEMPFILE, O_RDONLY);
++	if (fd < 0)
+ 		tst_brk(TFAIL, "opening %s read-only failed", TEMPFILE);
+ }
+ 
+-- 
+1.9.1
+

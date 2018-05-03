@@ -1,0 +1,35 @@
+From ade348a709889a93274c0e8740309f0c0d50ba60 Mon Sep 17 00:00:00 2001
+From: jitwxs <jitwxs@foxmail.com>
+Date: Sun, 26 Nov 2017 17:23:37 +0800
+Subject: [PATCH 6/7] Convert mmap06 to new API
+
+Signed-off-by: jitwxs <jitwxs@foxmail.com>
+---
+ testcases/kernel/syscalls/mmap/mmap06.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/testcases/kernel/syscalls/mmap/mmap06.c b/testcases/kernel/syscalls/mmap/mmap06.c
+index 003ef72..0221e71 100644
+--- a/testcases/kernel/syscalls/mmap/mmap06.c
++++ b/testcases/kernel/syscalls/mmap/mmap06.c
+@@ -23,7 +23,7 @@
+  *						  <jitwxs@foxmail.com>
+  *
+  *    DESCRIPTION
+- *		Call mmap() to map a file creating a mapped region with read 
++ *		Call mmap() to map a file creating a mapped region with read
+  *		access under the following conditions -
+  *		- The prot parameter is set to PROT_READ
+  *		- The file descriptor is open for writing.
+@@ -98,7 +98,7 @@ static void do_test(void)
+ 	else
+ 		tst_res(TFAIL | TERRNO,
+ 				"mmap failed with unexpected errno");
+-	
++
+ 	cleanup();
+ 	exit(EXIT_SUCCESS);
+ }
+-- 
+1.9.1
+

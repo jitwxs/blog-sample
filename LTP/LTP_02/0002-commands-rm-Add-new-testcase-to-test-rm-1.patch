@@ -1,0 +1,135 @@
+From f670ce7d1f206d767ecbfeb0e8ef790e84b80143 Mon Sep 17 00:00:00 2001
+From: jitwxs <jitwxs@foxmail.com>
+Date: Sat, 30 Sep 2017 00:39:47 +0800
+Subject: [PATCH 2/3] commands/rm:Add new testcase to test rm(1)
+
+Signed-off-by: jitwxs <jitwxs@foxmail.com>
+---
+ runtest/commands                  |  1 +
+ testcases/commands/rm/Makefile    | 23 ++++++++++++
+ testcases/commands/rm/rm_tests.sh | 74 +++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 98 insertions(+)
+ create mode 100644 testcases/commands/rm/Makefile
+ create mode 100644 testcases/commands/rm/rm_tests.sh
+
+diff --git a/runtest/commands b/runtest/commands
+index 71e25a7..a14f374 100644
+--- a/runtest/commands
++++ b/runtest/commands
+@@ -44,3 +44,4 @@ wc01 wc01.sh
+ keyctl01 keyctl01.sh
+ gdb01 gdb01.sh
+ echo echo_tests.sh
++rm rm_tests.sh
+diff --git a/testcases/commands/rm/Makefile b/testcases/commands/rm/Makefile
+new file mode 100644
+index 0000000..4cc287a
+--- /dev/null
++++ b/testcases/commands/rm/Makefile
+@@ -0,0 +1,23 @@
++#
++# Author : jitwxs  <jitwxs@foxmail.com>
++#
++# This program is free software; you can redistribute it and/or modify
++# it under the terms of the GNU General Public License as published by
++# the Free Software Foundation; either version 2 of the License, or
++# (at your option) any later version.
++#
++# This program is distributed in the hope that it will be useful,
++# but WITHOUT ANY WARRANTY; without even the implied warranty of
++# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++# GNU General Public License for more details.
++#
++
++top_srcdir ?= ../../..
++
++include $(top_srcdir)/include/mk/env_pre.mk
++
++INSTALL_TARGETS	:=rm_tests.sh
++
++MAKE_TARGETS :=
++
++include $(top_srcdir)/include/mk/generic_leaf_target.mk
+diff --git a/testcases/commands/rm/rm_tests.sh b/testcases/commands/rm/rm_tests.sh
+new file mode 100644
+index 0000000..36e7663
+--- /dev/null
++++ b/testcases/commands/rm/rm_tests.sh
+@@ -0,0 +1,74 @@
++#!/bin/sh
++#
++# Author : jitwxs <jitwxs@foxmail.com>
++#
++# This program is free software; you can redistribute it and/or modify
++# it under the terms of the GNU General Public License as published by
++# the Free Software Foundation; either version 2 of the License, or
++# (at your option) any later version.
++#
++# This program is distributed in the hope that it will be useful,
++# but WITHOUT ANY WARRANTY; without even the implied warranty of
++# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See
++# the GNU General Public License for more details.
++#
++# Test rm command with some basic options.
++
++TST_CNT=4
++TST_SETUP=setup
++TST_TESTFUNC=do_test
++TST_NEEDS_TMPDIR=1
++TST_NEEDS_CMDS="rm"
++. tst_test.sh
++
++setup()
++{
++	ROD touch "demoFile"
++		ROD mkdir "demoDir"
++}
++
++rm_test()
++{
++	local rm_opt=$1
++	local rm_file=$2
++	local rm_cmd="rm $rm_opt $rm_file"
++
++	eval $rm_cmd > temp 2>&1
++	if [ $? -ne 0 ]; then
++		grep -q -E "unknown option|invalid option" temp
++		if [ $? -eq 0 ]; then
++			tst_res TCONF "$rm_cmd not supported."
++		else
++			tst_res TFAIL "$rm_cmd failed."
++		fi
++		return
++	fi
++
++	if [ -z $rm_opt ];then
++		if [ -f $rm_file ];then
++			tst_res TFAIL "$rm_cmd failed."
++				return
++		fi
++	else
++		if [ $rm_opt = "-r" ];then
++			if [ -d $rm_file ];then
++				tst_res TFAIL "$rm_cmd failed."
++				return
++			fi
++		fi
++	fi
++
++	tst_res TPASS "rm passed with $rm_opt option."
++}
++
++do_test()
++{
++	case $1 in
++		1) rm_test "" "demoFile";;
++		2) rm_test "-r" "demoDir";;
++		3) rm_test "--help";;
++		4) rm_test "--version";;
++	esac
++}
++
++tst_run
+-- 
+1.8.3.1
+
