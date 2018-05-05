@@ -12,6 +12,7 @@
 |:---|:---|
 |springboot_security|[SpringBoot集成Spring Security安全框架](https://blog.csdn.net/yuanlaijike/article/details/79751583)|
 |springboot_shiro|[SpringBoot集成Shiro安全框架](http://blog.csdn.net/yuanlaijike/article/details/79633723)|
+|springboot_jwt|[Json Web Token介绍与基本使用](https://blog.csdn.net/yuanlaijike/article/details/80174327)|
 
 
 ---
