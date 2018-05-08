@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!-- 加载配置文件 -->
+    <context:property-placeholder location="classpath:cfg.properties"/>
+
+    <!-- 真正可以产生Connection的ConnectionFactory，由对应的 JMS服务厂商提供 -->
+    <bean id="targetConnectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
+        <property name="brokerURL" value="${activemq.broker_url}" />
+    </bean>
+
+    <!-- Spring用于管理真正的ConnectionFactory的ConnectionFactory -->
+    <bean id="connectionFactory"
+          class="org.springframework.jms.connection.SingleConnectionFactory">
+        <!-- 目标ConnectionFactory对应真实的可以产生JMS Connection的ConnectionFactory -->
+        <property name="targetConnectionFactory" ref="targetConnectionFactory" />
+    </bean>
+
+    <!-- Queue模式 -->
+    <bean id="queueDestination" class="org.apache.activemq.command.ActiveMQQueue">
+        <constructor-arg name="name" value="${activemq.queue_name}"/>
+    </bean>
+    <!--Topic模式 -->
+    <bean id="topicDestination" class="org.apache.activemq.command.ActiveMQTopic">
+        <constructor-arg name="name" value="${activemq.topic_name}"/>
+    </bean>
+
+    <!-- Spring提供的JMS工具类，它可以进行消息发送、接收等 -->
+    <bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate">
+        <!-- 这个connectionFactory对应的是我们定义的Spring提供的那个ConnectionFactory对象 -->
+        <property name="connectionFactory" ref="connectionFactory" />
+    </bean>
+
+    <!-- 配置消费者 -->
+    <bean id="myMessageListener" class="jit.wxs.activemq.MyMessageListener"/>
+    <!-- 消息监听容器 -->
+    <bean class="org.springframework.jms.listener.DefaultMessageListenerContainer">
+        <property name="connectionFactory" ref="connectionFactory" />
+        <!-- 指定Destination，ref为上面定义的两个模式 -->
+        <property name="destination" ref="queueDestination" />
+        <!-- 指定Listener -->
+        <property name="messageListener" ref="myMessageListener" />
+    </bean>
+</beans>
