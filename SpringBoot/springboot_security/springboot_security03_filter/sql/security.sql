@@ -5,13 +5,13 @@
  Source Server Type    : MySQL
  Source Server Version : 50719
  Source Host           : localhost:3306
- Source Schema         : test2
+ Source Schema         : security
 
  Target Server Type    : MySQL
  Target Server Version : 50719
  File Encoding         : 65001
 
- Date: 09/05/2018 15:49:49
+ Date: 09/05/2018 10:34:39
 */
 
 SET NAMES utf8mb4;
@@ -30,6 +30,11 @@ CREATE TABLE `persistent_logins`  (
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
+-- Records of persistent_logins
+-- ----------------------------
+INSERT INTO `persistent_logins` VALUES ('jitwxs', 'bxKalbj5TIKcTZNWwto76A==', '57i0Em0uSynAfey2t6Mp7w==', '2018-05-09 10:18:57');
+
+-- ----------------------------
 -- Table structure for sys_role
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_role`;
@@ -44,7 +49,6 @@ CREATE TABLE `sys_role`  (
 -- ----------------------------
 INSERT INTO `sys_role` VALUES (1, 'ROLE_ADMIN');
 INSERT INTO `sys_role` VALUES (2, 'ROLE_USER');
-INSERT INTO `sys_role` VALUES (3, 'ROLE_TEACHER');
 
 -- ----------------------------
 -- Table structure for sys_user
@@ -55,12 +59,13 @@ CREATE TABLE `sys_user`  (
   `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `password` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 12 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
-INSERT INTO `sys_user` VALUES (11, 'demo', '$2a$10$ip/m/nYFDXM70j2Ky4wWZu9FdmT6RPy1cg7IO/h4rkOSqV7JFYmUa');
+INSERT INTO `sys_user` VALUES (1, 'admin', '123');
+INSERT INTO `sys_user` VALUES (2, 'jitwxs', '123');
 
 -- ----------------------------
 -- Table structure for sys_user_role
@@ -71,13 +76,14 @@ CREATE TABLE `sys_user_role`  (
   `role_id` int(11) NOT NULL,
   PRIMARY KEY (`user_id`, `role_id`) USING BTREE,
   INDEX `fk_role_id`(`role_id`) USING BTREE,
-  CONSTRAINT `sys_user_role_ibfk_1` FOREIGN KEY (`role_id`) REFERENCES `sys_role` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `sys_user_role_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `sys_user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `fk_role_id` FOREIGN KEY (`role_id`) REFERENCES `sys_role` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `fk_user_id` FOREIGN KEY (`user_id`) REFERENCES `sys_user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_user_role
 -- ----------------------------
-INSERT INTO `sys_user_role` VALUES (11, 2);
+INSERT INTO `sys_user_role` VALUES (1, 1);
+INSERT INTO `sys_user_role` VALUES (2, 2);
 
 SET FOREIGN_KEY_CHECKS = 1;

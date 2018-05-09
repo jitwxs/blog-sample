@@ -1,9 +1,9 @@
-- springboot_security 完整例子，是以下各个子例子的整合
+- springboot_security01 [SpringBoot集成Spring Security（1）——入门程序](https://blog.csdn.net/yuanlaijike/article/details/80249235)
 
-- springboot_security01 Spring Security入门程序
+- springboot_security02 [SpringBoot集成Spring Security（2）——自动登录](https://blog.csdn.net/yuanlaijike/article/details/80249869)
 
-- springboot_security02 添加自动登录(Remember me)功能
+- springboot_security03_filter [SpringBoot集成Spring Security（3）——异常处理](https://blog.csdn.net/yuanlaijike/article/details/80250389) + [SpringBoot集成Spring Security（4）——自定义表单登录](https://blog.csdn.net/yuanlaijike/article/details/80253922) 使用Filter验证
 
-- springboot_security03 自定义表单登陆认证（增加验证码功能）
+- springboot_security03 [SpringBoot集成Spring Security（3）——异常处理](https://blog.csdn.net/yuanlaijike/article/details/80250389) + [SpringBoot集成Spring Security（4）——自定义表单登录](https://blog.csdn.net/yuanlaijike/article/details/80253922) 使用Spring Security验证
 
-- springboot_security04 异常处理
+- springboot_security 完整例子，包含用户登录、注册、密码加密

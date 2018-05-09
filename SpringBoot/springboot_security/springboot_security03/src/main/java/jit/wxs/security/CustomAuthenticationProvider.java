@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author jitwxs
- * @date 2018/3/29 19:49
+ * @since 2018/5/9 11:26
  */
 @Component
 public class CustomAuthenticationProvider implements AuthenticationProvider {
@@ -30,17 +30,18 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         String inputPassword = authentication.getCredentials().toString();
 
         CustomWebAuthenticationDetails details = (CustomWebAuthenticationDetails) authentication.getDetails();
+
         String verifyCode = details.getVerifyCode();
         if(!validateVerify(verifyCode)) {
             throw new DisabledException("验证码输入错误");
         }
 
-        // userDetails一定非空，否则会抛异常
+        // userDetails为数据库中查询到的用户信息
         UserDetails userDetails = customUserDetailsService.loadUserByUsername(inputName);
 
-        // 对密码进行验证，如有需要可以进行自定义加密解密的判断
-        if (!inputPassword.equals(userDetails.getPassword())) {
-            throw new BadCredentialsException("密码错误，登录失败！");
+        // 如果是自定义AuthenticationProvider，需要手动密码校验
+        if(!userDetails.getPassword().equals(inputPassword)) {
+            throw new BadCredentialsException("密码错误");
         }
 
         return new UsernamePasswordAuthenticationToken(inputName, inputPassword, userDetails.getAuthorities());
@@ -54,12 +55,14 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         String validateCode = ((String) request.getSession().getAttribute("validateCode")).toLowerCase();
         inputVerify = inputVerify.toLowerCase();
 
-        //System.out.println("验证码：" + validateCode + "用户输入：" + inputVerify);
+        System.out.println("验证码：" + validateCode + "用户输入：" + inputVerify);
+
         return validateCode.equals(inputVerify);
     }
 
     @Override
     public boolean supports(Class<?> authentication) {
+        // 这里不要忘记，和UsernamePasswordAuthenticationToken比较
         return authentication.equals(UsernamePasswordAuthenticationToken.class);
     }
 }

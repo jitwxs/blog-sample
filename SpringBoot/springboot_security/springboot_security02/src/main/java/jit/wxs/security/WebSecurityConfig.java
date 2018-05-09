@@ -1,6 +1,7 @@
 package jit.wxs.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -9,6 +10,10 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
+
+import javax.sql.DataSource;
 
 /**
  * @author jitwxs
@@ -19,26 +24,33 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
-    private CustomAuthenticationProvider customAuthenticationProvider;
+    private CustomUserDetailsService userDetailsService;
 
     @Autowired
-    private CustomUserDetailsService userDetailsService;
+    private DataSource dataSource;
+
+    @Bean
+    public PersistentTokenRepository persistentTokenRepository(){
+        JdbcTokenRepositoryImpl tokenRepository = new JdbcTokenRepositoryImpl();
+        tokenRepository.setDataSource(dataSource);
+        // 如果token表不存在，使用下面语句可以初始化该表；若存在，会报错。
+//        tokenRepository.setCreateTableOnStartup(true);
+        return tokenRepository;
+    }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.authenticationProvider(customAuthenticationProvider);
-        auth.userDetailsService(userDetailsService)
-            .passwordEncoder(new PasswordEncoder() {
-                @Override
-                public String encode(CharSequence charSequence) {
-                    return charSequence.toString();
-                }
+        auth.userDetailsService(userDetailsService).passwordEncoder(new PasswordEncoder() {
+            @Override
+            public String encode(CharSequence charSequence) {
+                return charSequence.toString();
+            }
 
-                @Override
-                public boolean matches(CharSequence charSequence, String s) {
-                    return s.equals(charSequence.toString());
-                }
-            });
+            @Override
+            public boolean matches(CharSequence charSequence, String s) {
+                return s.equals(charSequence.toString());
+            }
+        });
     }
 
     @Override
@@ -52,11 +64,19 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin().loginPage("/login")
                 // 设置登陆成功页
                 .defaultSuccessUrl("/").permitAll()
+                // 自定义登陆用户名和密码参数，默认为username和password
+//                .usernameParameter("username")
+//                .passwordParameter("password")
                 .and()
                 .logout().permitAll()
-                .and()
-                .rememberMe();
+                // 自动登录
+                .and().rememberMe()
+                    .tokenRepository(persistentTokenRepository())
+                    // 有效时间：单位s
+                    .tokenValiditySeconds(60)
+                    .userDetailsService(userDetailsService);
 
+        // 关闭CSRF跨域
         http.csrf().disable();
     }
 

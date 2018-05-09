@@ -20,8 +20,9 @@ import java.util.Collection;
 import java.util.List;
 
 /**
+ * 自定义userDetailsService
  * @author jitwxs
- * @date 2018/3/30 9:17
+ * @since 2018/5/9 9:36
  */
 @Service("userDetailsService")
 public class CustomUserDetailsService implements UserDetailsService {
@@ -34,11 +35,11 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Autowired
     private SysUserRoleService userRoleService;
 
-
     @Override
-    public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Collection<GrantedAuthority> authorities = new ArrayList<>();
-        SysUser user = userService.selectByName(s);
+        // 从数据库中取出用户信息
+        SysUser user = userService.selectByName(username);
 
         // 判断用户是否存在
         if(user == null) {

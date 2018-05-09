@@ -8,13 +8,11 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * 该接口用于在Spring Security登录过程中对用户的登录信息的详细信息进行填充
- *
  * @author jitwxs
- * @date 2018/3/30 11:08
+ * @since 2018/5/9 11:18
  */
 @Component
 public class CustomAuthenticationDetailsSource implements AuthenticationDetailsSource<HttpServletRequest, WebAuthenticationDetails> {
-
     @Override
     public WebAuthenticationDetails buildDetails(HttpServletRequest request) {
         return new CustomWebAuthenticationDetails(request);

@@ -7,12 +7,12 @@ import jit.wxs.entity.SysUserRole;
 import jit.wxs.service.SysRoleService;
 import jit.wxs.service.SysUserRoleService;
 import jit.wxs.service.SysUserService;
-import jit.wxs.utils.PasswordUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -75,7 +75,7 @@ public class LoginController {
             throw new Exception("用户名已被注册");
         }
 
-        user.setPassword(PasswordUtils.entryptPassword(user.getPassword()));
+        user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
         userService.insert(user);
         int id = userService.selectByName(name).getId();
         for(Integer roleId : roles) {
