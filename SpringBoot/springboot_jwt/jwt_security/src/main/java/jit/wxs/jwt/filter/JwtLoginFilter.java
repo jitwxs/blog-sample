@@ -71,7 +71,7 @@ public class JwtLoginFilter extends UsernamePasswordAuthenticationFilter {
 
         // 从数据库中取出用户信息
         SysUserService userService = SpringBeanFactoryUtils.getBean(SysUserService.class);
-        SysUser user = userService.selectByUsername(username);;
+        SysUser user = userService.selectByUsername(username);
 
         // 将用户id放入JWT token
         Map<String,Object> map = new HashMap<>();
