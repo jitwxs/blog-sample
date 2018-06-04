@@ -14,6 +14,7 @@
 |springboot_shiro|[SpringBoot集成Shiro安全框架](http://blog.csdn.net/yuanlaijike/article/details/79633723)|
 |springboot_jwt|[Json Web Token介绍与基本使用](https://blog.csdn.net/yuanlaijike/article/details/80174327)|
 |third_login|[Web三方登录实现（基于OAuth2.0，包含Github和QQ登录，附源码）](https://blog.csdn.net/yuanlaijike/article/details/80413181)|
+|springboot_alipay|[Java Web中接入支付宝支付](https://blog.csdn.net/yuanlaijike/article/details/80575513)|
 
 ---
 
