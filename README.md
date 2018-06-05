@@ -1,8 +1,8 @@
 ## 从哪里可以找到我
 
-- CSDN https://blog.csdn.net/yuanlaijike 【主要，长期维护】
+- CSDN https://blog.csdn.net/yuanlaijike 【首发，长期维护】
 
-- 个人网站 http://www.jitwxs.cn 【不定时维护】
+- 个人网站 http://www.jitwxs.cn 【包含CSDN部分文章，长期维护】
 
 ---
 

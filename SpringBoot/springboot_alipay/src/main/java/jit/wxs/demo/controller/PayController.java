@@ -192,9 +192,17 @@ public class PayController {
      */
     @PostMapping("/alipay/notify")
     public void alipayNotify(HttpServletRequest request,  HttpServletResponse response){
+        /*
+         默认只有TRADE_SUCCESS会触发通知，如果需要开通其他通知，请联系客服申请
+         触发条件名 	    触发条件描述 	触发条件默认值
+        TRADE_FINISHED 	交易完成 	false（不触发通知）
+        TRADE_SUCCESS 	支付成功 	true（触发通知）
+        WAIT_BUYER_PAY 	交易创建 	false（不触发通知）
+        TRADE_CLOSED 	交易关闭 	false（不触发通知）
+        来源：https://docs.open.alipay.com/270/105902/#s2
+         */
         // 获取参数
         Map<String,String> params = getPayParams(request);
-
         try{
             // 验证订单
             boolean flag = orderInfoService.validOrder(params);
@@ -206,14 +214,10 @@ public class PayController {
                 //交易状态
                 String tradeStatus = params.get("trade_status");
 
-                /*
-                 * 订单状态（与官方统一）
-                 * WAIT_BUYER_PAY：交易创建，等待买家付款；
-                 * TRADE_CLOSED：未付款交易超时关闭，或支付完成后全额退款；
-                 * TRADE_SUCCESS：交易支付成功；
-                 * TRADE_FINISHED：交易结束，不可退款。一般为超过退款时间
-                 */
                 switch (tradeStatus) {
+                    case "WAIT_BUYER_PAY":
+                        orderInfoService.changeStatus(orderId, tradeStatus);
+                        break;
                     /*
                      * 关闭订单
                      * （1)订单已创建，但用户未付款，调用关闭交易接口
@@ -240,12 +244,13 @@ public class PayController {
                 }
                 response.getWriter().write("success");
             }else {//验证失败
-                response.getWriter().write("fail");
                 //调试用，写文本函数记录程序运行情况是否正常
                 String sWord = AlipaySignature.getSignCheckContentV1(params);
-                logger.error("支付异步方法出现异常：" + sWord);
+                logger.error("支付异步方法验证失败：" + sWord);
+                response.getWriter().write("fail");
             }
         } catch (Exception e){
+            logger.error("支付异步方法出现异常：" + e.getMessage());
             e.printStackTrace();
         }
     }
@@ -399,8 +404,15 @@ public class PayController {
                 orderRefundService.createRefund(refundId, reason, money, responseMap);
                 return Msg.ok(null, null);
             } else {
-                logger.error("退款失败，错误码：" + code + "，错误信息：" + responseMap.get("sub_msg"));
-                return Msg.error("退款失败");
+                String subMsg = responseMap.get("sub_msg");
+                logger.error("退款失败，错误码：" + code + "，错误信息：" + subMsg);
+
+                // 如果错误信息为 交易状态不合法 ，说明本地状态与服务器的不一致，需要手动同步
+                if("交易状态不合法".equals(subMsg)) {
+                    orderInfoService.syncStatus(orderId, alipayNo);
+                }
+
+                return Msg.error("退款失败，请重试或联系客服");
             }
         } catch (Exception e) {
             logger.error("退款出现异常，错误原因：" + e.getMessage());

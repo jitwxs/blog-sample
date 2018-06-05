@@ -1,21 +1,24 @@
 package jit.wxs.demo.service.impl;
 
+import com.alipay.api.AlipayClient;
 import com.alipay.api.internal.util.AlipaySignature;
+import com.alipay.api.request.AlipayTradeQueryRequest;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import jit.wxs.demo.entity.OrderInfo;
 import jit.wxs.demo.mapper.OrderInfoMapper;
 import jit.wxs.demo.service.OrderInfoService;
+import jit.wxs.demo.utils.JsonUtils;
+import jit.wxs.demo.utils.Msg;
 import jit.wxs.demo.utils.RandomUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * <p>
@@ -36,6 +39,13 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
 
     @Autowired
     private OrderInfoMapper orderInfoMapper;
+
+    @Autowired
+    private AlipayClient alipayClient;
+
+    private List<String> statusList = Arrays.asList("WAIT_BUYER_PAY", "TRADE_CLOSED", "TRADE_SUCCESS", "TRADE_FINISHED");
+
+    private Logger logger = LoggerFactory.getLogger(OrderInfoServiceImpl.class);
 
     /**
      * 生成订单
@@ -152,17 +162,64 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
         if(orderInfo == null) {
             return false;
         }
-        List<String> list = Arrays.asList("WAIT_BUYER_PAY", "TRADE_CLOSED", "TRADE_SUCCESS", "TRADE_FINISHED");
-        if(StringUtils.isBlank(status) || !list.contains(status)) {
+
+        if(StringUtils.isBlank(status) || !statusList.contains(status)) {
             return false;
         }
 
-        // 更新状态
+        // 如果订单状态相同，不发生改变
+        if(status.equals(orderInfo.getStatus())) {
+            return true;
+        }
+
+
+        // 如果是TRADE_SUCCESS，设置订单号
         if("TRADE_SUCCESS".equals(status) && tradeNo.length > 0) {
             orderInfo.setAlipayNo(tradeNo[0]);
         }
+
         orderInfo.setStatus(status);
         orderInfoMapper.updateById(orderInfo);
         return true;
+    }
+
+    @Override
+    public boolean syncStatus(String orderId, String alipayNo) {
+        OrderInfo orderInfo = getByIdOrAlipayNo(orderId, alipayNo);
+        if(orderInfo == null) {
+            return false;
+        }
+
+        // 1、设置请求参数
+        AlipayTradeQueryRequest alipayRequest = new AlipayTradeQueryRequest();
+        Map<String, String> map = new HashMap<>(16);
+        map.put("out_trade_no", orderId);
+        map.put("trade_no", alipayNo);
+        alipayRequest.setBizContent(JsonUtils.objectToJson(map));
+        try {
+            // 2、请求
+            String json = alipayClient.execute(alipayRequest).getBody();
+            Map<String, Object> resMap = JsonUtils.jsonToPojo(json, Map.class);
+            Map<String, String> responseMap = (Map)resMap.get("alipay_trade_query_response");
+
+            // 获得返回状态码，具体参考：https://docs.open.alipay.com/common/105806
+            String code = responseMap.get("code");
+            if("10000".equals(code)) {
+                // 当查询的订单状态不等于数据库订单状态时，更新状态
+                String tradeStatus = responseMap.get("trade_status");
+                if(!orderInfo.getStatus().equals(tradeStatus)) {
+                    orderInfo.setStatus(tradeStatus);
+                    orderInfoMapper.updateById(orderInfo);
+                    return true;
+                }
+            } else {
+                logger.error("查询失败，错误码：" + code + "，错误信息：" + responseMap.get("sub_msg"));
+            }
+        } catch (Exception e) {
+            logger.error("查询订单方法出现异常，错误信息：" + e.getMessage());
+            e.printStackTrace();
+        }
+
+        return false;
     }
 }

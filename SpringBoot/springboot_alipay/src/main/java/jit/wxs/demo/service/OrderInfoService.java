@@ -1,7 +1,7 @@
 package jit.wxs.demo.service;
 
-import jit.wxs.demo.entity.OrderInfo;
 import com.baomidou.mybatisplus.service.IService;
+import jit.wxs.demo.entity.OrderInfo;
 
 import java.util.Map;
 
@@ -14,6 +14,7 @@ import java.util.Map;
  * @since 2018-06-04
  */
 public interface OrderInfoService extends IService<OrderInfo> {
+
     /**
      * 生成订单
      * @author jitwxs
@@ -43,4 +44,17 @@ public interface OrderInfoService extends IService<OrderInfo> {
      * @since 2018/6/4 22:42
      */
     boolean changeStatus(String orderId, String status, String... tradeNo);
+
+    /**
+     * 手动同步状态
+     * 支付宝服务器状态 ---> 数据库状态
+     * 调用原因：订单状态没有在支付宝异步通知方法中更新，导致状态不一致。
+     *          使用该方法手动同步状态
+     * 两个参数传任一即可
+     * @param orderId 商户订单号
+     * @param alipayNo 支付宝交易号
+     * @author jitwxs
+     * @since 2018/6/5 21:30
+     */
+    boolean syncStatus(String orderId, String alipayNo);
 }
