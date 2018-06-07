@@ -5,17 +5,18 @@ import com.alipay.api.internal.util.AlipaySignature;
 import com.alipay.api.request.AlipayTradeQueryRequest;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+import jit.wxs.demo.config.AliPayConfig;
 import jit.wxs.demo.entity.OrderInfo;
+import jit.wxs.demo.exception.CustomException;
 import jit.wxs.demo.mapper.OrderInfoMapper;
 import jit.wxs.demo.service.OrderInfoService;
 import jit.wxs.demo.utils.JsonUtils;
-import jit.wxs.demo.utils.Msg;
 import jit.wxs.demo.utils.RandomUtils;
+import jit.wxs.demo.utils.Result;
+import jit.wxs.demo.utils.ResultEnum;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -29,23 +30,16 @@ import java.util.*;
  * @since 2018-06-04
  */
 @Service
+@Slf4j
 public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo> implements OrderInfoService {
-    @Value("${alipay.app_id}")
-    private String APP_ID;
-    @Value("${alipay.alipay_public_key}")
-    private String ALIPAY_PUBLIC_KEY;
-    @Value("${alipay.sign_type}")
-    private String SIGN_TYPE;
-
     @Autowired
     private OrderInfoMapper orderInfoMapper;
-
+    @Autowired
+    private AliPayConfig aliPayConfig;
     @Autowired
     private AlipayClient alipayClient;
 
     private List<String> statusList = Arrays.asList("WAIT_BUYER_PAY", "TRADE_CLOSED", "TRADE_SUCCESS", "TRADE_FINISHED");
-
-    private Logger logger = LoggerFactory.getLogger(OrderInfoServiceImpl.class);
 
     /**
      * 生成订单
@@ -98,7 +92,7 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
         */
 
         // 1、调用SDK验证签名
-        boolean signVerified = AlipaySignature.rsaCheckV1(params, ALIPAY_PUBLIC_KEY, "utf-8", SIGN_TYPE);
+        boolean signVerified = AlipaySignature.rsaCheckV1(params, aliPayConfig.getAlipayPublicKey(), "utf-8", aliPayConfig.getSignType());
         if(!signVerified) {
             return false;
         }
@@ -119,9 +113,10 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
         if(!sellerId.equals(orderInfo.getSellerId())) {
             return false;
         }
+
         // 4、判断APP_ID是否相等
         String appId = params.get("app_id");
-        if(!appId.equals(APP_ID)) {
+        if(!appId.equals(aliPayConfig.getAppId())) {
             return false;
         }
 
@@ -213,10 +208,10 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
                     return true;
                 }
             } else {
-                logger.error("查询失败，错误码：" + code + "，错误信息：" + responseMap.get("sub_msg"));
+                log.error("【状态同步Service】错误码：{}，错误信息：{}",code ,responseMap.get("sub_msg"));
             }
         } catch (Exception e) {
-            logger.error("查询订单方法出现异常，错误信息：" + e.getMessage());
+            log.error("【状态同步Service】异常，错误信息：{}", e.getMessage());
             e.printStackTrace();
         }
 

@@ -7,17 +7,18 @@ import com.alipay.api.request.AlipayTradePagePayRequest;
 import com.alipay.api.request.AlipayTradeQueryRequest;
 import com.alipay.api.request.AlipayTradeRefundRequest;
 import com.alipay.api.response.AlipayTradePagePayResponse;
+import jit.wxs.demo.config.AliPayConfig;
 import jit.wxs.demo.entity.OrderInfo;
 import jit.wxs.demo.entity.OrderRefund;
+import jit.wxs.demo.exception.CustomException;
 import jit.wxs.demo.service.OrderInfoService;
 import jit.wxs.demo.service.OrderRefundService;
 import jit.wxs.demo.utils.JsonUtils;
-import jit.wxs.demo.utils.Msg;
+import jit.wxs.demo.utils.Result;
 import jit.wxs.demo.utils.RandomUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import jit.wxs.demo.utils.ResultEnum;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -40,23 +41,16 @@ import java.util.Map;
  * @since 2018/6/3 13:59
  */
 @Controller
+@Slf4j
 public class PayController {
-    @Value("${alipay.uid}")
-    private String SELLER_ID;
-    @Value("${alipay.notify_url}")
-    private String NOTIFY_URL;
-    @Value("${alipay.return_url}")
-    private String RETURN_URL;
-
     @Autowired
     private OrderInfoService orderInfoService;
     @Autowired
     private OrderRefundService orderRefundService;
-
+    @Autowired
+    private AliPayConfig aliPayConfig;
     @Autowired
     private AlipayClient alipayClient;
-
-    private final Logger logger = LoggerFactory.getLogger(PayController.class);
 
     @RequestMapping("/")
     public String showIndex() {
@@ -78,14 +72,14 @@ public class PayController {
         money = (float) (Math.round(money * 100)) / 100;
 
         // 生成订单
-        OrderInfo orderInfo = orderInfoService.createOrder(subject, body, money, SELLER_ID);
+        OrderInfo orderInfo = orderInfoService.createOrder(subject, body, money, aliPayConfig.getSellerId());
 
         // 1、设置请求参数
         AlipayTradePagePayRequest alipayRequest = new AlipayTradePagePayRequest();
         // 页面跳转同步通知页面路径
-        alipayRequest.setReturnUrl(RETURN_URL);
+        alipayRequest.setReturnUrl(aliPayConfig.getReturnUrl());
         // 服务器异步通知页面路径
-        alipayRequest.setNotifyUrl(NOTIFY_URL);
+        alipayRequest.setNotifyUrl(aliPayConfig.getNotifyUrl());
 
         // 2、SDK已经封装掉了公共参数，这里只需要传入业务参数，请求参数查阅开头Wiki
         Map<String,String> map = new HashMap<>(16);
@@ -106,12 +100,11 @@ public class PayController {
                 String result = alipayResponse.getBody();
                 response.getWriter().write(result);
             } else {
-                String result = "支付表单生成失败：" + alipayResponse.getMsg() + ":" + alipayResponse.getSubMsg();
-                logger.error(result);
-                response.getWriter().write(result);
+                log.error("【支付表单生成】失败，错误信息：{}", alipayResponse.getSubMsg());
+                response.getWriter().write("error");
             }
         } catch (Exception e) {
-            logger.error("支付表单方法出现异常，错误信息：" + e.getMessage());
+            log.error("【支付表单生成】异常，异常信息：{}", e.getMessage());
             e.printStackTrace();
         }
     }
@@ -168,11 +161,11 @@ public class PayController {
                         "</body>\n" +
                         "</html>");
             } else {
-                logger.error("支付同步方法验证失败");
+                log.error("【支付宝同步方法】验证失败");
                 response.getWriter().write("支付验证失败");
             }
         } catch (Exception e) {
-            logger.error("祝福同步方法出现异常，错误信息：" + e.getMessage());
+            log.error("【支付宝同步方法】异常，异常信息：{}", e.getMessage());
             e.printStackTrace();
         }
     }
@@ -243,14 +236,12 @@ public class PayController {
                         default:break;
                 }
                 response.getWriter().write("success");
-            }else {//验证失败
-                //调试用，写文本函数记录程序运行情况是否正常
-                String sWord = AlipaySignature.getSignCheckContentV1(params);
-                logger.error("支付异步方法验证失败：" + sWord);
+            }else {
+                log.error("【支付异步方法】验证失败，错误信息：{}", AlipaySignature.getSignCheckContentV1(params));
                 response.getWriter().write("fail");
             }
         } catch (Exception e){
-            logger.error("支付异步方法出现异常：" + e.getMessage());
+            log.error("【支付异步方法】异常，异常信息：{}", e.getMessage());
             e.printStackTrace();
         }
     }
@@ -265,7 +256,7 @@ public class PayController {
      */
     @PostMapping("/alipay/query")
     @ResponseBody
-    public Msg queryOrder(String orderId, String alipayNo) {
+    public Result queryOrder(String orderId, String alipayNo) {
         // 1、设置请求参数
         AlipayTradeQueryRequest alipayRequest = new AlipayTradeQueryRequest();
         Map<String, String> map = new HashMap<>(16);
@@ -290,17 +281,17 @@ public class PayController {
                 result.put("buyer_logon_id", responseMap.get("buyer_logon_id"));
                 result.put("trade_status", responseMap.get("trade_status"));
 
-                return Msg.ok(null, result);
+                return Result.ok(null, result);
             } else {
-                logger.error("查询失败，错误码：" + code + "，错误信息：" + responseMap.get("sub_msg"));
-                return Msg.error("查询失败");
+                log.error("【支付宝查询】错误，错误码：{}，错误信息：{}", code, responseMap.get("sub_msg"));
+                return Result.error(ResultEnum.ALIPAY_QUERY_ERROR);
             }
         } catch (Exception e) {
-            logger.error("查询订单方法出现异常，错误信息：" + e.getMessage());
+            log.error("【支付宝查询】异常，异常信息：{}", e.getMessage());
             e.printStackTrace();
         }
-        return Msg.error("查询失败");
 
+        return Result.error(ResultEnum.ALIPAY_QUERY_ERROR);
         /*
          {
             "alipay_trade_query_response":{
@@ -352,21 +343,21 @@ public class PayController {
      */
     @PostMapping("/alipay/refund")
     @ResponseBody
-    public Msg refund(String orderId, String alipayNo, float money, String reason) {
+    public Result refund(String orderId, String alipayNo, float money, String reason) {
         if(money == 0) {
-            return Msg.error("退款金额不能为0");
+            throw new CustomException(ResultEnum.MONEY_ERROR);
         }
         // 金额保留两位
         money = (float) (Math.round(money * 100)) / 100;
 
         OrderInfo orderInfo = orderInfoService.getByIdOrAlipayNo(orderId, alipayNo);
         if(orderId == null) {
-            return Msg.error("订单不存在");
+            throw new CustomException(ResultEnum.ORDER_NOT_EXIST);
         }
 
         // 只有订单状态为TRADE_SUCCESS，才能退款
         if(!"TRADE_SUCCESS".equals(orderInfo.getStatus())) {
-            return Msg.error("当前订单状态不支持退款");
+            throw new CustomException(ResultEnum.ORDER_STATUS_NOT_SUPPORT);
         }
 
         // 判断金额是否足够退款（注：即使不判断，金额不够也无法退款成功）
@@ -374,7 +365,8 @@ public class PayController {
         float refundMoney = orderInfo.getRefundMoney();
         float canRefundMoney = (float) (Math.round((totalMoney - refundMoney) * 100)) / 100;
         if(canRefundMoney < money) {
-            return Msg.error("退款金额超过可退款金额，最大退款金额：" + canRefundMoney);
+            throw new CustomException(ResultEnum.PARAMS_ERROR.getCode(),
+                    "退款金额超过可退款金额，最大退款金额：" + canRefundMoney);
         }
 
         // 生成退款请求号，标识一次退款请求，同一笔交易多次退款需要保证唯一，如需部分退款，则此参数必传
@@ -402,23 +394,23 @@ public class PayController {
             if("10000".equals(code)) {
                 // 插入数据库
                 orderRefundService.createRefund(refundId, reason, money, responseMap);
-                return Msg.ok(null, null);
+                return Result.ok();
             } else {
                 String subMsg = responseMap.get("sub_msg");
-                logger.error("退款失败，错误码：" + code + "，错误信息：" + subMsg);
+                log.error("【支付宝退款】错误，错误码：{}，错误信息：{}", code, subMsg);
 
                 // 如果错误信息为 交易状态不合法 ，说明本地状态与服务器的不一致，需要手动同步
                 if("交易状态不合法".equals(subMsg)) {
                     orderInfoService.syncStatus(orderId, alipayNo);
                 }
 
-                return Msg.error("退款失败，请重试或联系客服");
+                return Result.error(ResultEnum.ALIPAY_REFUND_ERROR);
             }
         } catch (Exception e) {
-            logger.error("退款出现异常，错误原因：" + e.getMessage());
+            log.error("【支付宝退款】异常，异常原因：{}", e.getMessage());
             e.printStackTrace();
         }
-        return Msg.error("退款失败");
+        return Result.error(ResultEnum.ALIPAY_REFUND_ERROR);
 
         /*
          {
@@ -464,16 +456,16 @@ public class PayController {
      */
     @PostMapping("/alipay/refund/query")
     @ResponseBody
-    public Msg refundQuery(String orderId, String alipayNo, String refundId) {
+    public Result refundQuery(String orderId, String alipayNo, String refundId) {
         OrderInfo orderInfo = orderInfoService.getByIdOrAlipayNo(orderId, alipayNo);
-        if(orderId == null) {
-            return Msg.error("订单不存在");
+        if(orderInfo == null) {
+            throw new CustomException(ResultEnum.ORDER_NOT_EXIST);
         }
 
         // 这里我直接查询数据库了，也可以请求支付宝，参考文档：https://docs.open.alipay.com/api_1/alipay.trade.fastpay.refund.query/
         List<OrderRefund> refunds = orderRefundService.listRefund(orderInfo.getOrderId(), refundId);
 
-        return Msg.ok(null, refunds);
+        return Result.ok(null, refunds);
     }
 
     /**
@@ -484,7 +476,7 @@ public class PayController {
      */
     @PostMapping("/alipay/close")
     @ResponseBody
-    private Msg closeOrder(String orderId, String alipayNo) {
+    private Result closeOrder(String orderId, String alipayNo) {
         //设置请求参数
         AlipayTradeCloseRequest alipayRequest = new AlipayTradeCloseRequest();
         Map<String, String> map = new HashMap<>(16);
@@ -503,18 +495,17 @@ public class PayController {
             if("10000".equals(code)) {
                 // 将状态更改为关闭
                 String outTradeNo = responseMap.get("out_trade_no");
-                boolean b = orderInfoService.changeStatus(outTradeNo, "TRADE_CLOSED");
-
-                return b ? Msg.ok() : Msg.error("更新状态失败");
+                orderInfoService.changeStatus(outTradeNo, "TRADE_CLOSED");
+                return Result.ok();
             } else {
-                logger.error("交易关闭失败，错误原因：" + responseMap.get("sub_msg"));
-                return Msg.error("交易关闭失败");
+                log.error("【支付宝交易关闭】失败，错误原因：{}",responseMap.get("sub_msg"));
+                return Result.error(ResultEnum.ALIPAY_CLOSE_ERROR);
             }
         } catch (Exception e) {
-            logger.error("关闭交易异常，异常信息：" + e.getMessage());
+            log.error("【支付宝交易关闭】异常，异常原因：{}",e.getMessage());
             e.printStackTrace();
         }
-        return Msg.error("关闭失败");
+        return Result.error(ResultEnum.ALIPAY_CLOSE_ERROR);
     }
 
     /**

@@ -289,7 +289,7 @@
             cache : false,
             async : false,
             success : function(res) {
-                if(res.status) {
+                if(res.code === 0) {
                     $("#buyer_logon_id").text(res.data.buyer_logon_id);
                     $("#trade_status").text(res.data.trade_status);
                     $("#order_subject").text(res.data.orderInfo.subject);
@@ -300,7 +300,7 @@
 
                     $("#queryModel").modal('show');
                 } else {
-                    alert(res.info);
+                    alert("错误！错误码：" + res.code + ",错误信息：" + res.info);
                 }
             },
             error : function(res) {
@@ -326,10 +326,10 @@
             cache : false,
             async : false,
             success : function(res) {
-                if(res.status) {
+                if(res.code === 0) {
                     alert("退款成功");
                 } else {
-                    alert(res.info);
+                    alert("错误！错误码：" + res.code + ",错误信息：" + res.info);
                 }
             },
             error : function(res) {
@@ -348,7 +348,7 @@
             cache : false,
             async : false,
             success : function(res) {
-                if(res.status) {
+                if(res.code === 0) {
                     var html = "";
                     for(var i=0;i<res.data.length;i++) {
                         html += '<div class="form-group">\n' +
@@ -386,7 +386,7 @@
                     $("#refundQueryResForm").html(html);
                     $("#refundQueryModel").modal('show');
                 } else {
-                    alert(res.info);
+                    alert("错误！错误码：" + res.code + ",错误信息：" + res.info);
                 }
             },
             error : function(res) {
@@ -405,10 +405,10 @@
             cache : false,
             async : false,
             success : function(res) {
-                if(res.status) {
+                if(res.info === 0) {
                     alert("交易已关闭");
                 } else {
-                    alert(res.info);
+                    alert("错误！错误码：" + res.code + ",错误信息：" + res.info);
                 }
             },
             error : function(res) {

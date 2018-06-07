@@ -3,9 +3,10 @@ package jit.wxs.demo.entity;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.enums.IdType;
+import lombok.Data;
 
-import java.util.Date;
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * <p>
@@ -15,6 +16,7 @@ import java.io.Serializable;
  * @author jitwxs
  * @since 2018-06-04
  */
+@Data
 public class OrderInfo implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -66,84 +68,4 @@ public class OrderInfo implements Serializable {
      */
     @TableField(update = "now()")
     private Date updateDate;
-
-    public String getOrderId() {
-        return orderId;
-    }
-
-    public void setOrderId(String orderId) {
-        this.orderId = orderId;
-    }
-
-    public String getSubject() {
-        return subject;
-    }
-
-    public void setSubject(String subject) {
-        this.subject = subject;
-    }
-
-    public String getBody() {
-        return body;
-    }
-
-    public void setBody(String body) {
-        this.body = body;
-    }
-
-    public float getMoney() {
-        return money;
-    }
-
-    public void setMoney(float money) {
-        this.money = money;
-    }
-
-    public String getSellerId() {
-        return sellerId;
-    }
-
-    public void setSellerId(String sellerId) {
-        this.sellerId = sellerId;
-    }
-
-    public String getAlipayNo() {
-        return alipayNo;
-    }
-
-    public void setAlipayNo(String alipayNo) {
-        this.alipayNo = alipayNo;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public float getRefundMoney() {
-        return refundMoney;
-    }
-
-    public void setRefundMoney(float refundMoney) {
-        this.refundMoney = refundMoney;
-    }
-
-    public Date getCreateDate() {
-        return createDate;
-    }
-
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
-    }
-
-    public Date getUpdateDate() {
-        return updateDate;
-    }
-
-    public void setUpdateDate(Date updateDate) {
-        this.updateDate = updateDate;
-    }
 }
