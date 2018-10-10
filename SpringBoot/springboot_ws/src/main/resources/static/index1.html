@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>WebSocket Heart</title>
+</head>
+<body>
+
+<button onclick="closeWebSocket()">主动断开连接</button>
+
+<script>
+    var ws = null, wsUrl = "ws://localhost:8080/ws1";
+    var lockReconnect = false;  //避免ws重复连接
+
+    createWebSocket(wsUrl);
+
+    // 建立连接
+    function createWebSocket(url) {
+        if ('WebSocket' in window) {
+            ws = new WebSocket(url);
+        } else if ('MozWebSocket' in window) {
+            ws = new MozWebSocket(url);
+        } else {
+            alert('您的浏览器不支持WebSocket，请更换浏览器');
+        }
+        initEventHandle();
+    }
+
+    // 初始化相关回调函数
+    function initEventHandle() {
+        //连接成功建立的回调方法
+        ws.onopen = function(){
+            console.log("客户端连接建立");
+            //心跳检测重置
+            heartCheck.reset().start();
+        };
+
+        //接收到消息的回调方法
+        ws.onmessage = function(event){
+            console.log("客户端收到消息啦:" +event.data);
+            //拿到任何消息都说明当前连接是正常的，重置心跳
+            heartCheck.reset().start();
+        };
+
+        //连接关闭的回调方法
+        ws.onclose = function(){
+            console.log("客户端连接关闭");
+            // 重连WebSocket
+            reconnect(wsUrl);
+        };
+
+        //连接发生错误的回调方法
+        ws.onerror = function(){
+            console.log("客户端连接错误");
+            // 重连WebSocket
+            reconnect(wsUrl);
+        };
+    }
+
+    //监听窗口关闭事件，当窗口关闭时，主动去关闭webSocket连接，防止连接还没断开就关闭窗口，server端会抛异常。
+    window.onbeforeunload = function(){
+        ws.close();
+    };
+
+    // 重连WebSocket
+    function reconnect(url) {
+        if (lockReconnect)
+            return;
+        lockReconnect = true;
+
+        //没连接上会一直重连，设置延迟避免请求过多
+        setTimeout(function () {
+            createWebSocket(url);
+            lockReconnect = false;
+        }, 2000);
+    }
+
+
+    //心跳检测
+    var heartCheck = {
+        timeout: 10000,        // 10s发一次心跳
+        timeoutObj: null,
+        serverTimeoutObj: null,
+        reset: function () { //心跳包重置
+            clearTimeout(this.timeoutObj);
+            clearTimeout(this.serverTimeoutObj);
+            return this;
+        },
+        start: function () {
+            var self = this;
+            this.timeoutObj = setTimeout(function () {
+                // 向后台发送心跳
+                ws.send("ping");
+                self.serverTimeoutObj = setTimeout(function () { //如果超过一定时间还没重置，说明后端主动断开了
+                    // 执行ws.close()会回调onclose，然后执行其中的reconnet。如果直接执行reconnect 会触发onclose导致重连两次
+                    ws.close();
+                }, self.timeout)
+            }, this.timeout)
+        }
+    };
+
+    //关闭连接
+    function closeWebSocket(){
+        ws.close();
+    }
+</script>
+</body>
+</html>

@@ -16,6 +16,7 @@
 |third_login|[Web三方登录实现（基于OAuth2.0，包含Github和QQ登录，附源码）](https://blog.csdn.net/yuanlaijike/article/details/80413181)|
 |springboot_alipay|[Java Web中接入支付宝支付](https://blog.csdn.net/yuanlaijike/article/details/80575513)|
 |springboot_es|[Elasticsearch初探（5）——与SpringBoot整合](https://blog.csdn.net/yuanlaijike/article/details/82985208)|
+|springboot_ws|[WebSoket初探并于SpringBoot整合](https://blog.csdn.net/yuanlaijike/article/details/83002143)|
 
 ---
 
