@@ -22,18 +22,18 @@ public class VerifyFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        if(isProtectedUrl(request)) {
+        if (isProtectedUrl(request)) {
             String verifyCode = request.getParameter("verifyCode");
-            if(!validateVerify(verifyCode)) {
+            if (!validateVerify(verifyCode)) {
                 //手动设置异常
-                request.getSession().setAttribute("SPRING_SECURITY_LAST_EXCEPTION",new DisabledException("验证码输入错误"));
+                request.getSession().setAttribute("SPRING_SECURITY_LAST_EXCEPTION", new DisabledException("验证码输入错误"));
                 // 转发到错误Url
-                request.getRequestDispatcher("/login/error").forward(request,response);
+                request.getRequestDispatcher("/login/error").forward(request, response);
             } else {
-                filterChain.doFilter(request,response);
+                filterChain.doFilter(request, response);
             }
         } else {
-            filterChain.doFilter(request,response);
+            filterChain.doFilter(request, response);
         }
 
     }

@@ -39,7 +39,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private CustomAuthenticationProvider customAuthenticationProvider;
 
     @Bean
-    public PersistentTokenRepository persistentTokenRepository(){
+    public PersistentTokenRepository persistentTokenRepository() {
         JdbcTokenRepositoryImpl tokenRepository = new JdbcTokenRepositoryImpl();
         tokenRepository.setDataSource(dataSource);
         // 如果token表不存在，使用下面语句可以初始化该表；若存在，会报错。
@@ -85,10 +85,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .logout().permitAll()
                 // 自动登录
                 .and().rememberMe()
-                    .tokenRepository(persistentTokenRepository())
-                    // 有效时间：单位s
-                    .tokenValiditySeconds(60)
-                    .userDetailsService(userDetailsService);
+                .tokenRepository(persistentTokenRepository())
+                // 有效时间：单位s
+                .tokenValiditySeconds(60)
+                .userDetailsService(userDetailsService);
 
         // 关闭CSRF跨域
         http.csrf().disable();

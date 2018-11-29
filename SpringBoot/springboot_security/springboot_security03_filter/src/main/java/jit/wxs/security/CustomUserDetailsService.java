@@ -21,6 +21,7 @@ import java.util.List;
 
 /**
  * 自定义userDetailsService
+ *
  * @author jitwxs
  * @since 2018/5/9 9:36
  */
@@ -42,7 +43,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         SysUser user = userService.selectByName(username);
 
         // 判断用户是否存在
-        if(user == null) {
+        if (user == null) {
             throw new UsernameNotFoundException("用户名不存在");
         }
 

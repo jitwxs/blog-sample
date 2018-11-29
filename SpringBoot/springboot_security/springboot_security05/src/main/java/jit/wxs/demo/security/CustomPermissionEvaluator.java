@@ -16,6 +16,7 @@ import java.util.List;
 
 /**
  * Spring Security 权限管理
+ *
  * @author jitwxs
  * @since 2018/5/15 18:16
  */
@@ -32,23 +33,23 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
     @Override
     public boolean hasPermission(Authentication authentication, Object targetUrl, Object targetPermission) {
         // 获得loadUserByUsername()方法的结果
-        User user = (User)authentication.getPrincipal();
+        User user = (User) authentication.getPrincipal();
         // 获得loadUserByUsername()中注入的角色
         Collection<GrantedAuthority> authorities = user.getAuthorities();
 
         // 遍历用户所有角色
-        for(GrantedAuthority authority : authorities) {
+        for (GrantedAuthority authority : authorities) {
             String roleName = authority.getAuthority();
             Integer roleId = roleService.selectByName(roleName).getId();
             // 得到角色所有的权限
             List<SysPermission> permissionList = permissionService.listByRoleId(roleId);
 
             // 遍历权限
-            for(SysPermission sysPermission : permissionList) {
+            for (SysPermission sysPermission : permissionList) {
                 // 获取权限集
                 List permissions = sysPermission.getPermissions();
                 // 如果访问的Url和权限用户符合的话，返回true
-                if(targetUrl.equals(sysPermission.getUrl())
+                if (targetUrl.equals(sysPermission.getUrl())
                         && permissions.contains(targetPermission)) {
                     return true;
                 }

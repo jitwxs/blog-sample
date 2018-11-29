@@ -6,6 +6,7 @@ import java.util.List;
 
 /**
  * 权限实体类
+ *
  * @author jitwxs
  * @since 2018/5/15 18:11
  */

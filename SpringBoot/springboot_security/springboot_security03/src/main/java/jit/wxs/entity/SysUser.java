@@ -6,7 +6,7 @@ import java.io.Serializable;
  * @author jitwxs
  * @date 2018/3/30 1:18
  */
-public class SysUser implements Serializable{
+public class SysUser implements Serializable {
     static final long serialVersionUID = 1L;
 
     private Integer id;

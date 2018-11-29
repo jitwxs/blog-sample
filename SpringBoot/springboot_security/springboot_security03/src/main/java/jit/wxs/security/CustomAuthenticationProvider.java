@@ -32,7 +32,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         CustomWebAuthenticationDetails details = (CustomWebAuthenticationDetails) authentication.getDetails();
 
         String verifyCode = details.getVerifyCode();
-        if(!validateVerify(verifyCode)) {
+        if (!validateVerify(verifyCode)) {
             throw new DisabledException("验证码输入错误");
         }
 
@@ -40,7 +40,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         UserDetails userDetails = customUserDetailsService.loadUserByUsername(inputName);
 
         // 如果是自定义AuthenticationProvider，需要手动密码校验
-        if(!userDetails.getPassword().equals(inputPassword)) {
+        if (!userDetails.getPassword().equals(inputPassword)) {
             throw new BadCredentialsException("密码错误");
         }
 

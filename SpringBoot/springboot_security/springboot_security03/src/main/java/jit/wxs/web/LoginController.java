@@ -20,6 +20,7 @@ import java.io.IOException;
 @Controller
 public class LoginController {
     private Logger logger = LoggerFactory.getLogger(LoginController.class);
+
     @RequestMapping("/")
     public String showHome() {
         String name = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -37,10 +38,10 @@ public class LoginController {
     public void loginError(HttpServletRequest request, HttpServletResponse response) {
         response.setContentType("text/html;charset=utf-8");
         AuthenticationException exception =
-                (AuthenticationException)request.getSession().getAttribute("SPRING_SECURITY_LAST_EXCEPTION");
+                (AuthenticationException) request.getSession().getAttribute("SPRING_SECURITY_LAST_EXCEPTION");
         try {
             response.getWriter().write(exception.toString());
-        }catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
