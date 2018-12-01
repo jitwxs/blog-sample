@@ -5,13 +5,13 @@
  Source Server Type    : MySQL
  Source Server Version : 50719
  Source Host           : localhost:3306
- Source Schema         : test2
+ Source Schema         : security02
 
  Target Server Type    : MySQL
  Target Server Version : 50719
  File Encoding         : 65001
 
- Date: 09/05/2018 15:49:49
+ Date: 01/12/2018 23:54:10
 */
 
 SET NAMES utf8mb4;

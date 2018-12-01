@@ -24,6 +24,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private CustomUserDetailsService userDetailsService;
 
+    @Autowired
+    private CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
+    @Autowired
+    private CustomAuthenticationFailureHandler customAuthenticationFailureHandler;
+
     @Bean
     public SessionRegistry sessionRegistry() {
         return new SessionRegistryImpl();
@@ -53,18 +58,19 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 // 设置登陆页
                 .formLogin().loginPage("/login")
+//                .successHandler(customAuthenticationSuccessHandler)
+//                .failureHandler(customAuthenticationFailureHandler)
                 .failureUrl("/login/error")
                 // 设置登陆成功页
-                .defaultSuccessUrl("/").permitAll()
-                // 自定义登陆用户名和密码参数，默认为username和password
-//                .usernameParameter("username")
-//                .passwordParameter("password")
+                .defaultSuccessUrl("/")
+                .permitAll()
                 .and()
-                .logout().and()
+                .logout()
+                .and()
                 .sessionManagement()
                 .maximumSessions(1)
                 // 当达到maximumSessions时，是否保留已经登录的用户
-                .maxSessionsPreventsLogin(true)
+                .maxSessionsPreventsLogin(false)
                 // 当达到maximumSessions时，旧用户被踢出后的操作
                 .expiredSessionStrategy(new CustomExpiredSessionStrategy())
                 .sessionRegistry(sessionRegistry());

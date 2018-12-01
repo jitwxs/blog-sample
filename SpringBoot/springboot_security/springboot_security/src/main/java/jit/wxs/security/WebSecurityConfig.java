@@ -10,28 +10,28 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.session.SessionRegistry;
+import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 
 import javax.sql.DataSource;
 
-/**
- * @author jitwxs
- * @date 2018/3/29 16:57
- */
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-
     @Autowired
     private CustomUserDetailsService userDetailsService;
-
     @Autowired
     private DataSource dataSource;
+
+    @Bean
+    public SessionRegistry sessionRegistry() {
+        return new SessionRegistryImpl();
+    }
 
     @Bean
     public PersistentTokenRepository persistentTokenRepository(){
@@ -45,17 +45,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService)
-            .passwordEncoder(new PasswordEncoder() {
-                @Override
-                public String encode(CharSequence rawPassword) {
-                    return new BCryptPasswordEncoder().encode(rawPassword);
-                }
-
-                @Override
-                public boolean matches(CharSequence rawPassword, String encodedPassword) {
-                    return new BCryptPasswordEncoder().matches(rawPassword,encodedPassword);
-                }
-            });
+            .passwordEncoder(new BCryptPasswordEncoder());
     }
 
     @Override
@@ -72,20 +62,30 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .failureUrl("/login/error").permitAll()
                 .and()
                 .addFilterBefore(new VerifyFilter(),UsernamePasswordAuthenticationFilter.class)
-                .logout().permitAll()
+                .logout()
                 // 自动登录
                 .and().rememberMe()
-                    .tokenRepository(persistentTokenRepository())
-                    // 有效时间：单位s
-                    .tokenValiditySeconds(60)
-                    .userDetailsService(userDetailsService);
+                .tokenRepository(persistentTokenRepository())
+                // 有效时间：单位s
+                .tokenValiditySeconds(60)
+                .userDetailsService(userDetailsService)
+                // session管理
+                .and().sessionManagement()
+                .maximumSessions(1)
+                // 当达到maximumSessions时，是否保留已经登录的用户
+                .maxSessionsPreventsLogin(false)
+                // 当达到maximumSessions时，旧用户被踢出后的操作
+                .expiredSessionStrategy(new CustomExpiredSessionStrategy())
+                .sessionRegistry(sessionRegistry());
 
         http.csrf().disable();
     }
 
+    /**
+     * 静态资源忽略
+     */
     @Override
     public void configure(WebSecurity web) throws Exception {
-        // 设置拦截忽略文件夹，可以对静态资源放行
         web.ignoring().antMatchers("/css/**", "/js/**");
     }
 }

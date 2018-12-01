@@ -13,7 +13,6 @@ public class Application {
 		SpringApplication.run(Application.class, args);
 	}
 
-
 	/**
 	 * 注入验证码servlet
 	 */

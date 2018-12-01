@@ -17,6 +17,8 @@
 |springboot_alipay|[Java Web中接入支付宝支付](https://blog.csdn.net/yuanlaijike/article/details/80575513)|
 |springboot_es|[Elasticsearch初探（5）——与SpringBoot整合](https://blog.csdn.net/yuanlaijike/article/details/82985208)|
 |springboot_ws|[WebSoket初探并于SpringBoot整合](https://blog.csdn.net/yuanlaijike/article/details/83002143)|
+|springboot_mp|SpringBoot整合MyBatisPlus 2.x|
+|springboot_mp3|SpringBoot整合MyBatisPlus 3.x|
 
 ---
 
