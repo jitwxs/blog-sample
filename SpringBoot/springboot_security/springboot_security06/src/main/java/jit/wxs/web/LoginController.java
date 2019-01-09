@@ -81,7 +81,10 @@ public class LoginController {
             if (principal instanceof User) {
                 String principalName = ((User)principal).getUsername();
                 if (principalName.equals(username)) {
-                    // 参数二：是否包含过期的Session
+                    /*
+                     * 获取指定用户所有的 session 信息
+                     * 参数二：是否包含过期的Session
+                     */
                     List<SessionInformation> sessionsInfo = sessionRegistry.getAllSessions(principal, false);
                     if (null != sessionsInfo && sessionsInfo.size() > 0) {
                         for (SessionInformation sessionInformation : sessionsInfo) {
