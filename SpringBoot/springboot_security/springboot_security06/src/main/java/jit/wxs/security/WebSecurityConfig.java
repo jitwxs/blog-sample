@@ -53,27 +53,24 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 // 如果有允许匿名的url，填在下面
-//                .antMatchers().permitAll()
-                .anyRequest().authenticated()
-                .and()
+                .antMatchers("/login/invalid").permitAll()
+                .anyRequest().authenticated().and()
                 // 设置登陆页
                 .formLogin().loginPage("/login")
-//                .successHandler(customAuthenticationSuccessHandler)
-//                .failureHandler(customAuthenticationFailureHandler)
-                .failureUrl("/login/error")
-                // 设置登陆成功页
-                .defaultSuccessUrl("/")
-                .permitAll()
-                .and()
-                .logout()
-                .and()
+                .successHandler(customAuthenticationSuccessHandler)
+                .failureHandler(customAuthenticationFailureHandler)
+//                .failureUrl("/login/error")
+//                .defaultSuccessUrl("/")
+                .permitAll().and()
+                .logout().and()
                 .sessionManagement()
-                .maximumSessions(1)
-                // 当达到maximumSessions时，是否保留已经登录的用户
-                .maxSessionsPreventsLogin(false)
-                // 当达到maximumSessions时，旧用户被踢出后的操作
-                .expiredSessionStrategy(new CustomExpiredSessionStrategy())
-                .sessionRegistry(sessionRegistry());
+                    .invalidSessionUrl("/login/invalid")
+                    .maximumSessions(1)
+                    // 当达到最大值时，是否保留已经登录的用户
+                    .maxSessionsPreventsLogin(false)
+                    // 当达到最大值时，旧用户被踢出后的操作
+                    .expiredSessionStrategy(new CustomExpiredSessionStrategy())
+                    .sessionRegistry(sessionRegistry());
 
         // 关闭CSRF跨域
         http.csrf().disable();

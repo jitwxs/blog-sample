@@ -32,6 +32,6 @@ public class CustomAuthenticationFailureHandler implements AuthenticationFailure
 
         response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
         response.setContentType("application/json;charset=UTF-8");
-        response.getWriter().write(objectMapper.writeValueAsString(exception));
+        response.getWriter().write(objectMapper.writeValueAsString(exception.getMessage()));
     }
 }

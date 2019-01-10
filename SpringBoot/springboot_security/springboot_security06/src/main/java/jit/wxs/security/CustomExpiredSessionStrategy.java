@@ -1,8 +1,6 @@
 package jit.wxs.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.security.web.DefaultRedirectStrategy;
-import org.springframework.security.web.RedirectStrategy;
 import org.springframework.security.web.session.SessionInformationExpiredEvent;
 import org.springframework.security.web.session.SessionInformationExpiredStrategy;
 
@@ -13,7 +11,7 @@ import java.util.Map;
 
 public class CustomExpiredSessionStrategy implements SessionInformationExpiredStrategy {
     private ObjectMapper objectMapper = new ObjectMapper();
-    private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
+//    private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 
     /**
      * 根据需要返回 Url 或者 Json
