@@ -20,7 +20,7 @@ public class SecurityDemo02Application {
     @Bean
     public ServletRegistrationBean indexServletRegistration() {
         ServletRegistrationBean registration = new ServletRegistrationBean(new VerifyServlet());
-        registration.addUrlMappings(SecurityConstants.VALIDATE_CODE_URL_PREFIX + "/getVerifyCode");
+        registration.addUrlMappings(SecurityConstants.VALIDATE_CODE_PIC_URL);
         return registration;
     }
 }

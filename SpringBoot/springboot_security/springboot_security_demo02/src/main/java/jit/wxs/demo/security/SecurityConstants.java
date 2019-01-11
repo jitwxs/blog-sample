@@ -11,13 +11,17 @@ public class SecurityConstants {
      */
     public static final String UN_AUTHENTICATION_URL = "/sso";
     /**
+     * 退出登录的 Url
+     */
+    public static final String LOGOUT_URL = "/logout";
+    /**
      * 登陆成功后，被引导跳转的 Url
      */
     public static final String LOGIN_SUCCESS_URL = "/";
     /**
-     * 登陆失败，被引导跳转的 Url
+     * Session 过期被引导跳转的 Url
      */
-    public static final String LOGIN_FAILURE_URL = "/login/error";
+    public static final String INVALID_SESSION_URL = "/login/invalid";
 
     /**
      * 用户名密码登录请求处理url
@@ -46,4 +50,12 @@ public class SecurityConstants {
      * 包括图形验证码图片、短信验证码接口等等...
      */
     public static final String VALIDATE_CODE_URL_PREFIX = "/code";
+    /**
+     * 图形验证码 Url
+     */
+    public static final String VALIDATE_CODE_PIC_URL = VALIDATE_CODE_URL_PREFIX + "/getVerifyCode";
+    /**
+     * 验证码错误 Url
+     */
+    public static final String VALIDATE_CODE_ERR_URL = VALIDATE_CODE_URL_PREFIX + "/error";
 }

@@ -45,11 +45,7 @@
                 username: username
             },
             success: function (data) {
-                if(data.status) {
-                    alert(data.msg);
-                } else {
-                    alert("踢出失败");
-                }
+                alert(data.msg);
             },
             error: function (error) {
                 console.log("内部错误");

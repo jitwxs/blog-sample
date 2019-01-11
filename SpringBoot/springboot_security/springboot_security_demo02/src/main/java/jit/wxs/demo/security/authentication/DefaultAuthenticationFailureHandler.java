@@ -1,9 +1,8 @@
 package jit.wxs.demo.security.authentication;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.extern.slf4j.Slf4j;
+import jit.wxs.demo.util.ResultMap;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.stereotype.Component;
@@ -18,7 +17,6 @@ import java.io.IOException;
  * @author jitwxs
  * @since 2019/1/8 23:29
  */
-@Slf4j
 @Component
 public class DefaultAuthenticationFailureHandler implements AuthenticationFailureHandler {
     @Autowired
@@ -26,10 +24,8 @@ public class DefaultAuthenticationFailureHandler implements AuthenticationFailur
 
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
-        log.info("{}：登陆失败，错误信息：{}", getClass().getName(), exception.getClass());
-
-        response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
+        String json = objectMapper.writeValueAsString(new ResultMap(getClass() + ":onAuthenticationFailure()", exception.getMessage()));
         response.setContentType("application/json;charset=UTF-8");
-        response.getWriter().write(objectMapper.writeValueAsString(exception.getMessage()));
+        response.getWriter().write(json);
     }
 }

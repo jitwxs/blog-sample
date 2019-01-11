@@ -1,3 +1,8 @@
+server:
+  servlet:
+    session:
+      timeout: 60
+
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver

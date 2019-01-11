@@ -35,7 +35,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private DefaultAuthenticationSuccessHandler successHandler;
     @Autowired
-    private DefaultUserDetailService userDetailService;
+    private DefaultLogoutSuccessHandler logoutSuccessHandler;
+    @Autowired
+    private DefaultUserDetailsService userDetailService;
     @Autowired
     private ValidateCodeSecurityConfig validateCodeSecurityConfig;
     @Autowired
@@ -103,12 +105,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     // 设置登陆成功/失败处理逻辑
                     .successHandler(successHandler)
                     .failureHandler(failureHandler)
-                    // 设置登陆成功/失败页
-                    .defaultSuccessUrl(SecurityConstants.LOGIN_SUCCESS_URL)
-                    .failureUrl(SecurityConstants.LOGIN_FAILURE_URL)
                     .permitAll().and()
-                .logout().and()
+                .logout()
+                    .logoutUrl(SecurityConstants.LOGOUT_URL)
+                    .logoutSuccessHandler(logoutSuccessHandler)
+                    .deleteCookies("JSESSIONID").and()
                 .sessionManagement()
+                    .invalidSessionUrl(SecurityConstants.INVALID_SESSION_URL)
                     // 单用户最大session数
                     .maximumSessions(1)
                     // 当达到maximumSessions时，是否保留已经登录的用户

@@ -34,7 +34,7 @@ public class ValidateCodeFilter extends OncePerRequestFilter {
                 //手动设置异常
                 request.getSession().setAttribute("SPRING_SECURITY_LAST_EXCEPTION",new DisabledException("验证码输入错误"));
                 // 转发到错误Url
-                request.getRequestDispatcher(SecurityConstants.LOGIN_FAILURE_URL).forward(request,response);
+                request.getRequestDispatcher(SecurityConstants.VALIDATE_CODE_ERR_URL).forward(request,response);
             } else {
                 filterChain.doFilter(request,response);
             }
@@ -55,7 +55,9 @@ public class ValidateCodeFilter extends OncePerRequestFilter {
         return validateCode.equals(inputVerify);
     }
 
-    // 拦截登陆请求
+    /**
+     * 拦截登陆请求
+     */
     private boolean isProtectedUrl(HttpServletRequest request) {
         return "POST".equals(request.getMethod()) &&
                 pathMatcher.match(SecurityConstants.LOGIN_PROCESSING_URL_FORM, request.getServletPath());

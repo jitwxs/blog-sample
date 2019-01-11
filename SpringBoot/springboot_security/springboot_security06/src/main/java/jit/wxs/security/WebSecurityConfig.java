@@ -28,6 +28,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
     @Autowired
     private CustomAuthenticationFailureHandler customAuthenticationFailureHandler;
+    @Autowired
+    private CustomLogoutSuccessHandler logoutSuccessHandler;
 
     @Bean
     public SessionRegistry sessionRegistry() {
@@ -62,7 +64,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //                .failureUrl("/login/error")
 //                .defaultSuccessUrl("/")
                 .permitAll().and()
-                .logout().and()
+                .logout()
+                    .logoutUrl("/logout")
+                    .logoutSuccessHandler(logoutSuccessHandler)
+                    .deleteCookies("JSESSIONID").and()
                 .sessionManagement()
                     .invalidSessionUrl("/login/invalid")
                     .maximumSessions(1)

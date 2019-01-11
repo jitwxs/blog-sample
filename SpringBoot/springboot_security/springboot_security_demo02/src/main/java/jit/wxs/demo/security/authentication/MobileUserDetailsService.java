@@ -20,12 +20,12 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * 默认 UserDetailService，通过用户名读取信息
+ * 手机登录 UserDetailService，通过手机号读取信息
  * @author jitwxs
- * @since 2019/1/8 23:34
+ * @since 2019/1/8 23:37
  */
 @Service
-public class DefaultUserDetailService implements UserDetailsService {
+public class MobileUserDetailsService implements UserDetailsService {
     @Autowired
     private SysUserService userService;
 
@@ -39,11 +39,11 @@ public class DefaultUserDetailService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Collection<GrantedAuthority> authorities = new ArrayList<>();
         // 从数据库中取出用户信息
-        SysUser user = userService.getByName(username);
+        SysUser user = userService.getByMobile(username);
 
         // 判断用户是否存在
         if (user == null) {
-            throw new UsernameNotFoundException("用户名不存在");
+            throw new UsernameNotFoundException("该手机号码尚未注册");
         }
 
         // 添加权限

@@ -25,7 +25,7 @@ import java.util.List;
  * @since 2019/1/8 23:34
  */
 @Service
-public class DefaultUserDetailService implements UserDetailsService {
+public class DefaultUserDetailsService implements UserDetailsService {
     @Autowired
     private SysUserService userService;
 

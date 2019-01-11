@@ -2,7 +2,7 @@ package jit.wxs.demo.security.validate.mobile;
 
 import jit.wxs.demo.security.authentication.DefaultAuthenticationFailureHandler;
 import jit.wxs.demo.security.authentication.DefaultAuthenticationSuccessHandler;
-import jit.wxs.demo.security.authentication.MobileUserDetailService;
+import jit.wxs.demo.security.authentication.MobileUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.SecurityConfigurerAdapter;
@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class SmsCodeAuthenticationSecurityConfig extends SecurityConfigurerAdapter<DefaultSecurityFilterChain, HttpSecurity> {
     @Autowired
-    private MobileUserDetailService userDetailsService;
+    private MobileUserDetailsService userDetailsService;
     @Autowired
     private DefaultAuthenticationSuccessHandler successHandler;
     @Autowired
