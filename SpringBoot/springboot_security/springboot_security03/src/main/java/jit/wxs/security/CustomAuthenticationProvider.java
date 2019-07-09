@@ -39,7 +39,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         // userDetails为数据库中查询到的用户信息
         UserDetails userDetails = customUserDetailsService.loadUserByUsername(inputName);
 
-        // 如果是自定义AuthenticationProvider，需要手动密码校验
+        // 这里直接偷懒手动密码校验了，也可以通过注入 passwordEncode 实现
         if (!userDetails.getPassword().equals(inputPassword)) {
             throw new BadCredentialsException("密码错误");
         }
