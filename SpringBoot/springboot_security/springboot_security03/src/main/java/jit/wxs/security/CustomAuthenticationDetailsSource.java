@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
  * @author jitwxs
  * @since 2018/5/9 11:18
  */
-@Component
+@Component("authenticationDetailsSource")
 public class CustomAuthenticationDetailsSource implements AuthenticationDetailsSource<HttpServletRequest, WebAuthenticationDetails> {
     @Override
     public WebAuthenticationDetails buildDetails(HttpServletRequest request) {
