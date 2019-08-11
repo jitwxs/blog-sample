@@ -14,7 +14,7 @@
 |springboot_aop|[SpringBoot 整合 AOP](https://www.jitwxs.cn/77bba914.html)|
 |springboot_es|[Elasticsearch 初探（5）——与SpringBoot整合](https://www.jitwxs.cn/79a2adb2.html)|
 |springboot_i18n|[SprringBoot 配置国际化](https://www.jitwxs.cn/885663.html)|
-|[springboot_jwt](./SpringBoot/springboot_jwt/README.md.html)|[Json Web Token 介绍与基本使用](https://www.jitwxs.cn/7ac4f061.html)|
+|[springboot_jwt](./SpringBoot/springboot_jwt/README.md)|[Json Web Token 介绍与基本使用](https://www.jitwxs.cn/7ac4f061.html)|
 |springboot_mp|SpringBoot 整合 MyBatisPlus 2.x|
 |springboot_mp3|SpringBoot 整合 MyBatisPlus 3.x|
 |[springboot_security](./SpringBoot/springboot_security/README.md.html)|《SpringBoot 集成 Spring Security》系列|
@@ -47,7 +47,7 @@
 
 | 名称 | 文章地址 |
 |:---|:---|
-|[vue_axios](./Vue/vue_axios/README.md.html)|[Axiso解决跨域访问](https://www.jitwxs.cn/dad1fbe2.html)|
+|[vue_axios](./Vue/vue_axios/README.md)|[Axiso解决跨域访问](https://www.jitwxs.cn/dad1fbe2.html)|
 
 ---
 
@@ -55,6 +55,6 @@
 
 | 名称 | 文章地址 |
 |:---|:---|
-|[Hololens](./Hololens/README.md.html)|《Hololens 开发笔记》系列|
-|[LTP](./LTP/README.md.html)|《LTP》系列|
-|[ActiveMQ](./ActiveMQ/README.md.html)|《ActiveMQ 初探》系列|
+|[Hololens](./Hololens/README.md)|《Hololens 开发笔记》系列|
+|[LTP](./LTP/README.md)|《LTP》系列|
+|[ActiveMQ](./ActiveMQ/README.md)|《ActiveMQ 初探》系列|
