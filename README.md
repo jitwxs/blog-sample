@@ -17,7 +17,7 @@
 |[springboot_jwt](./SpringBoot/springboot_jwt/README.md)|[Json Web Token 介绍与基本使用](https://www.jitwxs.cn/7ac4f061.html)|
 |springboot_mp|SpringBoot 整合 MyBatisPlus 2.x|
 |springboot_mp3|SpringBoot 整合 MyBatisPlus 3.x|
-|[springboot_security](./SpringBoot/springboot_security/README.md.html)|《SpringBoot 集成 Spring Security》系列|
+|[springboot_security](./SpringBoot/springboot_security/README.md)|《SpringBoot 集成 Spring Security》系列|
 |springboot_shiro|[SpringBoot 集成 Shiro 安全框架](https://www.jitwxs.cn/30819bdf.html)|
 |springboot_ws|[WebSoket 初探并于 SpringBoot 整合](https://www.jitwxs.cn/9af7a6d1.html)|
 |third_login|[Web 三方登录实现（基于OAuth2.0，包含Github和QQ登录，附源码）](https://www.jitwxs.cn/33ad9e35.html)|
