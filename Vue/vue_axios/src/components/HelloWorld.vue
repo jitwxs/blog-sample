@@ -92,7 +92,7 @@ export default {
     }
   },
   created(){
-    this.$axios.get("/movie/top250")
+    this.$axios.get("/site/info.json")
     .then(res=>{
         console.log(res)
     })
