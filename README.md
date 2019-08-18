@@ -47,7 +47,7 @@
 
 | 名称 | 文章地址 |
 |:---|:---|
-|[vue_axios](./Vue/vue_axios/README.md)|[Axiso解决跨域访问](https://www.jitwxs.cn/dad1fbe2.html)|
+|[vue_axios + vue3_axios](./Vue/vue_axios/README.md)|[Axiso解决跨域访问](https://www.jitwxs.cn/dad1fbe2.html)|
 
 ---
 
