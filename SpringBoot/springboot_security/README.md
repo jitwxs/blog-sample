@@ -8,6 +8,7 @@
 | springboot_security06        | [SpringBoot 集成 Spring Security（6）——登录管理](https://www.jitwxs.cn/59f4016e.html) |
 | springboot_security06_share  | [SpringBoot 集成 Spring Security（6）——登录管理](https://www.jitwxs.cn/59f4016e.html) 添加 session 共享 |
 | springboot_security08        | [SpringBoot 集成 Spring Security（8）——短信验证码登录](https://www.jitwxs.cn/d208d079.html) |
+| springboot_security10        | [SpringBoot 集成 Spring Security（10）——角色继承](https://www.jitwxs.cn/7886e906.html) |
 | springboot_security          | 旧版本完整例子。包含 spring_security01 ~ 06 中除了05的功能 |
 | springboot_security_demo01 | 新版本完整例子，为了方便后续增加新功能，对 springboot_security 这个项目代码进行重构，包含 spring_security01 ~ 06 所有功能，后续完整例子均在这个版本上二次开发。 |
 | springboot_security_demo02 | 基于 springboot_security_demo01，增加了短信验证码登录。 |
