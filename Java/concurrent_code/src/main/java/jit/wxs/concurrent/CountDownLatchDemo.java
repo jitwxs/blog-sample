@@ -11,7 +11,7 @@ import java.util.concurrent.TimeUnit;
  * @author jitwxs
  * @date 2019年08月11日 20:52
  */
-public class CountdownLatchDemo {
+public class CountDownLatchDemo {
 
     public static void main(String[] args) {
         ExecutorService executor = Executors.newFixedThreadPool(2);

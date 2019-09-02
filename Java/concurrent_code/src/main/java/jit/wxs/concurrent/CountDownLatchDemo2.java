@@ -13,14 +13,14 @@ import java.util.stream.IntStream;
  * @author jitwxs
  * @date 2019年08月11日 20:52
  */
-public class CountdownLatchDemo1 {
+public class CountDownLatchDemo2 {
     private ExecutorService executor = Executors.newFixedThreadPool(5);
 
     public static void main(String[] args) {
         List<Integer> dataList = IntStream.range(1, 100).boxed().collect(Collectors.toList());
         int size = 10;
 
-        new CountdownLatchDemo1().func(dataList, size);
+        new CountDownLatchDemo2().func(dataList, size);
     }
 
     /**
