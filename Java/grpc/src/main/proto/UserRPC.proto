@@ -1,0 +1,19 @@
+syntax = "proto3";
+option java_package = "jit.wxs.demo.rpc";
+option java_outer_classname = "UserRPCProto";
+
+import "User.proto";
+
+message Request {
+    int32 age = 1;
+}
+
+message Response {
+    int32 code = 1;
+    string msg = 2;
+    repeated User user = 3;
+}
+
+service UserRPCService {
+    rpc listByAge(Request) returns(Response);
+}
