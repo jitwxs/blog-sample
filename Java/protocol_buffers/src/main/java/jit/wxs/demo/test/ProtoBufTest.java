@@ -19,7 +19,7 @@ public class ProtoBufTest {
         builder.setSex(SexEnumProto.SexEnum.MALE);
 
         UserProto.User user = builder.build();
-        System.out.println("before: " + user.getName() + "," + user.getAge() + "," + user.getSex());
+        System.out.println("before: " + user.toString());
 
         byte[] byteArray = user.toByteArray();
         System.out.println("=======");
@@ -28,7 +28,7 @@ public class ProtoBufTest {
 
         try {
             UserProto.User user2 = UserProto.User.parseFrom(byteArray);
-            System.out.println("after: " + user2.getName() + "," + user2.getAge() + "," + user2.getSex());
+            System.out.println("after: " + user2.toString());
         } catch (InvalidProtocolBufferException e) {
             e.printStackTrace();
         }
