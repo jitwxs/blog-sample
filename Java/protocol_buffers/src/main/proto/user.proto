@@ -2,7 +2,7 @@ syntax = "proto3";
 option java_package = "jit.wxs.demo.dto";
 option java_outer_classname = "UserProto";
 
-import "SexEnum.proto";
+import "sex_enum.proto";
 
 message User {
     int32 age = 1;
