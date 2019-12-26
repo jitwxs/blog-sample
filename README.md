@@ -2,7 +2,7 @@
 
 - 个人网站 https://www.jitwxs.cn 【首发，长期维护】
 
-- CSDN https://blog.csdn.net/yuanlaijike
+- CSDN https://jitwxs.blog.csdn.net
 
 ---
 
