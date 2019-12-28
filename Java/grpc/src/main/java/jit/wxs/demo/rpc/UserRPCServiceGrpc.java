@@ -1,18 +1,25 @@
 package jit.wxs.demo.rpc;
 
 import static io.grpc.MethodDescriptor.generateFullMethodName;
+import static io.grpc.stub.ClientCalls.asyncBidiStreamingCall;
+import static io.grpc.stub.ClientCalls.asyncClientStreamingCall;
+import static io.grpc.stub.ClientCalls.asyncServerStreamingCall;
 import static io.grpc.stub.ClientCalls.asyncUnaryCall;
 import static io.grpc.stub.ClientCalls.blockingServerStreamingCall;
 import static io.grpc.stub.ClientCalls.blockingUnaryCall;
 import static io.grpc.stub.ClientCalls.futureUnaryCall;
+import static io.grpc.stub.ServerCalls.asyncBidiStreamingCall;
+import static io.grpc.stub.ServerCalls.asyncClientStreamingCall;
+import static io.grpc.stub.ServerCalls.asyncServerStreamingCall;
 import static io.grpc.stub.ServerCalls.asyncUnaryCall;
+import static io.grpc.stub.ServerCalls.asyncUnimplementedStreamingCall;
 import static io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall;
 
 /**
  */
 @javax.annotation.Generated(
     value = "by gRPC proto compiler (version 1.26.0)",
-    comments = "Source: UserRPC.proto")
+    comments = "Source: user_rpc.proto")
 public final class UserRPCServiceGrpc {
 
   private UserRPCServiceGrpc() {}
@@ -20,29 +27,29 @@ public final class UserRPCServiceGrpc {
   public static final String SERVICE_NAME = "UserRPCService";
 
   // Static method descriptors that strictly reflect the proto.
-  private static volatile io.grpc.MethodDescriptor<UserRPCProto.Request,
-      UserRPCProto.Response> getListByAgeMethod;
+  private static volatile io.grpc.MethodDescriptor<jit.wxs.demo.rpc.UserRPCProto.Request,
+      jit.wxs.demo.rpc.UserRPCProto.Response> getListByAgeMethod;
 
   @io.grpc.stub.annotations.RpcMethod(
       fullMethodName = SERVICE_NAME + '/' + "listByAge",
-      requestType = UserRPCProto.Request.class,
-      responseType = UserRPCProto.Response.class,
+      requestType = jit.wxs.demo.rpc.UserRPCProto.Request.class,
+      responseType = jit.wxs.demo.rpc.UserRPCProto.Response.class,
       methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
-  public static io.grpc.MethodDescriptor<UserRPCProto.Request,
-      UserRPCProto.Response> getListByAgeMethod() {
-    io.grpc.MethodDescriptor<UserRPCProto.Request, UserRPCProto.Response> getListByAgeMethod;
+  public static io.grpc.MethodDescriptor<jit.wxs.demo.rpc.UserRPCProto.Request,
+      jit.wxs.demo.rpc.UserRPCProto.Response> getListByAgeMethod() {
+    io.grpc.MethodDescriptor<jit.wxs.demo.rpc.UserRPCProto.Request, jit.wxs.demo.rpc.UserRPCProto.Response> getListByAgeMethod;
     if ((getListByAgeMethod = UserRPCServiceGrpc.getListByAgeMethod) == null) {
       synchronized (UserRPCServiceGrpc.class) {
         if ((getListByAgeMethod = UserRPCServiceGrpc.getListByAgeMethod) == null) {
           UserRPCServiceGrpc.getListByAgeMethod = getListByAgeMethod =
-              io.grpc.MethodDescriptor.<UserRPCProto.Request, UserRPCProto.Response>newBuilder()
+              io.grpc.MethodDescriptor.<jit.wxs.demo.rpc.UserRPCProto.Request, jit.wxs.demo.rpc.UserRPCProto.Response>newBuilder()
               .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
               .setFullMethodName(generateFullMethodName(SERVICE_NAME, "listByAge"))
               .setSampledToLocalTracing(true)
               .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  UserRPCProto.Request.getDefaultInstance()))
+                  jit.wxs.demo.rpc.UserRPCProto.Request.getDefaultInstance()))
               .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  UserRPCProto.Response.getDefaultInstance()))
+                  jit.wxs.demo.rpc.UserRPCProto.Response.getDefaultInstance()))
               .setSchemaDescriptor(new UserRPCServiceMethodDescriptorSupplier("listByAge"))
               .build();
         }
@@ -101,8 +108,8 @@ public final class UserRPCServiceGrpc {
 
     /**
      */
-    public void listByAge(UserRPCProto.Request request,
-                          io.grpc.stub.StreamObserver<UserRPCProto.Response> responseObserver) {
+    public void listByAge(jit.wxs.demo.rpc.UserRPCProto.Request request,
+        io.grpc.stub.StreamObserver<jit.wxs.demo.rpc.UserRPCProto.Response> responseObserver) {
       asyncUnimplementedUnaryCall(getListByAgeMethod(), responseObserver);
     }
 
@@ -112,8 +119,8 @@ public final class UserRPCServiceGrpc {
             getListByAgeMethod(),
             asyncUnaryCall(
               new MethodHandlers<
-                UserRPCProto.Request,
-                UserRPCProto.Response>(
+                jit.wxs.demo.rpc.UserRPCProto.Request,
+                jit.wxs.demo.rpc.UserRPCProto.Response>(
                   this, METHODID_LIST_BY_AGE)))
           .build();
     }
@@ -135,8 +142,8 @@ public final class UserRPCServiceGrpc {
 
     /**
      */
-    public void listByAge(UserRPCProto.Request request,
-                          io.grpc.stub.StreamObserver<UserRPCProto.Response> responseObserver) {
+    public void listByAge(jit.wxs.demo.rpc.UserRPCProto.Request request,
+        io.grpc.stub.StreamObserver<jit.wxs.demo.rpc.UserRPCProto.Response> responseObserver) {
       asyncUnaryCall(
           getChannel().newCall(getListByAgeMethod(), getCallOptions()), request, responseObserver);
     }
@@ -158,7 +165,7 @@ public final class UserRPCServiceGrpc {
 
     /**
      */
-    public UserRPCProto.Response listByAge(UserRPCProto.Request request) {
+    public jit.wxs.demo.rpc.UserRPCProto.Response listByAge(jit.wxs.demo.rpc.UserRPCProto.Request request) {
       return blockingUnaryCall(
           getChannel(), getListByAgeMethod(), getCallOptions(), request);
     }
@@ -180,8 +187,8 @@ public final class UserRPCServiceGrpc {
 
     /**
      */
-    public com.google.common.util.concurrent.ListenableFuture<UserRPCProto.Response> listByAge(
-        UserRPCProto.Request request) {
+    public com.google.common.util.concurrent.ListenableFuture<jit.wxs.demo.rpc.UserRPCProto.Response> listByAge(
+        jit.wxs.demo.rpc.UserRPCProto.Request request) {
       return futureUnaryCall(
           getChannel().newCall(getListByAgeMethod(), getCallOptions()), request);
     }
@@ -207,8 +214,8 @@ public final class UserRPCServiceGrpc {
     public void invoke(Req request, io.grpc.stub.StreamObserver<Resp> responseObserver) {
       switch (methodId) {
         case METHODID_LIST_BY_AGE:
-          serviceImpl.listByAge((UserRPCProto.Request) request,
-              (io.grpc.stub.StreamObserver<UserRPCProto.Response>) responseObserver);
+          serviceImpl.listByAge((jit.wxs.demo.rpc.UserRPCProto.Request) request,
+              (io.grpc.stub.StreamObserver<jit.wxs.demo.rpc.UserRPCProto.Response>) responseObserver);
           break;
         default:
           throw new AssertionError();
@@ -232,7 +239,7 @@ public final class UserRPCServiceGrpc {
 
     @java.lang.Override
     public com.google.protobuf.Descriptors.FileDescriptor getFileDescriptor() {
-      return UserRPCProto.getDescriptor();
+      return jit.wxs.demo.rpc.UserRPCProto.getDescriptor();
     }
 
     @java.lang.Override

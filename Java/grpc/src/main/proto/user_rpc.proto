@@ -2,7 +2,7 @@ syntax = "proto3";
 option java_package = "jit.wxs.demo.rpc";
 option java_outer_classname = "UserRPCProto";
 
-import "User.proto";
+import "user.proto";
 
 message Request {
     int32 age = 1;

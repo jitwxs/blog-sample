@@ -14,11 +14,13 @@
     </properties>
 
     <dependencies>
+        <!-- Protobuf Dependency -->
         <dependency>
             <groupId>com.google.protobuf</groupId>
             <artifactId>protobuf-java</artifactId>
             <version>${protobuf.version}</version>
         </dependency>
+        <!-- gRPC Dependency Start -->
         <dependency>
             <groupId>io.grpc</groupId>
             <artifactId>grpc-netty-shaded</artifactId>
@@ -34,6 +36,7 @@
             <artifactId>grpc-stub</artifactId>
             <version>${grpc.version}</version>
         </dependency>
+        <!-- gRPC Dependency End -->
     </dependencies>
 
     <build>
@@ -57,7 +60,9 @@
                 <executions>
                     <execution>
                         <goals>
+                            <!-- for protobuf -->
                             <goal>compile</goal>
+                            <!-- for grpc -->
                             <goal>compile-custom</goal>
                         </goals>
                     </execution>
