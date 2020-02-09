@@ -1,8 +1,7 @@
-package jit.wxs.demo.test;
+package jit.wxs.helloworld;
 
 import io.grpc.Server;
 import io.grpc.ServerBuilder;
-import jit.wxs.demo.rpc.impl.UserRPCServiceImpl;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;

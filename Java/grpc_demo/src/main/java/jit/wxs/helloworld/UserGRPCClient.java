@@ -1,4 +1,4 @@
-package jit.wxs.demo.test;
+package jit.wxs.helloworld;
 
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;

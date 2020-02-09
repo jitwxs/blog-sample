@@ -1,4 +1,4 @@
-package jit.wxs.demo.rpc.impl;
+package jit.wxs.helloworld;
 
 
 import io.grpc.stub.StreamObserver;

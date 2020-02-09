@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>jit.wxs</groupId>
-    <artifactId>grpc</artifactId>
+    <artifactId>demo</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <properties>
@@ -14,7 +14,7 @@
     </properties>
 
     <dependencies>
-        <!-- Protobuf Dependency -->
+        <!-- ProtoBuf Dependency -->
         <dependency>
             <groupId>com.google.protobuf</groupId>
             <artifactId>protobuf-java</artifactId>
@@ -70,4 +70,5 @@
             </plugin>
         </plugins>
     </build>
+
 </project>

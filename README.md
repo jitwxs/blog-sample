@@ -32,7 +32,7 @@
 |dynamic_proxy|[JDK 动态代理与 Cglib 动态代理](https://www.jitwxs.cn/8ee3adf6.html)|
 |concurrent_code|《Java 并发编程》系列|
 |protocol_buffers|[Protobuf 在 Java 中的入门实例](https://www.jitwxs.cn/a5b690ac.html)|
-|grpc|[gRPC 在 Java 中的入门实例](https://www.jitwxs.cn/d6535904.html)|
+|grpc_demo|[gRPC 在 Java 中的入门实例](https://www.jitwxs.cn/d6535904.html)|
 |disruptor_demo|Dsiruptor Demo 实例|
 
 ---
