@@ -1,4 +1,4 @@
-package jit.wxs.helloworld;
+package jit.wxs.disruptor.demo.quickstart;
 
 import com.lmax.disruptor.EventFactory;
 

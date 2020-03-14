@@ -1,4 +1,4 @@
-package jit.wxs.single1;
+package jit.wxs.disruptor.demo.ringbuffer;
 
 import com.lmax.disruptor.EventHandler;
 

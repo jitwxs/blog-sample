@@ -1,9 +1,9 @@
-package jit.wxs.helloworld;
+package jit.wxs.disruptor.demo.quickstart;
 
 import com.lmax.disruptor.EventHandler;
 
 /**
- * 消费者
+ * 事件消费者
  * @author jitwxs
  * @date 2019年11月28日 23:46
  */
