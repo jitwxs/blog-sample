@@ -33,7 +33,7 @@
 |concurrent_code|《Java 并发编程》系列|
 |protocol_buffers|[Protobuf 在 Java 中的入门实例](https://www.jitwxs.cn/a5b690ac.html)|
 |grpc_demo|[gRPC 在 Java 中的入门实例](https://www.jitwxs.cn/d6535904.html)|
-|disruptor_demo|Dsiruptor Demo 实例|
+|~~disruptor_demo~~|已迁移为独立仓库：[disruptor_study](https://github.com/jitwxs/disruptor_study)|
 
 ---
 
