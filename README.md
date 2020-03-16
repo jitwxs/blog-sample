@@ -1,5 +1,4 @@
 [![Gitter](https://badges.gitter.im/jitwxs/blog.svg)](https://gitter.im/jitwxs/blog?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
-
 [![Star](https://img.shields.io/github/stars/jitwxs/blog-sample?color=green)](#)
 [![Fork](https://img.shields.io/github/forks/jitwxs/blog-sample)](#)
 [![License](https://img.shields.io/github/license/jitwxs/blog-sample?color=orange)](https://opensource.org/licenses/Apache-2.0)
