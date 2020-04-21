@@ -14,12 +14,19 @@
     </properties>
 
     <dependencies>
-        <!-- ProtoBuf Dependency -->
+        <!-- ProtoBuf Dependency Start -->
         <dependency>
             <groupId>com.google.protobuf</groupId>
             <artifactId>protobuf-java</artifactId>
             <version>${protobuf.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.google.protobuf</groupId>
+            <artifactId>protobuf-java-util</artifactId>
+            <version>${protobuf.version}</version>
+        </dependency>
+        <!-- ProtoBuf Dependency End -->
+
         <!-- gRPC Dependency Start -->
         <dependency>
             <groupId>io.grpc</groupId>
@@ -38,11 +45,6 @@
         </dependency>
         <!-- gRPC Dependency End -->
 
-        <dependency>
-            <groupId>com.googlecode.protobuf-java-format</groupId>
-            <artifactId>protobuf-java-format</artifactId>
-            <version>1.4</version>
-        </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
