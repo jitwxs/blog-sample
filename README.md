@@ -39,6 +39,7 @@
 |protocol_buffers|[Protobuf 在 Java 中的入门实例](https://www.jitwxs.cn/a5b690ac.html)|
 |grpc_demo|[gRPC 在 Java 中的入门实例](https://www.jitwxs.cn/d6535904.html)|
 |~~disruptor_demo~~|已迁移为独立仓库：[disruptor-study](https://github.com/jitwxs/disruptor-study)|
+|performance_optimized|[Java 代码性能优化之路](https://www.jitwxs.cn/94186b3a.html)|
 
 ---
 
