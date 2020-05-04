@@ -22,7 +22,7 @@ public class StreamReplaceTest {
     int startAmount = 10;
 
     public static void main(String[] args) {
-        sourceLst = mockOrder(100000);
+        sourceLst = mockOrder(1000000);
         StreamReplaceTest test = new StreamReplaceTest();
         test.calTotalAmount();
         test.calTotalAmountNew();
@@ -31,15 +31,15 @@ public class StreamReplaceTest {
     public void calTotalAmount() {
         long startTime = Utils.now();
 
-        int buyPre = 0, sellPre = 0;
+        double buyPre = 0, sellPre = 0;
         if(addPre) {
-            buyPre = sourceLst.stream().filter(e -> e.getBuyPreAmount() > startAmount).mapToInt(Order::getBuyPreAmount).sum();
-            sellPre = sourceLst.stream().filter(e -> e.getSellPreAmount() > startAmount).mapToInt(Order::getSellPreAmount).sum();
+            buyPre = sourceLst.stream().filter(e -> e.getBuyPreAmount() > startAmount).mapToDouble(Order::getBuyPreAmount).sum();
+            sellPre = sourceLst.stream().filter(e -> e.getSellPreAmount() > startAmount).mapToDouble(Order::getSellPreAmount).sum();
         }
-        int buy = sourceLst.stream().filter(e -> e.getBuyAmount() > startAmount).mapToInt(Order::getBuyAmount).sum();
-        int sell = sourceLst.stream().filter(e -> e.getSellAmount() > startAmount).mapToInt(Order::getSellAmount).sum();
+        double buy = sourceLst.stream().filter(e -> e.getBuyAmount() > startAmount).mapToDouble(Order::getBuyAmount).sum();
+        double sell = sourceLst.stream().filter(e -> e.getSellAmount() > startAmount).mapToDouble(Order::getSellAmount).sum();
 
-        int total = buyPre + sellPre + buy + sell;
+        double total = buyPre + sellPre + buy + sell;
 
         System.out.println("calTotalAmount: " + Utils.diff(startTime));
     }
@@ -47,7 +47,7 @@ public class StreamReplaceTest {
     public void calTotalAmountNew() {
         long startTime = Utils.now();
 
-        int total = 0;
+        double total = 0;
 
         for(Order order : sourceLst) {
             if(addPre) {
@@ -88,12 +88,12 @@ public class StreamReplaceTest {
     static class Order {
         private long id;
 
-        private int buyAmount;
+        private double buyAmount;
 
-        private int sellAmount;
+        private double sellAmount;
 
-        private int buyPreAmount;
+        private double buyPreAmount;
 
-        private int sellPreAmount;
+        private double sellPreAmount;
     }
 }
