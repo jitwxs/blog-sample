@@ -10,7 +10,7 @@
 
     <properties>
         <junit.version>4.12</junit.version>
-        <spring.version>5.0.9.RELEASE</spring.version>
+        <spring.version>5.2.7.RELEASE</spring.version>
         <activemq.version>5.15.3</activemq.version>
     </properties>
 
