@@ -27,6 +27,7 @@
 |springboot_shiro|[SpringBoot 集成 Shiro 安全框架](https://www.jitwxs.cn/30819bdf.html)|
 |springboot_ws|[WebSoket 初探并于 SpringBoot 整合](https://www.jitwxs.cn/9af7a6d1.html)|
 |third_login|[Web 三方登录实现（基于OAuth2.0，包含Github和QQ登录，附源码）](https://www.jitwxs.cn/33ad9e35.html)|
+|shallow_copy|[Java 浅拷贝性能比较](https://www.jitwxs.cn/a9fa88a0.html)|
 
 ---
 
