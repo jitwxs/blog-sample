@@ -1,4 +1,4 @@
-package jit.wxs.concurrent;
+package com.github.jitwxs.demo;
 
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
