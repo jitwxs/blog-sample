@@ -1,6 +1,5 @@
-package jit.wxs.performance;
+package com.github.jitwxs.demo;
 
-import jit.wxs.performance.util.Utils;
 import org.apache.commons.lang3.RandomUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.RepeatedTest;

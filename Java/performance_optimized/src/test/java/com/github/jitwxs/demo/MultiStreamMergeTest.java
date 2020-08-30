@@ -1,7 +1,6 @@
-package jit.wxs.performance;
+package com.github.jitwxs.demo;
 
 import com.google.common.collect.Lists;
-import jit.wxs.performance.util.Utils;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

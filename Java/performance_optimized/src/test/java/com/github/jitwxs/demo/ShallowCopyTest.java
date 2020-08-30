@@ -1,7 +1,5 @@
-package jit.wxs.performance;
+package com.github.jitwxs.demo;
 
-import jit.wxs.performance.util.BeanCopierUtils;
-import jit.wxs.performance.util.Utils;
 import lombok.*;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.RandomUtils;

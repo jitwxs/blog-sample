@@ -1,4 +1,4 @@
-package jit.wxs.performance.util;
+package com.github.jitwxs.demo;
 
 import org.springframework.cglib.beans.BeanCopier;
 

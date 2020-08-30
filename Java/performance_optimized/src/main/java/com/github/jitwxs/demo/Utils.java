@@ -1,4 +1,4 @@
-package jit.wxs.performance.util;
+package com.github.jitwxs.demo;
 
 import java.math.BigDecimal;
 
