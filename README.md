@@ -21,6 +21,7 @@
 |springboot_i18n|[SprringBoot 配置国际化](https://www.jitwxs.cn/885663.html)|
 |[springboot_jwt](./SpringBoot/springboot_jwt/README.md)|[Json Web Token 介绍与基本使用](https://www.jitwxs.cn/7ac4f061.html)|
 |springboot_jib|[Google Jib 容器化构建工具](https://www.jitwxs.cn/a526485e.html)|
+|springboot_metrics|《SpringBoot Metrics 监控系统》系列|
 |springboot_mp|SpringBoot 整合 MyBatisPlus 2.x|
 |springboot_mp3|SpringBoot 整合 MyBatisPlus 3.x|
 |[springboot_security](./SpringBoot/springboot_security/README.md)|《SpringBoot 集成 Spring Security》系列|
