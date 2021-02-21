@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>测试页面</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css"/>
+    <script src="js/jquery-3.3.1.min.js"></script>
+    <script src="js/bootstrap.js"></script>
+</head>
+<body>
+
+<div class="container">
+    <div class="row">
+        <h3 style="text-align: center">支付宝在线支付DEMO</h3>
+    </div>
+    <div class="row">
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs" role="tablist">
+            <li role="presentation" class="active"><a href="#payment_tab" aria-controls="payment" role="tab" data-toggle="tab">付款</a></li>
+            <li role="presentation"><a href="#query_tab" aria-controls="query" role="tab" data-toggle="tab">交易查询</a></li>
+            <li role="presentation"><a href="#refund_tab" aria-controls="payment" role="tab" data-toggle="tab">退款</a></li>
+            <li role="presentation"><a href="#refund_query_tab" aria-controls="refund_query" role="tab" data-toggle="tab">退款查询</a></li>
+            <li role="presentation"><a href="#close_tab" aria-controls="close" role="tab" data-toggle="tab">交易关闭</a></li>
+        </ul>
+        <!-- Tab panes -->
+        <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade in active" id="payment_tab">
+                <div class="panel panel-info">
+                    <div class="panel-body">
+                        <form method="post" action="/alipay/payment">
+                            <div class="form-group">
+                                <label for="inputSubject">订单名称（必填）</label>
+                                <input type="text" class="form-control" id="inputSubject" name="subject" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputBody">订单描述</label>
+                                <input type="text" class="form-control" id="inputBody" name="body">
+                            </div>
+                            <div class="form-group">
+                                <label for="inputMoney">付款金额（必填）</label>
+                                <input class="form-control" id="inputMoney" name="money"
+                                       onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')"
+                                       required>
+                            </div>
+                            <button type="reset" class="btn btn-default">重置</button>
+                            <button type="submit" class="btn btn-default">付款</button>
+                        </form>
+                    </div>
+                    <div class="panel-footer">
+                        该接口提供所有支付宝支付订单的查询，商户可以通过该接口主动查询订单状态，完成下一步的业务逻辑。
+                        需要调用查询接口的情况： 当商户后台、网络、服务器等出现异常，商户系统最终未接收到支付通知；
+                        调用支付接口后，返回系统错误或未知交易状态情况； 调用alipay.trade.pay，返回INPROCESS的状态；
+                        调用alipay.trade.cancel之前，需确认支付状态；
+                    </div>
+                </div>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="query_tab">
+                <div class="panel panel-info">
+                    <div class="panel-body">
+                        <form id="queryForm">
+                            <div class="form-group">
+                                <label for="inputOrderId">订单号</label>
+                                <input type="text" class="form-control" id="inputOrderId" name="orderId">
+                            </div>
+                            <div class="form-group">
+                                <label for="inputAlipayId">支付宝交易号</label>
+                                <input type="text" class="form-control" id="inputAlipayId" name="alipayNo">
+                            </div>
+                            <button type="reset" class="btn btn-default">重置</button>
+                            <button type="button" class="btn btn-default" onclick="queryOrder()">交易查询</button>
+                        </form>
+                    </div>
+                    <div class="panel-footer">
+                        商户订单号与支付宝交易号二选一，如果您点击“交易查询”按钮，即表示您同意该次的执行操作。
+                    </div>
+                </div>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="refund_tab">
+                <div class="panel panel-info">
+                    <div class="panel-body">
+                        <form id="refundForm">
+                            <div class="form-group">
+                                <label for="inputOrderId1">订单号</label>
+                                <input type="text" class="form-control" id="inputOrderId1" name="orderId">
+                            </div>
+                            <div class="form-group">
+                                <label for="inputAlipayId1">支付宝交易号</label>
+                                <input type="text" class="form-control" id="inputAlipayId1" name="alipayNo">
+                            </div>
+                            <div class="form-group">
+                                <label for="inputMoney1">退款金额（必填）</label>
+                                <input class="form-control" id="inputMoney1" name="money"
+                                       onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')"
+                                       required>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputReason">退款原因（必填）</label>
+                                <input type="text" class="form-control" id="inputReason" name="reason" required>
+                            </div>
+                            <button type="reset" class="btn btn-default">重置</button>
+                            <button type="button" class="btn btn-default" onclick="refund()">退款</button>
+                        </form>
+                    </div>
+                    <div class="panel-footer">
+                        商户订单号与支付宝交易号二选一<br>
+                        当交易发生之后一段时间内，由于买家或者卖家的原因需要退款时，卖家可以通过退款接口将支付款退还给买家，
+                        支付宝将在收到退款请求并且验证成功之后，按照退款规则将支付款按原路退到买家帐号上。
+                        交易超过约定时间（签约时设置的可退款时间）的订单无法进行退款 支付宝退款支持单笔交易分多次退款，
+                        多次退款需要提交原支付订单的商户订单号和设置不同的退款单号。一笔退款失败后重新提交，要采用原来的退款单号。
+                        总退款金额不能超过用户实际支付金额
+                    </div>
+                </div>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="refund_query_tab">
+                <div class="panel panel-info">
+                    <div class="panel-body">
+                        <form id="refundQueryForm">
+                            <div class="form-group">
+                                <label for="inputOrderId2">订单号</label>
+                                <input type="text" class="form-control" id="inputOrderId2" name="orderId">
+                            </div>
+                            <div class="form-group">
+                                <label for="inputAlipayId2">支付宝交易号</label>
+                                <input type="text" class="form-control" id="inputAlipayId2" name="alipayNo">
+                            </div>
+                            <div class="form-group">
+                                <label for="inputRefundId">退款请求号</label>
+                                <input type="text" class="form-control" id="inputRefundId" name="refundId">
+                            </div>
+                            <button type="reset" class="btn btn-default">重置</button>
+                            <button type="button" class="btn btn-default" onclick="refundQuery()">退款查询</button>
+                        </form>
+                    </div>
+                    <div class="panel-footer">
+                        商户订单号与支付宝交易号二选一，退款请求号可选，如果为空，则查询所有退款记录。<br>
+                        商户可使用该接口查询自已通过alipay.trade.refund提交的退款请求是否执行成功。
+                        该接口的返回码10000，仅代表本次查询操作成功，不代表退款成功。
+                        如果该接口返回了查询数据，则代表退款成功，如果没有查询到则代表未退款成功，可以调用退款接口进行重试。
+                        重试时请务必保证退款请求号一致。
+                    </div>
+                </div>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="close_tab">
+                <div class="panel panel-info">
+                    <div class="panel-body">
+                        <form id="closeForm">
+                            <div class="form-group">
+                                <label for="inputOrderId">订单号</label>
+                                <input type="text" class="form-control" id="inputOrderId3" name="orderId">
+                            </div>
+                            <div class="form-group">
+                                <label for="inputAlipayId">支付宝交易号</label>
+                                <input type="text" class="form-control" id="inputAlipayId3" name="alipayNo">
+                            </div>
+                            <button type="reset" class="btn btn-default">重置</button>
+                            <button type="button" class="btn btn-default" onclick="closeOrder()">交易关闭</button>
+                        </form>
+                    </div>
+                    <div class="panel-footer">
+                        商户订单号与支付宝交易号二选一<br>
+                        用于交易创建后，用户在一定时间内未进行支付，可调用该接口直接将未付款的交易进行关闭。
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                官方资料
+            </div>
+            <div class="panel-body">
+                <div>
+                    <label>沙箱环境：</label><a href="https://openhome.alipay.com/platform/appDaily.htm" target="_blank">点我前往</a>
+                </div>
+                <div>
+                    <label>沙箱钱包（Android）：</label><a href="https://sandbox.alipaydev.com/user/downloadApp.htm" target="_blank">点我前往</a>
+                </div>
+                <div>
+                    <label>签名工具及使用教程：</label><a href="https://openhome.alipay.com/platform/appDaily.htm?tab=tool" target="_blank">点我前往</a>
+                </div>
+                <div>
+                    <label>电脑网站支付API文档：</label><a href="https://docs.open.alipay.com/270/105898" target="_blank">点我前往</a>
+                </div>
+                <div>
+                    <label>官方DEMO For Java：</label><a href="http://p.tb.cn/rmsportal_6680_alipay.trade.page.pay-JAVA-UTF-8.zip" target="_blank">点我下载</a>
+                </div>
+            </div>
+            <div class="panel-footer" style="text-align: center">
+                Designed By Jitwxs&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2018-06-04<br>
+                Email:&nbsp;&nbsp;jitwxs@foxmail.com
+            </div>
+        </div>
+    </div>
+
+    <!-- 交易查询模态框 -->
+    <div class="modal fade" id="queryModel" tabindex="-1" role="dialog" aria-labelledby="queryModelLabel">
+        <div class="modal-dialog" role="document" style="width:1100px">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="queryModelLabel">查询结果</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <label for="buyer_logon_id" class="col-sm-2 control-label">付款账户</label>
+                            <div class="col-sm-10">
+                                <p class="form-control-static" id="buyer_logon_id"></p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="trade_status" class="col-sm-2 control-label">交易状态</label>
+                            <div class="col-sm-10">
+                                <p class="form-control-static" id="trade_status"></p>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="form-group">
+                            <label for="order_subject" class="col-sm-2 control-label">订单名称</label>
+                            <div class="col-sm-10">
+                                <p class="form-control-static" id="order_subject"></p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="order_body" class="col-sm-2 control-label">订单描述</label>
+                            <div class="col-sm-10">
+                                <p class="form-control-static" id="order_body"></p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="order_money" class="col-sm-2 control-label">支付金额</label>
+                            <div class="col-sm-10">
+                                <p class="form-control-static" id="order_money"></p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="order_refund_money" class="col-sm-2 control-label">已退款金额</label>
+                            <div class="col-sm-10">
+                                <p class="form-control-static" id="order_refund_money"></p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="order_status" class="col-sm-2 control-label">订单状态</label>
+                            <div class="col-sm-10">
+                                <p class="form-control-static" id="order_status"></p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-offset-4" style="color: red">如果交易状态与订单状态不一致，说明数据同步出现问题</label>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 退款查询模态框 -->
+    <div class="modal fade" id="refundQueryModel" tabindex="-1" role="dialog" aria-labelledby="refundQueryModelLabel">
+        <div class="modal-dialog" role="document" style="width:1100px">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="refundQueryModelLabel">查询结果</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal" id="refundQueryResForm">
+
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // 查询交易
+    function queryOrder() {
+        $.ajax({
+            url : '/alipay/query',
+            type : "post",
+            dataType : "json",
+            data : $("#queryForm").serialize(),
+            cache : false,
+            async : false,
+            success : function(res) {
+                if(res.code === 0) {
+                    $("#buyer_logon_id").text(res.data.buyer_logon_id);
+                    $("#trade_status").text(res.data.trade_status);
+                    $("#order_subject").text(res.data.orderInfo.subject);
+                    $("#order_body").text(res.data.orderInfo.body);
+                    $("#order_money").text(res.data.orderInfo.money);
+                    $("#order_refund_money").text(res.data.orderInfo.refundMoney);
+                    $("#order_status").text(res.data.orderInfo.status);
+
+                    $("#queryModel").modal('show');
+                } else {
+                    alert("错误！错误码：" + res.code + ",错误信息：" + res.info);
+                }
+            },
+            error : function(res) {
+                alert("系统错误");
+            }
+        });
+    }
+
+    // 退款
+    function refund() {
+        var money = $("#inputMoney1").val();
+        var reason = $("#inputReason").val();
+        if(money === "" || reason === "") {
+            alert("请填写必填项");
+            return false;
+        }
+
+        $.ajax({
+            url : '/alipay/refund',
+            type : "post",
+            dataType : "json",
+            data : $("#refundForm").serialize(),
+            cache : false,
+            async : false,
+            success : function(res) {
+                if(res.code === 0) {
+                    alert("退款成功");
+                } else {
+                    alert("错误！错误码：" + res.code + ",错误信息：" + res.info);
+                }
+            },
+            error : function(res) {
+                alert("系统错误");
+            }
+        });
+    }
+
+    // 退款查询
+    function refundQuery() {
+        $.ajax({
+            url : '/alipay/refund/query',
+            type : "post",
+            dataType : "json",
+            data : $("#refundQueryForm").serialize(),
+            cache : false,
+            async : false,
+            success : function(res) {
+                if(res.code === 0) {
+                    var html = "";
+                    for(var i=0;i<res.data.length;i++) {
+                        html += '<div class="form-group">\n' +
+                            '                            <label class="col-sm-2 control-label">退款请求号</label>\n' +
+                            '                            <div class="col-sm-10">\n' +
+                            '                                <p class="form-control-static">'+res.data[i].refundId+'</p>\n' +
+                            '                            </div>\n' +
+                            '                        </div>\n' +
+                            '                        <div class="form-group">\n' +
+                            '                            <label class="col-sm-2 control-label">退款账户</label>\n' +
+                            '                            <div class="col-sm-10">\n' +
+                            '                                <p class="form-control-static">'+res.data[i].account+'</p>\n' +
+                            '                            </div>\n' +
+                            '                        </div>\n' +
+                            '                        <div class="form-group">\n' +
+                            '                            <label class="col-sm-2 control-label">退款金额</label>\n' +
+                            '                            <div class="col-sm-10">\n' +
+                            '                                <p class="form-control-static">'+res.data[i].money+'</p>\n' +
+                            '                            </div>\n' +
+                            '                        </div>\n' +
+                            '                        <div class="form-group">\n' +
+                            '                            <label class="col-sm-2 control-label">退款原因</label>\n' +
+                            '                            <div class="col-sm-10">\n' +
+                            '                                <p class="form-control-static" >'+res.data[i].reason+'</p>\n' +
+                            '                            </div>\n' +
+                            '                        </div>\n' +
+                            '                        <div class="form-group">\n' +
+                            '                            <label class="col-sm-2 control-label">退款时间</label>\n' +
+                            '                            <div class="col-sm-10">\n' +
+                            '                                <p class="form-control-static">'+res.data[i].refundDate+'</p>\n' +
+                            '                            </div>\n' +
+                            '                        </div>\n' +
+                            '                        <hr>';
+                    }
+                    $("#refundQueryResForm").html(html);
+                    $("#refundQueryModel").modal('show');
+                } else {
+                    alert("错误！错误码：" + res.code + ",错误信息：" + res.info);
+                }
+            },
+            error : function(res) {
+                alert("系统错误");
+            }
+        });
+    }
+    
+    // 交易关闭
+    function closeOrder() {
+        $.ajax({
+            url : '/alipay/close',
+            type : "post",
+            dataType : "json",
+            data : $("#closeForm").serialize(),
+            cache : false,
+            async : false,
+            success : function(res) {
+                if(res.info === 0) {
+                    alert("交易已关闭");
+                } else {
+                    alert("错误！错误码：" + res.code + ",错误信息：" + res.info);
+                }
+            },
+            error : function(res) {
+                alert("系统错误");
+            }
+        });
+    }
+
+</script>
+
+</body>
+</html>

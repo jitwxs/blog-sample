@@ -1,0 +1,18 @@
+server:
+  servlet:
+    session:
+      timeout: 60
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/security-demo02?useUnicode=true&characterEncoding=utf-8&useSSL=true&serverTimezone=GMT%2B8
+    username: root
+    password: root
+  main:
+    # Spring Boot 2.1 需要显式开启bean override
+    allow-bean-definition-overriding: true
+
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true

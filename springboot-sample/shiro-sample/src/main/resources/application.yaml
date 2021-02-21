@@ -1,0 +1,18 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    password: root
+    url: jdbc:mysql://localhost:3306/shiro_sample?useUnicode=true&characterEncoding=utf-8&useSSL=true
+    username: root
+
+mybatis-plus:
+  configuration:
+    cache-enabled: false
+    map-underscore-to-camel-case: true
+  global-config:
+    db-column-underline: true
+    field-strategy: 2
+    id-type: 3
+    refresh-mapper: true
+  mapper-locations: /mapper/*Mapper.xml
+  type-aliases-package: jit.wxs.entity

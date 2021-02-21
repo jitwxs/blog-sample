@@ -1,0 +1,11 @@
+management:
+  server:
+    port: 7002
+  endpoints:
+    web:
+      base-path: /
+      exposure:
+        include: health, info, prometheus
+spring:
+  application:
+    name: metrics-sample

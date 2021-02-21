@@ -1,0 +1,12 @@
+mybatis-plus:
+  global-config:
+    db-config:
+      id-type: uuid # 主键策略：AUTO(0),NONE(1),INPUT(2),ID_WORKER(3),UUID(4),ID_WORKER_STR(5);
+  mapper-locations: classpath*:mapper/*.xml
+  type-aliases-package: com.github.jitwxs.sample.mp3.enity
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    password: root
+    url: jdbc:mysql://localhost:3306/mp3?useUnicode=true&characterEncoding=utf-8&useSSL=true&serverTimezone=GMT%2B8
+    username: root

@@ -1,0 +1,3 @@
+spring:
+  aop:
+    proxy-target-class: true # 当值为 true 时，使用 Cglib 动态代理
