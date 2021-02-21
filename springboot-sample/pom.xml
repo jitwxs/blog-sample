@@ -22,6 +22,7 @@
         <module>shiro-sample</module>
         <module>alipay-sample</module>
         <module>oauth-sample</module>
+        <module>jwt-sample</module>
     </modules>
 
     <properties>
