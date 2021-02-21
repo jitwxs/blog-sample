@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>登陆</title>
+</head>
+<body>
+<h1>登陆</h1>
+<form method="post" action="/login">
+    <div>
+        用户名：<input type="text" name="username">
+    </div>
+    <div>
+        密码：<input type="password" name="password">
+    </div>
+    <div>
+        <button type="submit">立即登陆</button>
+    </div>
+</form>
+<br>
+<form method="post" action="/sms/login">
+    <div>
+        手机号：<input type="text" id="mobile" name="mobile" value="jitwxs">
+    </div>
+    <div>
+        验证码：<input type="text" name="smsCode">
+        <a href="javascript:;" onclick="sendSms()">获取验证码</a>
+    </div>
+    <div>
+        <button type="submit">立即登陆</button>
+    </div>
+</form>
+
+<script>
+    function sendSms() {
+        window.location.href = '/sms/code?mobile=' + document.getElementById("mobile").value;
+    }
+</script>
+</body>
+</html>

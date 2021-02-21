@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>登陆</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/login.css">
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-md-offset-3 col-md-6">
+            <form class="form-horizontal" action="/login" method="post">
+                <span class="heading">用户登录</span>
+                <span>默认用户名：demo；密码：123</span>
+                <div class="form-group">
+                    <input type="text" class="form-control" name="username" placeholder="用户名" required>
+                </div>
+                <div class="form-group help">
+                    <input type="password" class="form-control" name="password" placeholder="密码" required>
+                </div>
+                <div class="form-group help">
+                    <input type="text" class="form-control" name="verifyCode" placeholder="验证码" required>
+                </div>
+                <div class="form-group">
+                    <img src="getVerifyCode" title="看不清，请点我" onclick="refresh(this)" onmouseover="mouseover(this)"/>
+                    <label style="margin-left: 50px"><input type="checkbox" name="remember-me"/>自动登录</label>
+                    <a href="/register" style="margin-left: 50px">没有账号？立即注册</a>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-default">登录</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="js/jquery-3.2.1.min.js"></script>
+<script src="js/bootstrap.js"></script>
+<script>
+    function refresh(obj) {
+        obj.src = "getVerifyCode?" + Math.random();
+    }
+
+    function mouseover(obj) {
+        obj.style.cursor = "pointer";
+    }
+</script>
+</body>
+</html>

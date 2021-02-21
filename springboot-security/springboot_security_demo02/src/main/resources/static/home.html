@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h1>登陆成功</h1>
+    <div>
+        <a href="/role/admin" target="_blank">检测ROLE_ADMIN角色</a>
+        <a href="/role/user" target="_blank">检测ROLE_USER角色</a>
+    </div>
+    <br>
+    <div>
+        <a href="/permission/admin/r" target="_blank">检测访问admin路径r权限</a>
+        <a href="/permission/admin/c" target="_blank">检测访问admin路径c权限</a>
+    </div>
+    <br>
+    <div>
+        <label>指定踢出用户名：</label>
+        <input type="text" id="kickName">
+        <button onclick="kickUser()">踢出用户</button>
+    </div>
+    <br>
+    <div>
+        <a href="/me" target="_blank">读取认证信息</a>
+        <button onclick="window.location.href='/logout'">退出登录</button>
+    </div>
+
+<script src="assets/js/jquery-3.3.1.min.js"></script>
+<script>
+    function kickUser() {
+        var username = $("#kickName").val();
+        if(username == null || username === '') {
+            alert("踢出的用户名不能为空");
+            return false;
+        }
+
+        $.ajax({
+            type: 'post',
+            async: true,
+            url: '/kick',
+            dataType: 'json',
+            data: {
+                username: username
+            },
+            success: function (data) {
+                alert(data.msg);
+            },
+            error: function (error) {
+                console.log("内部错误");
+            }
+        });
+    }
+
+</script>
+</body>
+</html>
