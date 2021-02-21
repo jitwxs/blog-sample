@@ -23,6 +23,7 @@
         <module>alipay-sample</module>
         <module>oauth-sample</module>
         <module>jwt-sample</module>
+        <module>es-sample</module>
     </modules>
 
     <properties>
