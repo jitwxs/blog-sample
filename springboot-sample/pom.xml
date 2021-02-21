@@ -20,6 +20,7 @@
         <module>mp-sample</module>
         <module>mp3-sample</module>
         <module>shiro-sample</module>
+        <module>alipay-sample</module>
     </modules>
 
     <properties>

@@ -18,6 +18,7 @@
 
 | Modulo              | Description                                                  |
 | ------------------- | ------------------------------------------------------------ |
+| alipay-sample       | [Java Web 中接入支付宝支付](https://www.jitwxs.cn/ea57cb90.html) |
 | aop-sample          | [SpringBoot 整合 AOP](https://www.jitwxs.cn/77bba914.html)   |
 | i18n-sample         | [SprringBoot 配置国际化](https://www.jitwxs.cn/885663.html)  |
 | jib-sample          | [Google Jib 容器化构建工具](https://www.jitwxs.cn/a526485e.html) |
@@ -36,7 +37,7 @@
 
 | 名称 | 文章地址 |
 |:---|:---|
-|springboot_alipay|[Java Web 中接入支付宝支付](https://www.jitwxs.cn/ea57cb90.html)|
+|springboot_alipay||
 |springboot_aop||
 |springboot_es|[Elasticsearch 初探（5）——与SpringBoot整合](https://www.jitwxs.cn/79a2adb2.html)|
 |springboot_i18n||
