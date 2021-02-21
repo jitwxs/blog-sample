@@ -23,34 +23,15 @@
 | es-sample                                              | [Elasticsearch 初探（5）——与SpringBoot整合](https://www.jitwxs.cn/79a2adb2.html) |
 | i18n-sample                                            | [SprringBoot 配置国际化](https://www.jitwxs.cn/885663.html)  |
 | jib-sample                                             | [Google Jib 容器化构建工具](https://www.jitwxs.cn/a526485e.html) |
-| [jwt-sample](./springboot-sample/jwt-sample/README.md) | [Json Web Token 介绍与基本使用](https://www.jitwxs.cn/7ac4f061.html) |
+| [jwt-sample](./springboot-sample/jwt-sample)           | [Json Web Token 介绍与基本使用](https://www.jitwxs.cn/7ac4f061.html) |
 | metrics-sample                                         | 《SpringBoot Metrics 监控系统》系列                          |
 | mp3-sample                                             | SpringBoot 整合 MyBatisPlus 3.x                              |
 | mp-sample                                              | SpringBoot 整合 MyBatisPlus 2.x                              |
 | oauth-sample                                           | [Web 三方登录实现（基于OAuth2.0，包含Github和QQ登录，附源码）](https://www.jitwxs.cn/33ad9e35.html) |
+| [security-sample](./SpringBoot/springboot_security) | 《SpringBoot 集成 Spring Security》系列                      |
 | shallow-copy-sample                                    | [Java 浅拷贝性能比较](https://www.jitwxs.cn/a9fa88a0.html)   |
 | shiro-sample                                           | [SpringBoot 集成 Shiro 安全框架](https://www.jitwxs.cn/30819bdf.html) |
 | ws-sample                                              | [WebSoket 初探并于 SpringBoot 整合](https://www.jitwxs.cn/9af7a6d1.html) |
-
-
-| 名称 | 文章地址 |
-|:---|:---|
-|springboot_alipay||
-|springboot_aop||
-|springboot_es||
-|springboot_i18n||
-|[springboot_jwt](./SpringBoot/springboot_jwt/README.md)||
-|springboot_jib||
-|springboot_metrics||
-|springboot_mp||
-|springboot_mp3||
-|[springboot_security](./SpringBoot/springboot_security/README.md)|《SpringBoot 集成 Spring Security》系列|
-|springboot_shiro||
-|springboot_ws||
-|third_login||
-|shallow_copy||
-
----
 
 ### Java
 
@@ -63,8 +44,6 @@
 |~~disruptor_demo~~|已迁移为独立仓库：[disruptor-study](https://github.com/jitwxs/disruptor-study)|
 |performance_optimized|[Java 代码性能优化之路](https://www.jitwxs.cn/94186b3a.html)|
 
----
-
 ### Linux
 
 | 名称 | 文章地址 |
@@ -73,15 +52,11 @@
 |io_mode|[Linux IO 模型](https://www.jitwxs.cn/3b3bd025.html)|
 |socket|[Linux Socket 编程](https://www.jitwxs.cn/f2ee55a7.html)|
 
----
-
 ### Vue
 
 | 名称 | 文章地址 |
 |:---|:---|
 |[vue_axios + vue3_axios](./Vue/vue_axios/README.md)|[Axiso解决跨域访问](https://www.jitwxs.cn/dad1fbe2.html)|
-
----
 
 ### 其他
 

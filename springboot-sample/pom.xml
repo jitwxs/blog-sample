@@ -24,6 +24,7 @@
         <module>oauth-sample</module>
         <module>jwt-sample</module>
         <module>es-sample</module>
+        <module>security-sample</module>
     </modules>
 
     <properties>
