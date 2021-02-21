@@ -5,34 +5,55 @@
 
 ## 从哪里可以找到我
 
-- 个人网站 https://www.jitwxs.cn 【首发，长期维护】
+|          |                              |
+| -------- | ---------------------------- |
+| 个人网站 | https://jitwxs.cn            |
+| CSDN     | https://jitwxs.blog.csdn.net |
+| 邮箱     | jitwxs@foxmail.com           |
+| 微信     | jitwxs                       |
 
-- CSDN https://jitwxs.blog.csdn.net
+## 目录
 
----
+### springboot-sample
 
-**SpringBoot**
+| Modulo              | Description                                                  |
+| ------------------- | ------------------------------------------------------------ |
+| aop-sample          | [SpringBoot 整合 AOP](https://www.jitwxs.cn/77bba914.html)   |
+| i18n-sample         | [SprringBoot 配置国际化](https://www.jitwxs.cn/885663.html)  |
+| jib-sample          | [Google Jib 容器化构建工具](https://www.jitwxs.cn/a526485e.html) |
+| metrics-sample      | 《SpringBoot Metrics 监控系统》系列                          |
+| mp3-sample          | SpringBoot 整合 MyBatisPlus 3.x                              |
+| mp-sample           | SpringBoot 整合 MyBatisPlus 2.x                              |
+| shallow-copy-sample | [Java 浅拷贝性能比较](https://www.jitwxs.cn/a9fa88a0.html)   |
+| shiro-sample        | [SpringBoot 集成 Shiro 安全框架](https://www.jitwxs.cn/30819bdf.html) |
+| ws_sample           | [WebSoket 初探并于 SpringBoot 整合](https://www.jitwxs.cn/9af7a6d1.html) |
+|                     |                                                              |
+|                     |                                                              |
+|                     |                                                              |
+|                     |                                                              |
+
+
 
 | 名称 | 文章地址 |
 |:---|:---|
 |springboot_alipay|[Java Web 中接入支付宝支付](https://www.jitwxs.cn/ea57cb90.html)|
-|springboot_aop|[SpringBoot 整合 AOP](https://www.jitwxs.cn/77bba914.html)|
+|springboot_aop||
 |springboot_es|[Elasticsearch 初探（5）——与SpringBoot整合](https://www.jitwxs.cn/79a2adb2.html)|
-|springboot_i18n|[SprringBoot 配置国际化](https://www.jitwxs.cn/885663.html)|
+|springboot_i18n||
 |[springboot_jwt](./SpringBoot/springboot_jwt/README.md)|[Json Web Token 介绍与基本使用](https://www.jitwxs.cn/7ac4f061.html)|
-|springboot_jib|[Google Jib 容器化构建工具](https://www.jitwxs.cn/a526485e.html)|
-|springboot_metrics|《SpringBoot Metrics 监控系统》系列|
-|springboot_mp|SpringBoot 整合 MyBatisPlus 2.x|
-|springboot_mp3|SpringBoot 整合 MyBatisPlus 3.x|
+|springboot_jib||
+|springboot_metrics||
+|springboot_mp||
+|springboot_mp3||
 |[springboot_security](./SpringBoot/springboot_security/README.md)|《SpringBoot 集成 Spring Security》系列|
-|springboot_shiro|[SpringBoot 集成 Shiro 安全框架](https://www.jitwxs.cn/30819bdf.html)|
-|springboot_ws|[WebSoket 初探并于 SpringBoot 整合](https://www.jitwxs.cn/9af7a6d1.html)|
+|springboot_shiro||
+|springboot_ws||
 |third_login|[Web 三方登录实现（基于OAuth2.0，包含Github和QQ登录，附源码）](https://www.jitwxs.cn/33ad9e35.html)|
-|shallow_copy|[Java 浅拷贝性能比较](https://www.jitwxs.cn/a9fa88a0.html)|
+|shallow_copy||
 
 ---
 
-**Java**
+### Java
 
 | 名称 | 文章地址 |
 |:---|:---|
@@ -45,7 +66,7 @@
 
 ---
 
-**Linux**
+### Linux
 
 | 名称 | 文章地址 |
 |:---|:---|
@@ -55,7 +76,7 @@
 
 ---
 
-**Vue**
+### Vue
 
 | 名称 | 文章地址 |
 |:---|:---|
@@ -63,10 +84,17 @@
 
 ---
 
-**其他**
+### 其他
 
 | 名称 | 文章地址 |
 |:---|:---|
 |[Hololens](./Hololens/README.md)|《Hololens 开发笔记》系列|
 |[LTP](./LTP/README.md)|《LTP》系列|
 |[ActiveMQ](./ActiveMQ/README.md)|《ActiveMQ 初探》系列|
+
+## Java 项目标准化
+
+1. 项目命名采用**全小写，中横线分隔，`sample` 结尾**，包名采用`com.github.jitwxs.sample` 打头，确保每个项目**包名在整个工程中唯一**。例如：*spring-security-sample*，包名 *com.github.jitwxs.sample.springsecurity*。
+2. 依赖中含有 SpringBoot 的，作为 `springboot-sample` 项目的一个独立子工程；依赖中不含有 SpringBoot 的，作为 `java-sample` 项目的一个独立子工程。
+3. 公共性依赖放置在父工程中，子项目放置本项目特有依赖。
+4. 如某文章为系列文章，含有多个章节项目，那么这些章节项目应当作为该系列的子项目，命令后加形如 `-ch01`、`-ch02` 区分。例如：*spring-security-sample-ch01*，包名 *com.github.jitwxs.sample.springsecurity.ch01*。
