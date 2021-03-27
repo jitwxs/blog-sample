@@ -59,6 +59,13 @@ public class DSContainer<T extends IDSTaskInfo> {
         }
     }
 
+    /**
+     * 获取 Semaphore，确保任务不会被多个线程同时执行
+     */
+    public Semaphore getSemaphore(final long taskId) {
+        return this.scheduleMap.get(taskId).getRight().getRight();
+    }
+
     private void registerTask(final T taskInfo, final TriggerTask triggerTask) {
         final ScheduledTask latestTask = taskRegistrar.scheduleTriggerTask(triggerTask);
         this.scheduleMap.put(taskInfo.getId(), Pair.of(taskInfo, Pair.of(latestTask, new Semaphore(1))));
@@ -69,12 +76,5 @@ public class DSContainer<T extends IDSTaskInfo> {
         if (pair != null) {
             pair.getRight().getLeft().cancel();
         }
-    }
-
-    /**
-     * 获取 Semaphore
-     */
-    public Semaphore getSemaphore(final long taskId) {
-        return this.scheduleMap.get(taskId).getRight().getRight();
     }
 }

@@ -1,6 +1,6 @@
 package com.github.jitwxs.sample.ds.test;
 
-import com.github.jitwxs.sample.ds.handler.AbstractDSHandler;
+import com.github.jitwxs.sample.ds.config.AbstractDSHandler;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
