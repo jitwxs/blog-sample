@@ -10,7 +10,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>alipay-sample</artifactId>
-    <description>https://www.jitwxs.cn/ea57cb90.html</description>
+    <url>https://www.jitwxs.cn/ea57cb90.html</url>
+    <description>Java Web 中接入支付宝支付</description>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>

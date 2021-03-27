@@ -10,7 +10,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>es-sample</artifactId>
-    <description>https://www.jitwxs.cn/79a2adb2.html</description>
+    <url>https://www.jitwxs.cn/79a2adb2.html</url>
+    <description>Elasticsearch 初探（5）——与SpringBoot整合</description>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>

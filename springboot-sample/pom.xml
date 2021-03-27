@@ -24,6 +24,7 @@
         <module>oauth-sample</module>
         <module>jwt-sample</module>
         <module>es-sample</module>
+        <module>dynamic-schedule-sample</module>
     </modules>
 
     <properties>
@@ -53,6 +54,7 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <scope>provided</scope>
+            <version>1.18.18</version>
         </dependency>
     </dependencies>
 

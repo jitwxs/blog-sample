@@ -10,8 +10,10 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>jwt-sample</artifactId>
-    <description>https://www.jitwxs.cn/7ac4f061.html</description>
+    <url>https://www.jitwxs.cn/7ac4f061.html</url>
+    <description>Json Web Token 介绍与基本使用</description>
     <packaging>pom</packaging>
+
     <modules>
         <module>jwt-sample-ch01</module>
         <module>jwt-sample-ch02</module>

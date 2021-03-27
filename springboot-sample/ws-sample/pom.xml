@@ -10,7 +10,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>ws-sample</artifactId>
-    <description>https://www.jitwxs.cn/9af7a6d1.html</description>
+    <url>https://www.jitwxs.cn/9af7a6d1.html</url>
+    <description>WebSocket 初探并于 SpringBoot 整合</description>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>

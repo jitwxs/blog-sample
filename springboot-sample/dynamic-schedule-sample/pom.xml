@@ -9,9 +9,9 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>i18n-sample</artifactId>
-    <url>https://www.jitwxs.cn/885663.html</url>
-    <description>SpringBoot 配置国际化</description>
+    <artifactId>dynamic-schedule-sample</artifactId>
+    <url>https://www.jitwxs.cn/e4d53ddb.html</url>
+    <description>Spring SchedulingConfigurer 实现动态定时任务</description>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
@@ -20,8 +20,10 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-thymeleaf</artifactId>
+            <groupId>com.github.jitwxs.sample</groupId>
+            <artifactId>common</artifactId>
+            <version>1.0-SNAPSHOT</version>
         </dependency>
     </dependencies>
+
 </project>
