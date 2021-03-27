@@ -10,7 +10,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>shiro-sample</artifactId>
-    <description>https://www.jitwxs.cn/30819bdf.html</description>
+    <url>https://www.jitwxs.cn/30819bdf.html</url>
+    <description>SpringBoot 集成 Shiro 安全框架</description>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>

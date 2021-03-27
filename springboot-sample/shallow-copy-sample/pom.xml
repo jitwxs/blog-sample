@@ -10,7 +10,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>shallow-copy-sample</artifactId>
-    <description>https://www.jitwxs.cn/a9fa88a0.html</description>
+    <url>https://www.jitwxs.cn/a9fa88a0.html</url>
+    <description>Java 浅拷贝性能比较</description>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>

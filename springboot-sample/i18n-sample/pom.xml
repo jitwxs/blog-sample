@@ -10,7 +10,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>i18n-sample</artifactId>
-    <description>https://www.jitwxs.cn/885663.html</description>
+    <url>https://www.jitwxs.cn/885663.html</url>
+    <description>SpringBoot 配置国际化</description>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
