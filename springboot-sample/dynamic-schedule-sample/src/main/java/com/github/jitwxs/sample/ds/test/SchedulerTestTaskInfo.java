@@ -25,7 +25,7 @@ public class SchedulerTestTaskInfo implements IDSTaskInfo {
             final SchedulerTestTaskInfo obj = (SchedulerTestTaskInfo) oldTaskInfo;
             return !this.cron.equals(obj.cron) || this.isValid != obj.isValid || !this.reference.equals(obj.getReference());
         } else {
-            throw new IllegalArgumentException("Not Support IDSTaskInfo type");
+            throw new IllegalArgumentException("Not Support SchedulerTestTaskInfo classType");
         }
     }
 }

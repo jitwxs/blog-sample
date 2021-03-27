@@ -51,9 +51,11 @@ public abstract class AbstractDSHandler<T extends IDSTaskInfo> implements Schedu
      * 调度任务，加载所有任务并注册
      */
     private void scheduleTask() {
-        CollectionUtils.emptyIfNull(listTaskInfo()).forEach(taskInfo -> dsContainer.checkTask(taskInfo, new TriggerTask(
-                () -> this.execute(taskInfo), triggerContext -> new CronTrigger(taskInfo.getCron()).nextExecutionTime(triggerContext)
-        )));
+        CollectionUtils.emptyIfNull(listTaskInfo()).forEach(taskInfo ->
+                dsContainer.checkTask(taskInfo, new TriggerTask(() ->
+                        this.execute(taskInfo), triggerContext -> new CronTrigger(taskInfo.getCron()).nextExecutionTime(triggerContext)
+                ))
+        );
     }
 
     private void execute(final T taskInfo) {

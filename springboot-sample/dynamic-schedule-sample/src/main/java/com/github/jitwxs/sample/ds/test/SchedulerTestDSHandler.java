@@ -46,12 +46,9 @@ public class SchedulerTestDSHandler extends AbstractDSHandler<SchedulerTestTaskI
             return;
         }
 
-        final String className = split[0];
-        final String funcName = split[1];
-
        try {
-           final Class<?> clazz = Class.forName(className);
-           final Method method = clazz.getMethod(funcName);
+           final Class<?> clazz = Class.forName(split[0]);
+           final Method method = clazz.getMethod(split[1]);
            method.invoke(clazz.newInstance());
        } catch (Exception e) {
            e.printStackTrace();
