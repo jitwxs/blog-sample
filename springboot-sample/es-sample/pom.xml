@@ -5,7 +5,7 @@
     <parent>
         <artifactId>springboot-sample</artifactId>
         <groupId>com.github.jitwxs.sample</groupId>
-        <version>1.0-SNAPSHOT</version>
+        <version>${reversion}</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -24,7 +24,7 @@
         <dependency>
             <groupId>com.github.jitwxs.sample</groupId>
             <artifactId>common</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>${reversion}</version>
         </dependency>
 
         <!-- elasticsearch依赖 -->
