@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+import "sex_enum.proto";
+
+option java_package = "com.github.jitwxs.sample.protobuf";
+option java_outer_classname = "MessageProto";
+
+message User {
+    int32 age = 1;
+    string name = 2;
+    SexEnum sex = 3;
+}

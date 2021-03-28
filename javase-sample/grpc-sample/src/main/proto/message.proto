@@ -1,0 +1,8 @@
+syntax = "proto3";
+option java_package = "com.github.jitwxs.sample.grpc";
+option java_outer_classname = "MessageProto";
+
+message User {
+    int32 age = 1;
+    string name = 2;
+}

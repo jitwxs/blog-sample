@@ -1,0 +1,30 @@
+syntax = "proto3";
+option java_package = "com.github.jitwxs.sample.grpc";
+option java_outer_classname = "UserRpcProto";
+
+import "message.proto";
+
+message AgeRequest {
+    int32 age = 1;
+}
+
+message UserResponse {
+    int32 code = 1;
+    string msg = 2;
+    repeated User user = 3;
+}
+
+message UserListResponse {
+    repeated UserResponse response = 1;
+}
+
+service UserRpcService {
+    // 根据年龄查询用户列表
+    rpc listByAge(AgeRequest) returns(UserResponse);
+    // 根据年龄查询用户列表，流式响应
+    rpc listByAgeStream(AgeRequest) returns(stream UserResponse);
+    // 根据年龄查询用户列表，流式响应
+    rpc streamListByAge(stream AgeRequest) returns(UserListResponse);
+    // 根据年龄查询用户列表，双向流式
+    rpc streamListByAgeStream(stream AgeRequest) returns(stream UserResponse);
+}
