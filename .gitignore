@@ -49,3 +49,6 @@ out/
 
 HELP.md
 .mvn/
+
+# maven flatten plugin
+.flattened-pom.xml

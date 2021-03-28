@@ -5,7 +5,7 @@
     <parent>
         <artifactId>springboot-sample</artifactId>
         <groupId>com.github.jitwxs.sample</groupId>
-        <version>1.0-SNAPSHOT</version>
+        <version>${reversion}</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -13,16 +13,11 @@
     <url>https://www.jitwxs.cn/ea57cb90.html</url>
     <description>Java Web 中接入支付宝支付</description>
 
-    <properties>
-        <maven.compiler.source>8</maven.compiler.source>
-        <maven.compiler.target>8</maven.compiler.target>
-    </properties>
-
     <dependencies>
         <dependency>
             <groupId>com.github.jitwxs.sample</groupId>
             <artifactId>common</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>${reversion}</version>
         </dependency>
 
         <!--支付宝支付SDK-->

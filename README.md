@@ -5,14 +5,24 @@
 
 ## 从哪里可以找到我
 
-|          |                              |
-| -------- | ---------------------------- |
-| 个人网站 | https://jitwxs.cn            |
-| CSDN     | https://jitwxs.blog.csdn.net |
-| 邮箱     | jitwxs@foxmail.com           |
-| 微信     | jitwxs                       |
+|          |                                        |
+| -------- | -------------------------------------- |
+| 个人网站 | https://jitwxs.cn                      |
+| CSDN     | https://jitwxs.blog.csdn.net           |
+| 邮箱     | jitwxs@foxmail.com<br>jitwxs@gmail.com |
+| 微信     | jitwxs                                 |
 
 ## 目录
+
+### java-sample
+
+| 名称 | 文章地址 |
+|:---|:---|
+|concurrent-sample|《Java 并发编程》系列|
+|dynamic-proxy-sample|[JDK 动态代理与 Cglib 动态代理](https://www.jitwxs.cn/8ee3adf6.html)|
+|grpc-sample|[gRPC 在 Java 中的入门实例](https://www.jitwxs.cn/d6535904.html)|
+|performance-optimized|[Java 代码性能优化之路](https://www.jitwxs.cn/94186b3a.html)|
+|protobuf-sample|[Protobuf 在 Java 中的入门实例](https://www.jitwxs.cn/a5b690ac.html)|
 
 ### springboot-sample
 
@@ -33,17 +43,6 @@
 | shallow-copy-sample                          | [Java 浅拷贝性能比较](https://www.jitwxs.cn/a9fa88a0.html)   |
 | shiro-sample                                 | [SpringBoot 集成 Shiro 安全框架](https://www.jitwxs.cn/30819bdf.html) |
 | ws-sample                                    | [WebSoket 初探并于 SpringBoot 整合](https://www.jitwxs.cn/9af7a6d1.html) |
-
-### Java
-
-| 名称 | 文章地址 |
-|:---|:---|
-|dynamic_proxy|[JDK 动态代理与 Cglib 动态代理](https://www.jitwxs.cn/8ee3adf6.html)|
-|concurrent_code|《Java 并发编程》系列|
-|protocol_buffers|[Protobuf 在 Java 中的入门实例](https://www.jitwxs.cn/a5b690ac.html)|
-|grpc_demo|[gRPC 在 Java 中的入门实例](https://www.jitwxs.cn/d6535904.html)|
-|~~disruptor_demo~~|已迁移为独立仓库：[disruptor-study](https://github.com/jitwxs/disruptor-study)|
-|performance_optimized|[Java 代码性能优化之路](https://www.jitwxs.cn/94186b3a.html)|
 
 ### Linux
 

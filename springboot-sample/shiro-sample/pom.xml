@@ -5,18 +5,13 @@
     <parent>
         <artifactId>springboot-sample</artifactId>
         <groupId>com.github.jitwxs.sample</groupId>
-        <version>1.0-SNAPSHOT</version>
+        <version>${reversion}</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>shiro-sample</artifactId>
     <url>https://www.jitwxs.cn/30819bdf.html</url>
     <description>SpringBoot 集成 Shiro 安全框架</description>
-
-    <properties>
-        <maven.compiler.source>8</maven.compiler.source>
-        <maven.compiler.target>8</maven.compiler.target>
-    </properties>
 
     <dependencies>
         <dependency>
