@@ -9,7 +9,6 @@ import org.springframework.scheduling.support.CronTrigger;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 
@@ -26,23 +25,20 @@ public abstract class AbstractDSHandler<T extends IDSTaskInfo> implements Schedu
     private final String CLASS_NAME = getClass().getSimpleName();
 
     /**
-     * 获取用于执行任务的线程池
-     */
-    protected abstract ExecutorService getWorkerExecutor();
-
-    /**
      * 获取所有的任务信息
      */
     protected abstract List<T> listTaskInfo();
 
     /**
      * 做具体的任务逻辑
+     *
+     * <p/> 该方法执行时位于跟 SpringBoot @Scheduled 注解相同的线程池内。如果内部仍需要开子线程池执行，请务必同步等待子线程池执行完毕，否则可能会影响预期效果。
      */
-    protected abstract void doProcess(T taskInfo);
+    protected abstract void doProcess(T taskInfo) throws Throwable;
 
     @Override
     public void configureTasks(ScheduledTaskRegistrar taskRegistrar) {
-        dsContainer = new DSContainer<>(taskRegistrar);
+        dsContainer = new DSContainer<>(taskRegistrar, CLASS_NAME);
         // 每隔 100ms 调度一次，用于读取所有任务
         taskRegistrar.addFixedDelayTask(this::scheduleTask, 1000);
     }
@@ -69,7 +65,9 @@ public abstract class AbstractDSHandler<T extends IDSTaskInfo> implements Schedu
             }
             if (semaphore.tryAcquire(3, TimeUnit.SECONDS)) {
                 try {
-                    getWorkerExecutor().execute(() -> doProcess(taskInfo));
+                    doProcess(taskInfo);
+                } catch (Throwable throwable) {
+                    log.error("{} doProcess error, taskId: {}", CLASS_NAME, taskId, throwable);
                 } finally {
                     semaphore.release();
                 }
