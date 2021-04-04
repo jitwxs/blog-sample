@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component;
 import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.LockSupport;
@@ -29,17 +28,12 @@ public class SchedulerTestDSHandler extends AbstractDSHandler<SchedulerTestTaskI
     );
 
     @Override
-    protected ExecutorService getWorkerExecutor() {
-        return Executors.newFixedThreadPool(2);
-    }
-
-    @Override
     protected List<SchedulerTestTaskInfo> listTaskInfo() {
         return taskInfoList;
     }
 
     @Override
-    protected void doProcess(SchedulerTestTaskInfo taskInfo) {
+    protected void doProcess(SchedulerTestTaskInfo taskInfo) throws Throwable {
         final String reference = taskInfo.getReference();
         final String[] split = reference.split("#");
         if(split.length != 2) {

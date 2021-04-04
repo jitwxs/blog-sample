@@ -26,8 +26,11 @@ public class DSContainer<T extends IDSTaskInfo> {
 
     private final ScheduledTaskRegistrar taskRegistrar;
 
-    public DSContainer(ScheduledTaskRegistrar scheduledTaskRegistrar) {
+    private final String name;
+
+    public DSContainer(ScheduledTaskRegistrar scheduledTaskRegistrar, final String name) {
         this.taskRegistrar = scheduledTaskRegistrar;
+        this.name = name;
     }
 
     /**
@@ -43,17 +46,17 @@ public class DSContainer<T extends IDSTaskInfo> {
                 final T oldTaskInfo = scheduleMap.get(taskId).getLeft();
 
                 if(oldTaskInfo.isChange(taskInfo)) {
-                    log.info("DSContainer will register again because task config change, taskId: {}", taskId);
+                    log.info("DSContainer will register {} again because task config change, taskId: {}", name, taskId);
                     cancelTask(taskId);
                     registerTask(taskInfo, triggerTask);
                 }
             } else {
-                log.info("DSContainer will cancelTask because task not valid, taskId: {}", taskId);
+                log.info("DSContainer will cancelTask {} because task not valid, taskId: {}", name, taskId);
                 cancelTask(taskId);
             }
         } else {
             if (taskInfo.isValid()) {
-                log.info("DSContainer will registerTask, taskId: {}", taskId);
+                log.info("DSContainer will register {} task, taskId: {}", name, taskId);
                 registerTask(taskInfo, triggerTask);
             }
         }
