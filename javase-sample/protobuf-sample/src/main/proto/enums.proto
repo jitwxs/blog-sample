@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+option java_package = "com.github.jitwxs.sample.protobuf";
+option java_outer_classname = "EnumMessageProto";
+
+enum SexEnum {
+    DEFAULT_SEX = 0;
+    MALE = 1;
+    FEMALE = 2;
+}
+
+enum SubjectEnum {
+    DEFAULT_SUBJECT = 0;
+    CHINESE = 1;
+    MATH = 2;
+    ENGLISH = 3;
+}
+
