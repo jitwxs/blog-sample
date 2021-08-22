@@ -1,10 +1,10 @@
 package com.github.jitwxs.sample.grpc.example4;
 
+import com.github.jitwxs.sample.grpc.common.ProtobufUtils;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.stub.StreamObserver;
 import com.github.jitwxs.sample.grpc.common.Constant;
-import com.github.jitwxs.sample.grpc.common.ProtoUtils;
 import com.github.jitwxs.sample.grpc.UserRpcProto;
 import com.github.jitwxs.sample.grpc.UserRpcServiceGrpc;
 import org.apache.commons.lang3.RandomUtils;
@@ -33,7 +33,7 @@ public class Example4Client {
         StreamObserver<UserRpcProto.UserResponse> responseStreamObserver = new StreamObserver<UserRpcProto.UserResponse>() {
             @Override
             public void onNext(UserRpcProto.UserResponse response) {
-                logger.info("Rec response: " + ProtoUtils.toStr(response));
+                logger.info("Rec response: " + ProtobufUtils.toJson(response));
             }
 
             @Override

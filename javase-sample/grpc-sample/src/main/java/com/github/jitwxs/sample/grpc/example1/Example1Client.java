@@ -1,10 +1,10 @@
 package com.github.jitwxs.sample.grpc.example1;
 
+import com.github.jitwxs.sample.grpc.common.ProtobufUtils;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.StatusRuntimeException;
 import com.github.jitwxs.sample.grpc.common.Constant;
-import com.github.jitwxs.sample.grpc.common.ProtoUtils;
 import com.github.jitwxs.sample.grpc.UserRpcProto;
 import com.github.jitwxs.sample.grpc.UserRpcServiceGrpc;
 
@@ -37,7 +37,7 @@ public class Example1Client {
         UserRpcProto.AgeRequest request = UserRpcProto.AgeRequest.newBuilder().setAge(20).build();
         try {
             UserRpcProto.UserResponse response = blockingStub.listByAge(request);
-            logger.info("Response: " + ProtoUtils.toStr(response));
+            logger.info("Response: " + ProtobufUtils.toJson(response));
         } catch (StatusRuntimeException e) {
             logger.log(Level.WARNING, "RPC failed: {0}", e.getStatus());
         } finally {
