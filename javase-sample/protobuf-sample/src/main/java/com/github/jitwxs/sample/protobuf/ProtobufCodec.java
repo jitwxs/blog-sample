@@ -16,15 +16,17 @@ import java.util.Map;
 
 /**
  * Fastjson Protobuf 序列化与反序列化处理器
+ * <p>
+ * 支持：Message Bean, Message List, Message Map (key 为非 message，value 为 message)
  *
  * @author jitwxs
  * @date 2021-08-22 19:52
  */
+@SuppressWarnings({"unchecked", "rawtypes"})
 public class ProtobufCodec implements ObjectSerializer, ObjectDeserializer {
-
     @Override
     public <T> T deserialze(final DefaultJSONParser parser, final Type fieldType, final Object fieldName) {
-        final String value = (String) parser.parse();
+        final String value = parser.parseObject().toJSONString();
 
         if (fieldType instanceof Class && Message.class.isAssignableFrom((Class<?>) fieldType)) {
             return (T) ProtobufUtils.toBean(value, (Class) fieldType);
@@ -90,7 +92,10 @@ public class ProtobufCodec implements ObjectSerializer, ObjectDeserializer {
 
                     if (Message.class.isAssignableFrom((Class<?>) valueType)) {
                         Map<?, Message> messageMap = (Map<?, Message>) object;
-                        out.writeString(ProtobufUtils.toJson(messageMap));
+
+                        final String toStr = ProtobufUtils.toJson(messageMap);
+
+                        out.write(toStr, 0, toStr.length());
                     }
                 } else {
                     out.writeString("{}");
