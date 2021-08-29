@@ -24,6 +24,8 @@
         <module>protobuf-sample</module>
         <module>performance-optimized</module>
         <module>reflection-sample</module>
+        <module>netty-sample</module>
+        <module>nio-sample</module>
     </modules>
 
     <properties>
@@ -40,6 +42,7 @@
 
         <protobuf.version>3.17.3</protobuf.version>
         <grpc.version>1.39.0</grpc.version>
+        <netty.version>4.1.66.Final</netty.version>
     </properties>
 
     <dependencyManagement>
