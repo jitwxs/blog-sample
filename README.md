@@ -21,6 +21,7 @@
 |concurrent-sample|《Java 并发编程》系列|
 |dynamic-proxy-sample|[JDK 动态代理与 Cglib 动态代理](https://www.jitwxs.cn/8ee3adf6.html)|
 |grpc-sample|[gRPC 在 Java 中的入门实例](https://www.jitwxs.cn/d6535904.html)|
+|mock-sample|Mockito 源码分析|
 |performance-optimized|[Java 代码性能优化之路](https://www.jitwxs.cn/94186b3a.html)|
 |protobuf-sample|[Protobuf 在 Java 中的入门实例](https://www.jitwxs.cn/a5b690ac.html)|
 |reflection-sample|反射用法实践|
