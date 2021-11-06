@@ -1,11 +1,11 @@
-package com.github.jitwxs.sample.aeron.agent;
+package com.github.jitwxs.sample.aeron.agrona.agent;
 
 import org.agrona.concurrent.IdleStrategy;
 
 /**
  * 自定义空闲策略
  */
-class MyIdleStrategy implements IdleStrategy {
+public class MyIdleStrategy implements IdleStrategy {
     @Override
     public void idle(int i) {
         if (i <= 0) {

@@ -1,8 +1,8 @@
-package com.github.jitwxs.sample.aeron.agent;
+package com.github.jitwxs.sample.aeron.agrona.agent;
 
 import org.agrona.ErrorHandler;
 
-class MyErrorHandle implements ErrorHandler {
+public class MyErrorHandle implements ErrorHandler {
     @Override
     public void onError(Throwable throwable) {
         System.out.println("MyErrorHandle catch error: " + throwable.getLocalizedMessage());

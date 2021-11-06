@@ -1,9 +1,9 @@
-package com.github.jitwxs.sample.aeron.agent;
+package com.github.jitwxs.sample.aeron.agrona.agent;
 
 import org.agrona.concurrent.Agent;
 import org.agrona.concurrent.AgentTerminationException;
 
-class MyAgentSupportStop implements Agent {
+public class MyAgentSupportStop implements Agent {
     private final String roleName;
     private int count;
 

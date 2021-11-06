@@ -1,8 +1,8 @@
-package com.github.jitwxs.sample.aeron.agent;
+package com.github.jitwxs.sample.aeron.agrona.agent;
 
 import org.agrona.concurrent.Agent;
 
-class MyAgent implements Agent {
+public class MyAgent implements Agent {
     private final String roleName;
     private int count;
 
