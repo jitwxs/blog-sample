@@ -21,7 +21,7 @@
 |concurrent-sample|《Java 并发编程》系列|
 |dynamic-proxy-sample|[JDK 动态代理与 Cglib 动态代理](https://www.jitwxs.cn/8ee3adf6.html)|
 |grpc-sample|[gRPC 在 Java 中的入门实例](https://www.jitwxs.cn/d6535904.html)|
-|mock-sample|Mockito 源码分析|
+|mock-sample|[👉 跳转子目录](./javase-sample/mock-sample)|
 |performance-optimized|[Java 代码性能优化之路](https://www.jitwxs.cn/94186b3a.html)|
 |protobuf-sample|[Protobuf 在 Java 中的入门实例](https://www.jitwxs.cn/a5b690ac.html)|
 |reflection-sample|反射用法实践|
@@ -37,11 +37,11 @@
 | i18n-sample                                  | [SprringBoot 配置国际化](https://www.jitwxs.cn/885663.html)  |
 | jib-sample                                   | [Google Jib 容器化构建工具](https://www.jitwxs.cn/a526485e.html) |
 | [jwt-sample](./springboot-sample/jwt-sample) | [Json Web Token 介绍与基本使用](https://www.jitwxs.cn/7ac4f061.html) |
-| metrics-sample                               | 《SpringBoot Metrics 监控系统》系列                          |
+| metrics-sample                               | [👉 跳转子目录](./springboot-sample/metrics-sample)           |
 | mp3-sample                                   | SpringBoot 整合 MyBatisPlus 3.x                              |
 | mp-sample                                    | SpringBoot 整合 MyBatisPlus 2.x                              |
 | oauth-sample                                 | [Web 三方登录实现（基于OAuth2.0，包含Github和QQ登录，附源码）](https://www.jitwxs.cn/33ad9e35.html) |
-| [springboot-security](./springboot-security) | [子目录详情](./springboot-security)                          |
+| [springboot-security](./springboot-security) | [👉 跳转子目录](./springboot-security)                        |
 | shallow-copy-sample                          | [Java 浅拷贝性能比较](https://www.jitwxs.cn/a9fa88a0.html)   |
 | shiro-sample                                 | [SpringBoot 集成 Shiro 安全框架](https://www.jitwxs.cn/30819bdf.html) |
 | ws-sample                                    | [WebSoket 初探并于 SpringBoot 整合](https://www.jitwxs.cn/9af7a6d1.html) |
@@ -64,7 +64,7 @@
 
 | 名称 | 文章地址 |
 |:---|:---|
-|[Hololens](./Hololens/README.md)|《Hololens 开发笔记》系列|
+|[Hololens](./Hololens/README.md)|[👉 跳转子目录](./Hololens)|
 |[LTP](./LTP/README.md)|《LTP》系列|
 |[ActiveMQ](./ActiveMQ/README.md)|《ActiveMQ 初探》系列|
 
