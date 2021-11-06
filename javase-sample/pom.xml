@@ -27,6 +27,7 @@
         <module>netty-sample</module>
         <module>nio-sample</module>
         <module>mock-sample</module>
+        <module>aeron-sample</module>
     </modules>
 
     <properties>
