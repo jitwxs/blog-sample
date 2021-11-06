@@ -5,12 +5,12 @@
 
 ## 从哪里可以找到我
 
-|          |                                        |
-| -------- | -------------------------------------- |
-| 个人网站 | https://jitwxs.cn                      |
-| CSDN     | https://jitwxs.blog.csdn.net           |
-| 邮箱     | jitwxs@foxmail.com<br>jitwxs@gmail.com |
-| 微信     | jitwxs                                 |
+|          |                                                              |
+| -------- | ------------------------------------------------------------ |
+| 个人网站 | https://jitwxs.cn                                            |
+| CSDN     | https://jitwxs.blog.csdn.net                                 |
+| 邮箱     | jitwxs@foxmail.com<br>jitwxs@gmail.com                       |
+| 微信     | jitwxs <br>![jitwxs](https://cdn.jsdelivr.net/gh/jitwxs/cdn/blog/configuration/wechat_qrcode.png) |
 
 ## 目录
 
@@ -41,7 +41,7 @@
 | mp3-sample                                   | SpringBoot 整合 MyBatisPlus 3.x                              |
 | mp-sample                                    | SpringBoot 整合 MyBatisPlus 2.x                              |
 | oauth-sample                                 | [Web 三方登录实现（基于OAuth2.0，包含Github和QQ登录，附源码）](https://www.jitwxs.cn/33ad9e35.html) |
-| [springboot-security](./springboot-security) | 《SpringBoot 集成 Spring Security》系列                      |
+| [springboot-security](./springboot-security) | [子目录详情](./springboot-security)                          |
 | shallow-copy-sample                          | [Java 浅拷贝性能比较](https://www.jitwxs.cn/a9fa88a0.html)   |
 | shiro-sample                                 | [SpringBoot 集成 Shiro 安全框架](https://www.jitwxs.cn/30819bdf.html) |
 | ws-sample                                    | [WebSoket 初探并于 SpringBoot 整合](https://www.jitwxs.cn/9af7a6d1.html) |
