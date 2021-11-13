@@ -3,8 +3,8 @@ package com.github.jitwxs.sample.performanceoptimized;
 import lombok.*;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.RandomUtils;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
+import org.junit.Before;
+import org.junit.Test;
 import org.springframework.beans.BeanUtils;
 
 import java.util.ArrayList;
@@ -18,13 +18,13 @@ public class ShallowCopyTest {
     static Order order = null;
     static int times = 10;
 
-    @BeforeAll
-    public static void initOrder() {
+    @Before
+    public void initOrder() {
         List<User> users = new ArrayList<User>() {{
-           add(User.builder().email(RandomStringUtils.randomAlphanumeric(4)).tel(RandomUtils.nextLong(1000, 1000) + "").build());
-           add(User.builder().email(RandomStringUtils.randomAlphanumeric(4)).tel(RandomUtils.nextLong(1000, 1000) + "").build());
-           add(User.builder().email(RandomStringUtils.randomAlphanumeric(4)).tel(RandomUtils.nextLong(1000, 1000) + "").build());
-           add(User.builder().email(RandomStringUtils.randomAlphanumeric(4)).tel(RandomUtils.nextLong(1000, 1000) + "").build());
+            add(User.builder().email(RandomStringUtils.randomAlphanumeric(4)).tel(RandomUtils.nextLong(1000, 1000) + "").build());
+            add(User.builder().email(RandomStringUtils.randomAlphanumeric(4)).tel(RandomUtils.nextLong(1000, 1000) + "").build());
+            add(User.builder().email(RandomStringUtils.randomAlphanumeric(4)).tel(RandomUtils.nextLong(1000, 1000) + "").build());
+            add(User.builder().email(RandomStringUtils.randomAlphanumeric(4)).tel(RandomUtils.nextLong(1000, 1000) + "").build());
         }};
         order = Order.builder()
                 .amount(RandomUtils.nextInt())
@@ -36,7 +36,7 @@ public class ShallowCopyTest {
     @Test
     public void testBeanUtils() {
         long startTime = Utils.now();
-        for(int i = 0; i < times; i++) {
+        for (int i = 0; i < times; i++) {
             Order orderNew = new Order();
             BeanUtils.copyProperties(order, orderNew);
         }
@@ -46,7 +46,7 @@ public class ShallowCopyTest {
     @Test
     public void testBeanCopierUtils() {
         long startTime = Utils.now();
-        for(int i = 0; i < times; i++) {
+        for (int i = 0; i < times; i++) {
             Order orderNew = new Order();
             BeanCopierUtils.copyProperties(order, orderNew);
         }

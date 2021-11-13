@@ -16,6 +16,7 @@
 
 package com.github.jitwxs.sample.aeron.agrona.broadcast;
 
+import lombok.extern.slf4j.Slf4j;
 import org.agrona.ExpandableArrayBuffer;
 import org.agrona.MutableDirectBuffer;
 import org.agrona.concurrent.Agent;
@@ -23,8 +24,7 @@ import org.agrona.concurrent.AtomicBuffer;
 import org.agrona.concurrent.ShutdownSignalBarrier;
 import org.agrona.concurrent.broadcast.BroadcastTransmitter;
 
-import java.util.logging.Logger;
-
+@Slf4j
 public class SendAgent implements Agent {
     private final ShutdownSignalBarrier barrier;
     private final int sendCount;
@@ -32,7 +32,6 @@ public class SendAgent implements Agent {
     private int lastSend;
     private boolean completed;
 
-    private static final Logger logger = Logger.getLogger(SendAgent.class.getName());
     private final MutableDirectBuffer msgBuffer = new ExpandableArrayBuffer();
 
     public SendAgent(final AtomicBuffer buffer, ShutdownSignalBarrier barrier, int sendCount) {
@@ -50,7 +49,7 @@ public class SendAgent implements Agent {
         }
 
         if (lastSend == sendCount) {
-            logger.info("completed send: " + lastSend);
+            log.info("completed send: {}", lastSend);
             barrier.signal();
             completed = true;
             return 0;

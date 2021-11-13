@@ -6,8 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.RandomUtils;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -18,6 +18,7 @@ import java.util.stream.Stream;
 
 /**
  * 多个Stream流合并性能测试
+ *
  * @author jitwxs
  * @date 2020年05月01日 21:47
  */
@@ -28,8 +29,8 @@ public class MultiStreamMergeTest {
     static int limit;
     static boolean isAsc = false;
 
-    @BeforeAll
-    public static void initOrder() {
+    @Before
+    public void initOrder() {
         sourceOrder = mockOrder(100_0000);
         startId = 10;
         endId = 50;
@@ -42,14 +43,14 @@ public class MultiStreamMergeTest {
 
         List<Order> result = sourceOrder.stream().filter(e -> e.getAmount() > 0).collect(Collectors.toList());
 
-        if(startId > 0) {
+        if (startId > 0) {
             result = result.stream().filter(e -> e.getId() >= startId).collect(Collectors.toList());
         }
-        if(endId > 0) {
+        if (endId > 0) {
             result = result.stream().filter(e -> e.getId() < endId).collect(Collectors.toList());
         }
 
-        if(result.size() > limit) {
+        if (result.size() > limit) {
             result = result.subList(0, limit);
         }
 
@@ -66,15 +67,15 @@ public class MultiStreamMergeTest {
 
         stream = stream.filter(e -> e.getAmount() > 0);
 
-        if(startId > 0) {
+        if (startId > 0) {
             stream = stream.filter(e -> e.getId() >= startId);
         }
-        if(endId > 0) {
+        if (endId > 0) {
             stream = stream.filter(e -> e.getId() < endId);
         }
 
         Comparator<Order> comparator = Comparator.comparingLong(Order::getId);
-        if(!isAsc) {
+        if (!isAsc) {
             comparator = comparator.reversed();
         }
 

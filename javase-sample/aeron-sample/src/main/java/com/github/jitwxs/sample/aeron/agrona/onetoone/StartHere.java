@@ -17,16 +17,15 @@
 package com.github.jitwxs.sample.aeron.agrona.onetoone;
 
 import com.github.jitwxs.sample.aeron.agrona.agent.MyErrorHandle;
+import lombok.extern.slf4j.Slf4j;
 import org.agrona.concurrent.*;
 import org.agrona.concurrent.ringbuffer.OneToOneRingBuffer;
 import org.agrona.concurrent.ringbuffer.RingBufferDescriptor;
 
 import java.nio.ByteBuffer;
-import java.util.logging.Logger;
 
+@Slf4j
 public class StartHere {
-    private static final Logger logger = Logger.getLogger(StartHere.class.getName());
-
     public static void main(String[] args) {
         final int sendCount = 18_000_000;
         final int bufferLength = 16384 + RingBufferDescriptor.TRAILER_LENGTH;
@@ -51,7 +50,7 @@ public class StartHere {
         final AgentRunner receiveAgentRunner = new AgentRunner(idleStrategyReceive, new MyErrorHandle(), null, receiveAgent);
 
         // 启动 Agent
-        logger.info("starting agent...");
+        log.info("starting agent...");
         AgentRunner.startOnThread(sendAgentRunner);
         AgentRunner.startOnThread(receiveAgentRunner);
 

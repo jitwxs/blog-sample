@@ -16,16 +16,15 @@
 
 package com.github.jitwxs.sample.aeron.agrona.broadcast;
 
+import lombok.extern.slf4j.Slf4j;
 import org.agrona.concurrent.*;
 
 import java.nio.ByteBuffer;
-import java.util.logging.Logger;
 
 import static org.agrona.concurrent.broadcast.BroadcastBufferDescriptor.TRAILER_LENGTH;
 
+@Slf4j
 public class StartHere {
-    private static final Logger logger = Logger.getLogger(StartHere.class.getName());
-
     public static void main(String[] args) {
         final int sendCount = 1000;
         final int bufferLength = 65536 + TRAILER_LENGTH;
@@ -49,7 +48,7 @@ public class StartHere {
         final AgentRunner receiveAgentRunner2 = new AgentRunner(idleStrategyReceive2,
                 Throwable::printStackTrace, null, receiveAgent2);
 
-        logger.info("starting");
+        log.info("starting");
 
         //start the runners
         AgentRunner.startOnThread(sendAgentRunner);

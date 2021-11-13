@@ -1,4 +1,4 @@
-package com.github.jitwxs.sample.aeron.agrona;
+package com.github.jitwxs.sample.aeron.agrona.buffer;
 
 import org.agrona.concurrent.UnsafeBuffer;
 import org.junit.Test;
@@ -7,7 +7,7 @@ import java.nio.ByteBuffer;
 
 import static org.junit.Assert.*;
 
-public class DirectBufferTests {
+public class UnsafeBufferTest {
     @Test
     public void unsafeLongExtras() {
         //allocate a buffer to store the long

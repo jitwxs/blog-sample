@@ -16,6 +16,7 @@
 
 package com.github.jitwxs.sample.aeron.agrona.broadcast;
 
+import lombok.extern.slf4j.Slf4j;
 import org.agrona.MutableDirectBuffer;
 import org.agrona.concurrent.Agent;
 import org.agrona.concurrent.AtomicBuffer;
@@ -23,11 +24,8 @@ import org.agrona.concurrent.MessageHandler;
 import org.agrona.concurrent.broadcast.BroadcastReceiver;
 import org.agrona.concurrent.broadcast.CopyBroadcastReceiver;
 
-import java.util.logging.Logger;
-
+@Slf4j
 public class ReceiveAgent implements Agent, MessageHandler {
-    private static final Logger logger = Logger.getLogger(ReceiveAgent.class.getName());
-
     private final String name;
     private final CopyBroadcastReceiver copyBroadcastReceiver;
 
@@ -49,6 +47,6 @@ public class ReceiveAgent implements Agent, MessageHandler {
 
     @Override
     public void onMessage(int msgTypeId, MutableDirectBuffer buffer, int index, int length) {
-        logger.info("Received " + buffer.getInt(index));
+        log.info("Received {}", buffer.getInt(index));
     }
 }

@@ -16,19 +16,17 @@
 
 package com.github.jitwxs.sample.aeron.agrona.onetoone;
 
+import lombok.extern.slf4j.Slf4j;
 import org.agrona.DirectBuffer;
 import org.agrona.concurrent.Agent;
 import org.agrona.concurrent.ShutdownSignalBarrier;
 import org.agrona.concurrent.ringbuffer.OneToOneRingBuffer;
 
-import java.util.logging.Logger;
-
+@Slf4j
 public class ReceiveAgent implements Agent {
     private final ShutdownSignalBarrier barrier;
     private final OneToOneRingBuffer ringBuffer;
     private final int sendCount;
-
-    private static final Logger logger = Logger.getLogger(ReceiveAgent.class.getName());
 
     public ReceiveAgent(final OneToOneRingBuffer ringBuffer, ShutdownSignalBarrier barrier, int sendCount) {
         this.ringBuffer = ringBuffer;
@@ -46,7 +44,7 @@ public class ReceiveAgent implements Agent {
         final int lastValue = buffer.getInt(offset);
 
         if (lastValue == sendCount) {
-            logger.info("received: " + lastValue);
+            log.info("received: {}", lastValue);
             // 达到消息上限时，通知 barrier
             barrier.signal();
         }

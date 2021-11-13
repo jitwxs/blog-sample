@@ -10,8 +10,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.RandomUtils;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +20,7 @@ import java.util.stream.IntStream;
 
 /**
  * FastJson预热性能测试
+ *
  * @author jitwxs
  * @date 2020年05月02日 10:15
  */
@@ -27,14 +28,14 @@ public class FastJsonWarnUpTest {
     static List<TestBean> sourceData = null;
     static int times = 5;
 
-    @BeforeAll
-    public static void initData() {
+    @Before
+    public void initData() {
         sourceData = mockData(1000);
     }
 
     @Test
     public void jsonToStr() {
-        for(int i = 0; i < times; i++) {
+        for (int i = 0; i < times; i++) {
             long start = Utils.now();
             JSON.toJSONString(sourceData);
             System.out.println("jsonToStr: " + Utils.diff(start));
@@ -46,7 +47,7 @@ public class FastJsonWarnUpTest {
         // 预热
         warnUp();
 
-        for(int i = 0; i < times; i++) {
+        for (int i = 0; i < times; i++) {
             long start = Utils.now();
             JSON.toJSONString(sourceData);
             System.out.println("jsonToStrNew: " + Utils.diff(start));

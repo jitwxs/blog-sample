@@ -16,19 +16,17 @@
 
 package com.github.jitwxs.sample.aeron.agrona.manytoone;
 
+import lombok.extern.slf4j.Slf4j;
 import org.agrona.DirectBuffer;
 import org.agrona.concurrent.Agent;
 import org.agrona.concurrent.ShutdownSignalBarrier;
 import org.agrona.concurrent.ringbuffer.ManyToOneRingBuffer;
 
-import java.util.logging.Logger;
-
+@Slf4j
 public class ReceiveAgent implements Agent {
     private final ShutdownSignalBarrier barrier;
     private final ManyToOneRingBuffer ringBuffer;
     private final int sendCount;
-
-    private static final Logger logger = Logger.getLogger(ReceiveAgent.class.getName());
 
     public ReceiveAgent(final ManyToOneRingBuffer ringBuffer, ShutdownSignalBarrier barrier, int sendCount) {
         this.ringBuffer = ringBuffer;
@@ -45,10 +43,10 @@ public class ReceiveAgent implements Agent {
     private void handler(int messageType, DirectBuffer buffer, int offset, int length) {
         final int lastValue = buffer.getInt(offset);
 
-        logger.info("received, type: " + messageType + ", msg: " + lastValue);
+        log.info("received, type: {}, msg: {}", messageType, lastValue);
 
         if (lastValue == sendCount * 2) {
-            logger.info("received: " + lastValue);
+            log.info("received: " + lastValue);
             barrier.signal();
         }
     }
