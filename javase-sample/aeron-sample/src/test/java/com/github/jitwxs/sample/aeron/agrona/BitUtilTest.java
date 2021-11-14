@@ -6,6 +6,9 @@ import org.junit.Test;
 import static java.lang.Integer.MIN_VALUE;
 import static org.junit.Assert.assertEquals;
 
+/**
+ * @see org.agrona.BitUtil
+ */
 public class BitUtilTest {
     @Test
     public void testFindNextPositivePowerOfTwo() {

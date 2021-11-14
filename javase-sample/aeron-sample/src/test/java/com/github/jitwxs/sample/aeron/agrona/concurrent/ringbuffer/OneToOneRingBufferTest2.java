@@ -1,4 +1,4 @@
-package com.github.jitwxs.sample.aeron.agrona;
+package com.github.jitwxs.sample.aeron.agrona.concurrent.ringbuffer;
 
 import org.agrona.MutableDirectBuffer;
 import org.agrona.concurrent.ControlledMessageHandler;
@@ -13,14 +13,13 @@ import java.util.HashSet;
 
 import static org.junit.Assert.*;
 
-public class OneToOneRingBufferTests {
-
+public class OneToOneRingBufferTest2 {
     @Test
     public void testSendAndReceive() {
         final int bufferLength = 4096 + RingBufferDescriptor.TRAILER_LENGTH;
         final UnsafeBuffer internalBuffer = new UnsafeBuffer(ByteBuffer.allocateDirect(bufferLength));
         final OneToOneRingBuffer ringBuffer = new OneToOneRingBuffer(internalBuffer);
-        final MessageCapture capture = new OneToOneRingBufferTests.MessageCapture();
+        final MessageCapture capture = new MessageCapture();
 
         final String testString = "0123456789";
 

@@ -1,4 +1,4 @@
-package com.github.jitwxs.sample.aeron.agrona;
+package com.github.jitwxs.sample.aeron.agrona.concurrent;
 
 import com.github.jitwxs.sample.aeron.agrona.agent.MyAgent;
 import com.github.jitwxs.sample.aeron.agrona.agent.MyAgentSupportStop;

@@ -15,6 +15,9 @@ import java.util.Date;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
+/**
+ * @see EpochClock
+ */
 public class ClockTests {
     /**
      * 测试 {@link SystemEpochClock} API
