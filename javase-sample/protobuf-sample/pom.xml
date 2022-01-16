@@ -10,8 +10,6 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>protobuf-sample</artifactId>
-    <url>https://www.jitwxs.cn/a5b690ac.html</url>
-    <description>Protobuf 在 Java 中的入门实例</description>
 
     <dependencies>
         <dependency>
