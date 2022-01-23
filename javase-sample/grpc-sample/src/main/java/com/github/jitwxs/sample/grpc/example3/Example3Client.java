@@ -7,17 +7,16 @@ import io.grpc.stub.StreamObserver;
 import com.github.jitwxs.sample.grpc.common.Constant;
 import com.github.jitwxs.sample.grpc.UserRpcProto;
 import com.github.jitwxs.sample.grpc.UserRpcServiceGrpc;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.concurrent.TimeUnit;
-import java.util.logging.Logger;
 
 /**
  * @author jitwxs
  * @date 2020年04月05日 19:42
  */
+@Slf4j
 public class Example3Client {
-    private static final Logger logger = Logger.getLogger(Example3Client.class.getName());
-
     public static void main(String[] args) throws Exception {
         // STEP1 构造 Channel 和 BlockingStub
         ManagedChannel channel = ManagedChannelBuilder.forAddress("localhost", Constant.RUNNING_PORT)
@@ -32,7 +31,7 @@ public class Example3Client {
         StreamObserver<UserRpcProto.UserListResponse> responseStreamObserver = new StreamObserver<UserRpcProto.UserListResponse>() {
             @Override
             public void onNext(UserRpcProto.UserListResponse response) {
-                logger.info("Rec response: " + ProtobufUtils.toJson(response));
+                log.info("Rec response: " + ProtobufUtils.toJson(response));
             }
 
             @Override
@@ -42,16 +41,18 @@ public class Example3Client {
 
             @Override
             public void onCompleted() {
-                logger.info("Rec Complete!");
+                log.info("Rec Complete!");
             }
         };
 
         // STEP3 准备多次请求，流式通信
         StreamObserver<UserRpcProto.AgeRequest> requestStreamObserver = asyncStub.streamListByAge(responseStreamObserver);
-        requestStreamObserver.onNext(UserRpcProto.AgeRequest.newBuilder().setAge(18).build());
-        requestStreamObserver.onNext(UserRpcProto.AgeRequest.newBuilder().setAge(20).build());
-        requestStreamObserver.onNext(UserRpcProto.AgeRequest.newBuilder().setAge(22).build());
-        requestStreamObserver.onNext(UserRpcProto.AgeRequest.newBuilder().setAge(24).build());
+
+        for (int age = 18; age < 24; age++) {
+            requestStreamObserver.onNext(UserRpcProto.AgeRequest.newBuilder().setAge(age).build());
+            TimeUnit.SECONDS.sleep(1);
+        }
+
         // 请求完毕
         requestStreamObserver.onCompleted();
 

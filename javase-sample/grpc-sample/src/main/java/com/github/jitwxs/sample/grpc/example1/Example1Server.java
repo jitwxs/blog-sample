@@ -1,21 +1,21 @@
 package com.github.jitwxs.sample.grpc.example1;
 
-import io.grpc.Server;
-import io.grpc.ServerBuilder;
 import com.github.jitwxs.sample.grpc.common.Constant;
 import com.github.jitwxs.sample.grpc.common.UserRpcServiceImpl;
+import io.grpc.Server;
+import io.grpc.ServerBuilder;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
-import java.util.logging.Logger;
 
 /**
  * Grpc 服务端
  * @author jitwxs
  * @date 2019年12月20日 1:03
  */
+@Slf4j
 public class Example1Server {
-    private static final Logger logger = Logger.getLogger(Example1Server.class.getName());
     private Server server;
 
     public static void main(String[] args) throws IOException, InterruptedException {
@@ -29,18 +29,18 @@ public class Example1Server {
                 .addService(new UserRpcServiceImpl())
                 .build()
                 .start();
-        logger.info("Server started...");
+        log.info("Server started...");
 
         // 程序停止钩子
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             // Use stderr here since the logger may have been reset by its JVM shutdown hook.
-            System.err.println("*** shutting down gRPC server since JVM is shutting down");
+            log.error("*** shutting down gRPC server since JVM is shutting down");
             try {
                 Example1Server.this.stop();
             } catch (InterruptedException e) {
                 e.printStackTrace(System.err);
             }
-            System.err.println("*** server shut down");
+            log.error("*** server shut down");
         }));
     }
 

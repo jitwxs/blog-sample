@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+option java_package = "com.github.jitwxs.sample.protobuf.grpc.pcbook";
+option java_multiple_files = true;
+
+import "pcbook/memory_message.proto";
+
+message Storage {
+  enum Driver {
+    UNKNOWN = 0;
+    HDD = 1;
+    SSD = 2;
+  }
+
+  Driver driver = 1;
+  Memory memory = 2;
+}

@@ -7,20 +7,17 @@ import io.grpc.StatusRuntimeException;
 import com.github.jitwxs.sample.grpc.common.Constant;
 import com.github.jitwxs.sample.grpc.UserRpcProto;
 import com.github.jitwxs.sample.grpc.UserRpcServiceGrpc;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.concurrent.TimeUnit;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * Grpc 客户端
  * @author jitwxs
  * @date 2019年12月20日 1:06
  */
+@Slf4j
 public class Example1Client {
-
-    private static final Logger logger = Logger.getLogger(Example1Client.class.getName());
-
     public static void main(String[] args) throws Exception {
         // STEP1 构造 Channel 和 BlockingStub
         ManagedChannel channel = ManagedChannelBuilder.forAddress("localhost", Constant.RUNNING_PORT)
@@ -31,15 +28,15 @@ public class Example1Client {
         UserRpcServiceGrpc.UserRpcServiceBlockingStub blockingStub = UserRpcServiceGrpc.newBlockingStub(channel);
 
         int requestAge = 20;
-        logger.info("Will try to query age = " + requestAge + " ...");
+        log.info("Will try to query age = " + requestAge + " ...");
 
         // STEP2 发起 gRPC 请求
         UserRpcProto.AgeRequest request = UserRpcProto.AgeRequest.newBuilder().setAge(20).build();
         try {
             UserRpcProto.UserResponse response = blockingStub.listByAge(request);
-            logger.info("Response: " + ProtobufUtils.toJson(response));
+            log.info("Response: " + ProtobufUtils.toJson(response));
         } catch (StatusRuntimeException e) {
-            logger.log(Level.WARNING, "RPC failed: {0}", e.getStatus());
+            log.error("RPC failed: {}", e.getStatus());
         } finally {
             // STEP3 关闭 Channel
             channel.shutdown().awaitTermination(5, TimeUnit.SECONDS);

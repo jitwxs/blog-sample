@@ -10,8 +10,6 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>grpc-sample</artifactId>
-    <url>https://www.jitwxs.cn/d6535904.html</url>
-    <description>gRPC 在 Java 中的入门实例</description>
 
     <dependencies>
         <!-- ProtoBuf Dependency Start -->
@@ -30,17 +28,7 @@
         <!-- gRPC Dependency Start -->
         <dependency>
             <groupId>io.grpc</groupId>
-            <artifactId>grpc-netty-shaded</artifactId>
-            <version>${grpc.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>io.grpc</groupId>
-            <artifactId>grpc-protobuf</artifactId>
-            <version>${grpc.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>io.grpc</groupId>
-            <artifactId>grpc-stub</artifactId>
+            <artifactId>grpc-all</artifactId>
             <version>${grpc.version}</version>
         </dependency>
         <!-- gRPC Dependency End -->
@@ -56,6 +44,10 @@
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-collections4</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-slf4j-impl</artifactId>
         </dependency>
     </dependencies>
 

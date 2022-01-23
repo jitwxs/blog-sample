@@ -7,18 +7,17 @@ import io.grpc.stub.StreamObserver;
 import com.github.jitwxs.sample.grpc.common.Constant;
 import com.github.jitwxs.sample.grpc.UserRpcProto;
 import com.github.jitwxs.sample.grpc.UserRpcServiceGrpc;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomUtils;
 
 import java.util.concurrent.TimeUnit;
-import java.util.logging.Logger;
 
 /**
  * @author jitwxs
  * @date 2020年04月05日 19:42
  */
+@Slf4j
 public class Example4Client {
-    private static final Logger logger = Logger.getLogger(Example4Client.class.getName());
-
     public static void main(String[] args) throws Exception {
         // STEP1 构造 Channel 和 BlockingStub
         ManagedChannel channel = ManagedChannelBuilder.forAddress("localhost", Constant.RUNNING_PORT)
@@ -33,7 +32,7 @@ public class Example4Client {
         StreamObserver<UserRpcProto.UserResponse> responseStreamObserver = new StreamObserver<UserRpcProto.UserResponse>() {
             @Override
             public void onNext(UserRpcProto.UserResponse response) {
-                logger.info("Rec response: " + ProtobufUtils.toJson(response));
+                log.info("Rec response: " + ProtobufUtils.toJson(response));
             }
 
             @Override
@@ -43,7 +42,7 @@ public class Example4Client {
 
             @Override
             public void onCompleted() {
-                logger.info("Rec Complete!");
+                log.info("Rec Complete!");
             }
         };
 
@@ -51,7 +50,7 @@ public class Example4Client {
         StreamObserver<UserRpcProto.AgeRequest> requestStreamObserver = asyncStub.streamListByAgeStream(responseStreamObserver);
         for(int i = 0; i < 10; i++) {
             requestStreamObserver.onNext(UserRpcProto.AgeRequest.newBuilder().setAge(RandomUtils.nextInt(10, 80)).build());
-            // 便于控制台管擦和
+            // 便于控制台观察
             Thread.sleep(1000);
         }
         // 请求完毕

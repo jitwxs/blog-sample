@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+option java_package = "com.github.jitwxs.sample.protobuf.grpc.pcbook";
+option java_multiple_files = true;
+
+import "pcbook/memory_message.proto";
+
+message Filter {
+    double max_price_usd = 1;
+    uint32 min_cpu_cores = 2;
+    double min_cpu_ghz = 3;
+    Memory min_ram = 4;
+}

@@ -4,24 +4,23 @@ import io.grpc.stub.StreamObserver;
 import com.github.jitwxs.sample.grpc.MessageProto;
 import com.github.jitwxs.sample.grpc.UserRpcProto;
 import com.github.jitwxs.sample.grpc.UserRpcServiceGrpc;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.RandomUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 import java.util.stream.IntStream;
 
 /**
  * @author jitwxs
  * @date 2019年12月20日 0:53
  */
+@Slf4j
 public class UserRpcServiceImpl extends UserRpcServiceGrpc.UserRpcServiceImplBase {
-    private static final Logger logger = Logger.getLogger(UserRpcServiceImpl.class.getName());
-
     @Override
     public void listByAge(UserRpcProto.AgeRequest request, StreamObserver<UserRpcProto.UserResponse> responseObserver) {
-        logger.info("Server Rec listByAge request...");
+        log.info("Server Rec listByAge request...");
 
         // 构造响应，模拟业务逻辑
         UserRpcProto.UserResponse response = UserRpcProto.UserResponse.newBuilder()
@@ -44,7 +43,7 @@ public class UserRpcServiceImpl extends UserRpcServiceGrpc.UserRpcServiceImplBas
 
     @Override
     public void listByAgeStream(UserRpcProto.AgeRequest request, StreamObserver<UserRpcProto.UserResponse> responseObserver) {
-        logger.info("Server Rec listByAgeStream request...");
+        log.info("Server Rec listByAgeStream request...");
 
         // 构造响应，模拟业务逻辑
         for(int i = 0; i < 10; i++) {
@@ -76,7 +75,7 @@ public class UserRpcServiceImpl extends UserRpcServiceGrpc.UserRpcServiceImplBas
             @Override
             public void onNext(UserRpcProto.AgeRequest ageRequest) {
                 allClientRequest.add(ageRequest);
-                logger.info("Server Rec streamListByAge request, age: " + ageRequest.getAge());
+                log.info("Server Rec streamListByAge request, age: " + ageRequest.getAge());
             }
 
             @Override
@@ -120,7 +119,7 @@ public class UserRpcServiceImpl extends UserRpcServiceGrpc.UserRpcServiceImplBas
         return new StreamObserver<UserRpcProto.AgeRequest>() {
             @Override
             public void onNext(UserRpcProto.AgeRequest ageRequest) {
-                logger.info("Server Rec streamListByAgeStream request, age: " + ageRequest.getAge());
+                log.info("Server Rec streamListByAgeStream request, age: " + ageRequest.getAge());
                 List<MessageProto.User> userList = new ArrayList<>(6);
                 IntStream.range(0, RandomUtils.nextInt(1, 5)).forEach(e -> {
                     userList.add(MessageProto.User.newBuilder()
@@ -145,7 +144,7 @@ public class UserRpcServiceImpl extends UserRpcServiceGrpc.UserRpcServiceImplBas
              */
             @Override
             public void onCompleted() {
-                logger.info("Server Rec streamListByAgeStream complete");
+                log.info("Server Rec streamListByAgeStream complete");
                 responseObserver.onCompleted();
             }
         };
