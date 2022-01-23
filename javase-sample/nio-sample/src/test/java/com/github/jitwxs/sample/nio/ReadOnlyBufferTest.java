@@ -1,10 +1,11 @@
 package com.github.jitwxs.sample.nio;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.nio.ByteBuffer;
 import java.nio.ReadOnlyBufferException;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * @author jitwxs
@@ -31,6 +32,6 @@ public class ReadOnlyBufferTest {
 
         readOnlyBuffer.position(0);
 
-        Assert.assertThrows(ReadOnlyBufferException.class, () -> readOnlyBuffer.put((byte) 2));
+        assertThrows(ReadOnlyBufferException.class, () -> readOnlyBuffer.put((byte) 2));
     }
 }

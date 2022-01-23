@@ -1,11 +1,13 @@
 package com.github.jitwxs.sample.nio;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 import java.security.SecureRandom;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 /**
  * @author jitwxs
@@ -28,9 +30,9 @@ public class HelloWorldTest {
 
         System.out.printf("before flip limit: %s, capacity: %s, position: %s\n", intBuffer.limit(), intBuffer.capacity(), intBuffer.position());
 
-        Assert.assertEquals(bufferSize, intBuffer.limit());
-        Assert.assertEquals(bufferSize, intBuffer.capacity());
-        Assert.assertEquals(elementSize, intBuffer.position());
+        assertEquals(bufferSize, intBuffer.limit());
+        assertEquals(bufferSize, intBuffer.capacity());
+        assertEquals(elementSize, intBuffer.position());
 
         // 读写翻转
         intBuffer.flip();
@@ -58,8 +60,8 @@ public class HelloWorldTest {
 
         byteBuffer.flip();
 
-        Assert.assertEquals(1, byteBuffer.getInt());
-        Assert.assertEquals(3.2, byteBuffer.getDouble(), 0D);
-        Assert.assertNotEquals('张', byteBuffer.getInt());
+        assertEquals(1, byteBuffer.getInt());
+        assertEquals(3.2, byteBuffer.getDouble(), 0D);
+        assertNotEquals('张', byteBuffer.getInt());
     }
 }

@@ -10,7 +10,7 @@ import org.agrona.concurrent.AgentRunner;
 import org.agrona.concurrent.CompositeAgent;
 import org.agrona.concurrent.IdleStrategy;
 import org.apache.commons.lang3.RandomUtils;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.concurrent.ThreadFactory;
 

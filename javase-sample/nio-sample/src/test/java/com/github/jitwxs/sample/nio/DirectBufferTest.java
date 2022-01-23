@@ -1,6 +1,6 @@
 package com.github.jitwxs.sample.nio;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;

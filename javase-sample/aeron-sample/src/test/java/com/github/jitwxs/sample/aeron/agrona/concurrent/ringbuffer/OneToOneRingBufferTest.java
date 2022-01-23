@@ -8,8 +8,8 @@ import org.agrona.concurrent.MessageHandler;
 import org.agrona.concurrent.UnsafeBuffer;
 import org.agrona.concurrent.ringbuffer.OneToOneRingBuffer;
 import org.agrona.concurrent.ringbuffer.RingBuffer;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InOrder;
 
 import java.util.function.IntConsumer;
@@ -19,7 +19,7 @@ import static org.agrona.concurrent.ringbuffer.RecordDescriptor.*;
 import static org.agrona.concurrent.ringbuffer.RingBuffer.INSUFFICIENT_CAPACITY;
 import static org.agrona.concurrent.ringbuffer.RingBuffer.PADDING_MSG_TYPE_ID;
 import static org.agrona.concurrent.ringbuffer.RingBufferDescriptor.*;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 public class OneToOneRingBufferTest {
@@ -33,7 +33,7 @@ public class OneToOneRingBufferTest {
     private final UnsafeBuffer buffer = mock(UnsafeBuffer.class);
     private OneToOneRingBuffer ringBuffer;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         when(buffer.capacity()).thenReturn(TOTAL_BUFFER_LENGTH);
 

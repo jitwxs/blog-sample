@@ -1,11 +1,11 @@
 package com.github.jitwxs.sample.aeron.agrona.buffer;
 
 import org.agrona.concurrent.UnsafeBuffer;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.nio.ByteBuffer;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class UnsafeBufferTest {
     @Test

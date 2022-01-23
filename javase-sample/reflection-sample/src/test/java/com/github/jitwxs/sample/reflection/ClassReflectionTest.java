@@ -4,7 +4,7 @@ import com.github.jitwxs.sample.reflection.bean.Student;
 import com.github.jitwxs.sample.reflection.bean.User;
 import com.github.jitwxs.sample.reflection.generics.StudentDataServiceImpl;
 import com.github.jitwxs.sample.reflection.generics.UserDataInfo;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;

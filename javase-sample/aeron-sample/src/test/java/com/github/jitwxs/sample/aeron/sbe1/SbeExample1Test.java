@@ -1,12 +1,12 @@
 package com.github.jitwxs.sample.aeron.sbe1;
 
 import org.agrona.concurrent.UnsafeBuffer;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.nio.ByteBuffer;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 public class SbeExample1Test {
     public static final String TEMPLATE_IDS_DO_NOT_MATCH = "Template ids do not match";

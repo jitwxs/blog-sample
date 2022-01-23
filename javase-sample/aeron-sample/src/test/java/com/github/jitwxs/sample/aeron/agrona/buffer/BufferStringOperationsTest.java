@@ -4,48 +4,40 @@ import org.agrona.ExpandableArrayBuffer;
 import org.agrona.ExpandableDirectByteBuffer;
 import org.agrona.MutableDirectBuffer;
 import org.agrona.concurrent.UnsafeBuffer;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
-import java.util.Arrays;
-import java.util.Collection;
+import java.util.stream.Stream;
 
 import static org.agrona.BitUtil.SIZE_OF_INT;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@RunWith(Parameterized.class)
 public class BufferStringOperationsTest {
     private static final int BUFFER_CAPACITY = 256;
     private static final int INDEX = 8;
 
-    private final MutableDirectBuffer buffer;
-
-    public BufferStringOperationsTest(MutableDirectBuffer buffer) {
-        this.buffer = buffer;
-    }
-
-    @Parameterized.Parameters
-    public static Collection<MutableDirectBuffer> buffers() {
-        return Arrays.asList(
+    private static Stream<MutableDirectBuffer> buffers() {
+        return Stream.of(
                 new UnsafeBuffer(new byte[BUFFER_CAPACITY]),
                 new UnsafeBuffer(ByteBuffer.allocateDirect(BUFFER_CAPACITY)),
                 new ExpandableArrayBuffer(BUFFER_CAPACITY),
                 new ExpandableDirectByteBuffer(BUFFER_CAPACITY));
     }
 
-    @Test
-    public void shouldInsertNonAsciiAsQuestionMark() {
+    @ParameterizedTest
+    @MethodSource("buffers")
+    public void shouldInsertNonAsciiAsQuestionMark(final MutableDirectBuffer buffer) {
         final String value = "Hello World £";
 
         buffer.putStringAscii(INDEX, value);
         assertEquals(buffer.getStringAscii(INDEX), "Hello World ?");
     }
 
-    @Test
-    public void shouldAppendAsciiStringInParts() {
+    @ParameterizedTest
+    @MethodSource("buffers")
+    public void shouldAppendAsciiStringInParts(final MutableDirectBuffer buffer) {
         final String value = "Hello World Test";
 
         int stringIndex = 0;
@@ -67,8 +59,9 @@ public class BufferStringOperationsTest {
         assertEquals(buffer.getStringAscii(INDEX), value);
     }
 
-    @Test
-    public void shouldRoundTripAsciiStringNativeLength() {
+    @ParameterizedTest
+    @MethodSource("buffers")
+    public void shouldRoundTripAsciiStringNativeLength(final MutableDirectBuffer buffer) {
         final String value = "Hello World";
 
         buffer.putStringAscii(INDEX, value);
@@ -76,8 +69,9 @@ public class BufferStringOperationsTest {
         assertEquals(buffer.getStringAscii(INDEX), value);
     }
 
-    @Test
-    public void shouldRoundTripAsciiStringBigEndianLength() {
+    @ParameterizedTest
+    @MethodSource("buffers")
+    public void shouldRoundTripAsciiStringBigEndianLength(final MutableDirectBuffer buffer) {
         final String value = "Hello World";
 
         buffer.putStringAscii(INDEX, value, ByteOrder.BIG_ENDIAN);
@@ -85,8 +79,9 @@ public class BufferStringOperationsTest {
         assertEquals(buffer.getStringAscii(INDEX, ByteOrder.BIG_ENDIAN), value);
     }
 
-    @Test
-    public void shouldRoundTripAsciiStringWithoutLength() {
+    @ParameterizedTest
+    @MethodSource("buffers")
+    public void shouldRoundTripAsciiStringWithoutLength(final MutableDirectBuffer buffer) {
         final String value = "Hello World";
 
         buffer.putStringWithoutLengthAscii(INDEX, value);
@@ -94,8 +89,9 @@ public class BufferStringOperationsTest {
         assertEquals(buffer.getStringWithoutLengthAscii(INDEX, value.length()), value);
     }
 
-    @Test
-    public void shouldRoundTripUtf8StringNativeLength() {
+    @ParameterizedTest
+    @MethodSource("buffers")
+    public void shouldRoundTripUtf8StringNativeLength(final MutableDirectBuffer buffer) {
         final String value = "Hello£ World £";
 
         buffer.putStringUtf8(INDEX, value);
@@ -103,8 +99,9 @@ public class BufferStringOperationsTest {
         assertEquals(buffer.getStringUtf8(INDEX), value);
     }
 
-    @Test
-    public void shouldRoundTripUtf8StringBigEndianLength() {
+    @ParameterizedTest
+    @MethodSource("buffers")
+    public void shouldRoundTripUtf8StringBigEndianLength(final MutableDirectBuffer buffer) {
         final String value = "Hello£ World £";
 
         buffer.putStringUtf8(INDEX, value, ByteOrder.BIG_ENDIAN);
@@ -112,8 +109,9 @@ public class BufferStringOperationsTest {
         assertEquals(buffer.getStringUtf8(INDEX, ByteOrder.BIG_ENDIAN), value);
     }
 
-    @Test
-    public void shouldRoundTripUtf8StringWithoutLength() {
+    @ParameterizedTest
+    @MethodSource("buffers")
+    public void shouldRoundTripUtf8StringWithoutLength(final MutableDirectBuffer buffer) {
         final String value = "Hello£ World £";
 
         final int encodedLength = buffer.putStringWithoutLengthUtf8(INDEX, value);
@@ -121,8 +119,9 @@ public class BufferStringOperationsTest {
         assertEquals(buffer.getStringWithoutLengthUtf8(INDEX, encodedLength), value);
     }
 
-    @Test
-    public void shouldGetAsciiToAppendable() {
+    @ParameterizedTest
+    @MethodSource("buffers")
+    public void shouldGetAsciiToAppendable(final MutableDirectBuffer buffer) {
         final String value = "Hello World";
 
         buffer.putStringAscii(INDEX, value);
@@ -134,8 +133,9 @@ public class BufferStringOperationsTest {
         assertEquals(appendable.toString(), value);
     }
 
-    @Test
-    public void shouldGetAsciiWithByteOrderToAppendable() {
+    @ParameterizedTest
+    @MethodSource("buffers")
+    public void shouldGetAsciiWithByteOrderToAppendable(final MutableDirectBuffer buffer) {
         final String value = "Hello World";
 
         buffer.putStringAscii(INDEX, value, ByteOrder.BIG_ENDIAN);
@@ -147,8 +147,9 @@ public class BufferStringOperationsTest {
         assertEquals(appendable.toString(), value);
     }
 
-    @Test
-    public void shouldGetAsciiToAppendableForLength() {
+    @ParameterizedTest
+    @MethodSource("buffers")
+    public void shouldGetAsciiToAppendableForLength(final MutableDirectBuffer buffer) {
         final String value = "Hello World";
 
         buffer.putStringAscii(INDEX, value);
@@ -161,8 +162,9 @@ public class BufferStringOperationsTest {
         assertEquals(appendable.toString(), value.substring(0, length));
     }
 
-    @Test
-    public void shouldAppendWithInvalidChar() {
+    @ParameterizedTest
+    @MethodSource("buffers")
+    public void shouldAppendWithInvalidChar(final MutableDirectBuffer buffer) {
         final String value = "Hello World";
 
         buffer.putStringAscii(INDEX, value);
@@ -175,8 +177,9 @@ public class BufferStringOperationsTest {
         assertEquals(appendable.toString(), "Hello?World");
     }
 
-    @Test
-    public void shouldAppendWithInvalidCharWithoutLength() {
+    @ParameterizedTest
+    @MethodSource("buffers")
+    public void shouldAppendWithInvalidCharWithoutLength(final MutableDirectBuffer buffer) {
         final String value = "Hello World";
 
         buffer.putStringAscii(INDEX, value);

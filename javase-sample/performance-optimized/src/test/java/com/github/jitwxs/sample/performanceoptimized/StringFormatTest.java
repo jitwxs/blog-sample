@@ -1,10 +1,8 @@
 package com.github.jitwxs.sample.performanceoptimized;
 
 import org.apache.commons.lang3.RandomUtils;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -15,22 +13,16 @@ import java.util.Map;
  * @author jitwxs
  * @date 2020年05月01日 20:46
  */
-@RunWith(Parameterized.class)
 public class StringFormatTest {
     private LastPriceCache lastPriceCache;
     private LastPriceCacheNew lastPriceCacheNew;
 
     private static String keySuffix = "last_price_%s";
 
-    @Before
+    @BeforeEach
     public void init() {
         lastPriceCache = new LastPriceCache();
         lastPriceCacheNew = new LastPriceCacheNew();
-    }
-
-    @Parameterized.Parameters
-    public static Object[][] data() {
-        return new Object[3][0]; // repeat count which you want
     }
 
     @Test

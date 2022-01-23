@@ -2,14 +2,16 @@ package com.github.jitwxs.sample.protobuf;
 
 import com.alibaba.fastjson.JSON;
 import org.apache.commons.lang3.RandomUtils;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class ProtobufCodecTest extends BaseTest {
     @Test
@@ -33,15 +35,15 @@ public class ProtobufCodecTest extends BaseTest {
 
         final ProtoBean protoBean1 = JSON.parseObject(json, ProtoBean.class);
 
-        Assert.assertNotNull(protoBean1);
-        Assert.assertEquals(protoBean.getId(), protoBean1.getId());
-        Assert.assertEquals(protoBean.getUser(), protoBean1.getUser());
-        Assert.assertEquals(protoBean.getUserList().size(), protoBean1.getUserList().size());
+        assertNotNull(protoBean1);
+        assertEquals(protoBean.getId(), protoBean1.getId());
+        assertEquals(protoBean.getUser(), protoBean1.getUser());
+        assertEquals(protoBean.getUserList().size(), protoBean1.getUserList().size());
         for (int i = 0; i < protoBean.getUserList().size(); i++) {
-            Assert.assertEquals(protoBean.getUserList().get(i), protoBean1.getUserList().get(i));
+            assertEquals(protoBean.getUserList().get(i), protoBean1.getUserList().get(i));
         }
-        Assert.assertEquals(protoBean.getUserMap().size(), protoBean1.getUserMap().size());
-        protoBean.getUserMap().forEach((k, v) -> Assert.assertEquals(v, protoBean1.getUserMap().get(k)));
-        Assert.assertEquals(protoBean.getCreateDate(), protoBean1.getCreateDate());
+        assertEquals(protoBean.getUserMap().size(), protoBean1.getUserMap().size());
+        protoBean.getUserMap().forEach((k, v) -> assertEquals(v, protoBean1.getUserMap().get(k)));
+        assertEquals(protoBean.getCreateDate(), protoBean1.getCreateDate());
     }
 }

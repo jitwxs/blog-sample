@@ -3,7 +3,7 @@ package com.github.jitwxs.sample.aeron.agrona.collections;
 import org.agrona.collections.Int2IntCounterMap;
 import org.agrona.collections.Int2IntHashMap;
 import org.agrona.collections.IntIntConsumer;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.mockito.InOrder;
 
 import java.util.ArrayList;
@@ -12,9 +12,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.IntUnaryOperator;
 import java.util.stream.IntStream;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.mock;
 
@@ -222,12 +220,12 @@ public class Int2IntCounterMapTest {
         final Int2IntHashMap map = new Int2IntHashMap(16, 0.6f, -1);
 
         IntStream.range(1, 17).forEach((i) -> map.put(i, i));
-        assertEquals("Map has correct size", 16, map.size());
+        assertEquals(16, map.size(), "Map has correct size");
 
         final List<Integer> keys = new ArrayList<>(map.keySet());
         keys.forEach(map::remove);
 
-        assertTrue("Map isn't empty", map.isEmpty());
+        assertTrue(map.isEmpty(), "Map isn't empty");
     }
 
     @Test
@@ -239,8 +237,8 @@ public class Int2IntCounterMapTest {
 
         assertEquals(map.initialValue(), map.get(testKey));
 
-        assertThat(map.computeIfAbsent(testKey, function), is(testValue));
-        assertThat(map.get(testKey), is(testValue));
+        assertEquals(map.computeIfAbsent(testKey, function), testValue);
+        assertEquals(map.get(testKey), (testValue));
     }
 
     @Test

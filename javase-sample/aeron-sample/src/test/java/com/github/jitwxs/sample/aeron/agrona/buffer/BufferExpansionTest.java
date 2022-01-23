@@ -3,28 +3,18 @@ package com.github.jitwxs.sample.aeron.agrona.buffer;
 import org.agrona.ExpandableArrayBuffer;
 import org.agrona.ExpandableDirectByteBuffer;
 import org.agrona.MutableDirectBuffer;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
-import java.util.Arrays;
-import java.util.Collection;
+import java.util.stream.Stream;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@RunWith(Parameterized.class)
 public class BufferExpansionTest {
-
-    private final MutableDirectBuffer buffer;
-
-    public BufferExpansionTest(MutableDirectBuffer buffer) {
-        this.buffer = buffer;
-    }
-
-    @Parameterized.Parameters
-    public static Collection<MutableDirectBuffer> buffers() {
-        return Arrays.asList(
+    private static Stream<MutableDirectBuffer> buffers() {
+        return Stream.of(
                 new ExpandableArrayBuffer(),
                 new ExpandableDirectByteBuffer()
         );
@@ -33,8 +23,9 @@ public class BufferExpansionTest {
     /**
      * buffer 使用默认大小，put 时需要扩容
      */
-    @Test
-    public void shouldExpand() {
+    @ParameterizedTest
+    @MethodSource("buffers")
+    public void shouldExpand(final MutableDirectBuffer buffer) {
         final int capacity = buffer.capacity();
 
         final int index = capacity + 50;

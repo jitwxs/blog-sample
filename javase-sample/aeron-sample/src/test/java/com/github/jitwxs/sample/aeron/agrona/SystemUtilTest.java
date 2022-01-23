@@ -3,9 +3,9 @@ package com.github.jitwxs.sample.aeron.agrona;
 import org.agrona.PropertyAction;
 import org.agrona.SystemUtil;
 import org.apache.commons.lang3.StringUtils;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @see org.agrona.SystemUtil

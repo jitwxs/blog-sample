@@ -1,19 +1,12 @@
 package com.github.jitwxs.sample.aeron.agrona;
 
-import org.agrona.concurrent.CachedEpochClock;
-import org.agrona.concurrent.EpochClock;
-import org.agrona.concurrent.EpochMicroClock;
-import org.agrona.concurrent.EpochNanoClock;
-import org.agrona.concurrent.OffsetEpochNanoClock;
-import org.agrona.concurrent.SystemEpochClock;
-import org.agrona.concurrent.SystemEpochMicroClock;
-import org.agrona.concurrent.SystemEpochNanoClock;
-import org.junit.Test;
+import org.agrona.concurrent.*;
+import org.junit.jupiter.api.Test;
 
 import java.util.Date;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 /**
  * @see EpochClock
@@ -26,7 +19,7 @@ public class ClockTests {
     public void systemEpochClock() {
         EpochClock clock = SystemEpochClock.INSTANCE;
         long time = clock.time();
-        assertEquals(0L, time);
+        assertNotEquals(0L, time);
     }
 
     /**

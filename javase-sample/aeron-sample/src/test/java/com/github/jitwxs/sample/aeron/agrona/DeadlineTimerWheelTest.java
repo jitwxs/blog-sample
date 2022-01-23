@@ -4,11 +4,11 @@ import org.agrona.BitUtil;
 import org.agrona.DeadlineTimerWheel;
 import org.agrona.collections.Long2LongHashMap;
 import org.agrona.collections.MutableLong;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.concurrent.TimeUnit;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @see org.agrona.DeadlineTimerWheel

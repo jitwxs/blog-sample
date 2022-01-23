@@ -4,44 +4,34 @@ import org.agrona.ExpandableArrayBuffer;
 import org.agrona.ExpandableDirectByteBuffer;
 import org.agrona.MutableDirectBuffer;
 import org.agrona.concurrent.UnsafeBuffer;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
-import java.util.Arrays;
-import java.util.Collection;
+import java.util.stream.Stream;
 
 import static org.agrona.BitUtil.SIZE_OF_INT;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@RunWith(Parameterized.class)
 public class BufferCharSequenceOperationsTest {
     private static final int BUFFER_CAPACITY = 256;
     private static final int INDEX = 8;
 
-    private final MutableDirectBuffer buffer;
-
-    public BufferCharSequenceOperationsTest(MutableDirectBuffer buffer) {
-        this.buffer = buffer;
-    }
-
-    @Parameterized.Parameters
-    public static Collection<MutableDirectBuffer> buffers() {
-        return Arrays.asList(
+    private static Stream<MutableDirectBuffer> buffers() {
+        return Stream.of(
                 new UnsafeBuffer(new byte[BUFFER_CAPACITY]),
                 new UnsafeBuffer(ByteBuffer.allocateDirect(BUFFER_CAPACITY)),
                 new ExpandableArrayBuffer(BUFFER_CAPACITY),
-                new ExpandableDirectByteBuffer(BUFFER_CAPACITY)
-        );
+                new ExpandableDirectByteBuffer(BUFFER_CAPACITY));
     }
 
     /**
      * 测试 {@link MutableDirectBuffer#putStringAscii} 和 {@link MutableDirectBuffer#getStringAscii}
      */
-    @Test
-    public void shouldInsertNonAsciiAsQuestionMark() {
+    @ParameterizedTest
+    @MethodSource("buffers")
+    public void shouldInsertNonAsciiAsQuestionMark(final MutableDirectBuffer buffer) {
         final CharSequence value = new StringBuilder("Hello World £");
         final CharSequence expected = "Hello World ?";
 
@@ -52,8 +42,9 @@ public class BufferCharSequenceOperationsTest {
     /**
      * 测试 {@link MutableDirectBuffer#putStringWithoutLengthAscii} 和 {@link MutableDirectBuffer#getStringWithoutLengthAscii}
      */
-    @Test
-    public void shouldAppendAsciiStringInParts() {
+    @ParameterizedTest
+    @MethodSource("buffers")
+    public void shouldAppendAsciiStringInParts(final MutableDirectBuffer buffer) {
         final CharSequence value = new StringBuilder("Hello World Test");
         final String expected = "Hello World Test";
 
@@ -75,8 +66,9 @@ public class BufferCharSequenceOperationsTest {
         assertEquals(buffer.getStringAscii(INDEX), expected);
     }
 
-    @Test
-    public void shouldRoundTripAsciiStringNativeLength() {
+    @ParameterizedTest
+    @MethodSource("buffers")
+    public void shouldRoundTripAsciiStringNativeLength(final MutableDirectBuffer buffer) {
         final CharSequence value = new StringBuilder("Hello World");
         final String expected = "Hello World";
 
@@ -85,8 +77,9 @@ public class BufferCharSequenceOperationsTest {
         assertEquals(buffer.getStringAscii(INDEX), expected);
     }
 
-    @Test
-    public void shouldRoundTripAsciiStringBigEndianLength() {
+    @ParameterizedTest
+    @MethodSource("buffers")
+    public void shouldRoundTripAsciiStringBigEndianLength(final MutableDirectBuffer buffer) {
         final CharSequence value = new StringBuilder("Hello World");
         final String expected = "Hello World";
 
@@ -95,8 +88,9 @@ public class BufferCharSequenceOperationsTest {
         assertEquals(buffer.getStringAscii(INDEX, ByteOrder.BIG_ENDIAN), expected);
     }
 
-    @Test
-    public void shouldRoundTripAsciiStringWithoutLength() {
+    @ParameterizedTest
+    @MethodSource("buffers")
+    public void shouldRoundTripAsciiStringWithoutLength(final MutableDirectBuffer buffer) {
         final CharSequence value = new StringBuilder("Hello World");
         final String expected = "Hello World";
 

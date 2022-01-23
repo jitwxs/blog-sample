@@ -5,29 +5,20 @@ import org.agrona.ExpandableArrayBuffer;
 import org.agrona.ExpandableDirectByteBuffer;
 import org.agrona.MutableDirectBuffer;
 import org.apache.commons.lang3.tuple.Pair;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.lang.reflect.Constructor;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.concurrent.ThreadLocalRandom;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@RunWith(Parameterized.class)
 public class MutableDirectBufferTests {
     private static final int ROUND_TRIP_ITERATIONS = 10_000_000;
 
-    private final Class<? extends MutableDirectBuffer> bufferClass;
-
-    public MutableDirectBufferTests(Class<? extends MutableDirectBuffer> bufferClass) {
-        this.bufferClass = bufferClass;
-    }
-
-    @Parameterized.Parameters
     public static Collection<Class<? extends MutableDirectBuffer>> buffers() {
         return Arrays.asList(
                 ExpandableArrayBuffer.class,
@@ -41,7 +32,7 @@ public class MutableDirectBufferTests {
      * @param capacity to allocate.
      * @return new buffer.
      */
-    private MutableDirectBuffer newBuffer(int capacity) {
+    private MutableDirectBuffer newBuffer(int capacity, Class<? extends MutableDirectBuffer> bufferClass) {
         try {
             final Constructor<? extends MutableDirectBuffer> constructor = bufferClass.getDeclaredConstructor(int.class);
             return constructor.newInstance(capacity);
@@ -53,8 +44,9 @@ public class MutableDirectBufferTests {
     /**
      * 测试 {@link MutableDirectBuffer#putNaturalIntAsciiFromEnd(int, int)}
      */
-    @Test
-    public void shouldPutNaturalFromEnd() {
+    @ParameterizedTest
+    @MethodSource("buffers")
+    public void shouldPutNaturalFromEnd(Class<? extends MutableDirectBuffer> bufferClass) {
         for (Pair<Integer, Integer> pair : Arrays.asList(
                 Pair.of(1, 1),
                 Pair.of(10, 2),
@@ -67,7 +59,7 @@ public class MutableDirectBufferTests {
                 Pair.of(99, 2),
                 Pair.of(999, 3),
                 Pair.of(9999, 4))) {
-            final MutableDirectBuffer buffer = newBuffer(8 * 1024);
+            final MutableDirectBuffer buffer = newBuffer(8 * 1024, bufferClass);
 
             final int value = pair.getLeft(), length = pair.getRight();
 
@@ -78,10 +70,11 @@ public class MutableDirectBufferTests {
         }
     }
 
-    @Test
-    public void putIntAsciiRoundTrip() {
+    @ParameterizedTest
+    @MethodSource("buffers")
+    public void putIntAsciiRoundTrip(Class<? extends MutableDirectBuffer> bufferClass) {
         final int index = 4;
-        final MutableDirectBuffer buffer = newBuffer(64);
+        final MutableDirectBuffer buffer = newBuffer(64, bufferClass);
 
         for (int i = 0; i < ROUND_TRIP_ITERATIONS; i++) {
             final int value = ThreadLocalRandom.current().nextInt();
@@ -91,10 +84,11 @@ public class MutableDirectBufferTests {
         }
     }
 
-    @Test
-    public void putLongAsciiRoundTrip() {
+    @ParameterizedTest
+    @MethodSource("buffers")
+    public void putLongAsciiRoundTrip(Class<? extends MutableDirectBuffer> bufferClass) {
         final int index = 16;
-        final MutableDirectBuffer buffer = newBuffer(64);
+        final MutableDirectBuffer buffer = newBuffer(64, bufferClass);
 
         for (int i = 0; i < ROUND_TRIP_ITERATIONS; i++) {
             final long value = ThreadLocalRandom.current().nextLong();
@@ -104,10 +98,11 @@ public class MutableDirectBufferTests {
         }
     }
 
-    @Test
-    public void putNaturalIntAsciiRoundTrip() {
+    @ParameterizedTest
+    @MethodSource("buffers")
+    public void putNaturalIntAsciiRoundTrip(Class<? extends MutableDirectBuffer> bufferClass) {
         final int index = 8;
-        final MutableDirectBuffer buffer = newBuffer(64);
+        final MutableDirectBuffer buffer = newBuffer(64, bufferClass);
 
         for (int i = 0; i < ROUND_TRIP_ITERATIONS; i++) {
             final int value = ThreadLocalRandom.current().nextInt(0, Integer.MAX_VALUE);
@@ -117,10 +112,11 @@ public class MutableDirectBufferTests {
         }
     }
 
-    @Test
-    public void putNaturalLongAsciiRoundTrip() {
+    @ParameterizedTest
+    @MethodSource("buffers")
+    public void putNaturalLongAsciiRoundTrip(Class<? extends MutableDirectBuffer> bufferClass) {
         final int index = 12;
-        final MutableDirectBuffer buffer = newBuffer(64);
+        final MutableDirectBuffer buffer = newBuffer(64, bufferClass);
 
         for (int i = 0; i < ROUND_TRIP_ITERATIONS; i++) {
             final long value = ThreadLocalRandom.current().nextLong(0, Long.MAX_VALUE);
@@ -130,12 +126,13 @@ public class MutableDirectBufferTests {
         }
     }
 
-    @Test
-    public void setMemory() {
+    @ParameterizedTest
+    @MethodSource("buffers")
+    public void setMemory(Class<? extends MutableDirectBuffer> bufferClass) {
         for (int length : Arrays.asList(11, 64, 1011)) {
             final int index = 2;
             final byte value = (byte) 11;
-            final MutableDirectBuffer buffer = newBuffer(2 * index + length);
+            final MutableDirectBuffer buffer = newBuffer(2 * index + length, bufferClass);
 
             buffer.setMemory(index, length, value);
 
@@ -149,10 +146,11 @@ public class MutableDirectBufferTests {
         }
     }
 
-    @Test
-    public void putLongAsciiShouldHandleEightDigitNumber() {
+    @ParameterizedTest
+    @MethodSource("buffers")
+    public void putLongAsciiShouldHandleEightDigitNumber(Class<? extends MutableDirectBuffer> bufferClass) {
         final int index = 0;
-        final MutableDirectBuffer buffer = newBuffer(16);
+        final MutableDirectBuffer buffer = newBuffer(16, bufferClass);
 
         final int length = buffer.putLongAscii(index, 87654321);
         assertEquals(8, length);
@@ -160,12 +158,13 @@ public class MutableDirectBufferTests {
         assertEquals("87654321", buffer.getStringWithoutLengthAscii(index, length));
     }
 
-    @Test
-    public void putLongAsciiShouldEncodeBoundaryValues() {
+    @ParameterizedTest
+    @MethodSource("buffers")
+    public void putLongAsciiShouldEncodeBoundaryValues(Class<? extends MutableDirectBuffer> bufferClass) {
         for (long value : Arrays.asList(Long.MIN_VALUE, 0L, Long.MAX_VALUE)) {
             final String encodedValue = Long.toString(value);
             final int index = 4;
-            final MutableDirectBuffer buffer = newBuffer(32);
+            final MutableDirectBuffer buffer = newBuffer(32, bufferClass);
 
             final int length = buffer.putLongAscii(index, value);
 
@@ -175,12 +174,13 @@ public class MutableDirectBufferTests {
         }
     }
 
-    @Test
-    public void putIntAsciiShouldEncodeBoundaryValues() {
+    @ParameterizedTest
+    @MethodSource("buffers")
+    public void putIntAsciiShouldEncodeBoundaryValues(Class<? extends MutableDirectBuffer> bufferClass) {
         for (int value : Arrays.asList(Integer.MIN_VALUE, 0, Integer.MAX_VALUE)) {
             final String encodedValue = Integer.toString(value);
             final int index = 3;
-            final MutableDirectBuffer buffer = newBuffer(32);
+            final MutableDirectBuffer buffer = newBuffer(32, bufferClass);
 
             final int length = buffer.putIntAscii(index, value);
 
@@ -190,8 +190,9 @@ public class MutableDirectBufferTests {
         }
     }
 
-    @Test
-    public void parseIntAsciiThrowsAsciiNumberFormatExceptionIfValueContainsInvalidCharacters() {
+    @ParameterizedTest
+    @MethodSource("buffers")
+    public void parseIntAsciiThrowsAsciiNumberFormatExceptionIfValueContainsInvalidCharacters(Class<? extends MutableDirectBuffer> bufferClass) {
         for (String value : Arrays.asList(
                 "23.5",
                 "+1",
@@ -202,15 +203,16 @@ public class MutableDirectBufferTests {
                 "+",
                 "1234%67890")) {
             final int index = 2;
-            final MutableDirectBuffer buffer = newBuffer(16);
+            final MutableDirectBuffer buffer = newBuffer(16, bufferClass);
             final int length = buffer.putStringWithoutLengthAscii(index, value);
 
             assertThrows(AsciiNumberFormatException.class, () -> buffer.parseIntAscii(index, length));
         }
     }
 
-    @Test
-    public void parseLongAsciiThrowsAsciiNumberFormatExceptionIfValueContainsInvalidCharacters() {
+    @ParameterizedTest
+    @MethodSource("buffers")
+    public void parseLongAsciiThrowsAsciiNumberFormatExceptionIfValueContainsInvalidCharacters(Class<? extends MutableDirectBuffer> bufferClass) {
         for (Pair<String, Integer> pair : Arrays.asList(
                 Pair.of("23.5", 2),
                 Pair.of("+1", 0),
@@ -225,15 +227,16 @@ public class MutableDirectBufferTests {
             final int baseIndex = pair.getRight();
 
             final int index = 7;
-            final MutableDirectBuffer buffer = newBuffer(32);
+            final MutableDirectBuffer buffer = newBuffer(32, bufferClass);
             final int length = buffer.putStringWithoutLengthAscii(index, value);
 
-            assertThrows("error parsing long: " + value, AsciiNumberFormatException.class, () -> buffer.parseLongAscii(index, length));
+            assertThrows(AsciiNumberFormatException.class, () -> buffer.parseLongAscii(index, length), "error parsing long: " + value);
         }
     }
 
-    @Test
-    public void parseNaturalIntAsciiThrowsAsciiNumberFormatExceptionIfValueContainsInvalidCharacters() {
+    @ParameterizedTest
+    @MethodSource("buffers")
+    public void parseNaturalIntAsciiThrowsAsciiNumberFormatExceptionIfValueContainsInvalidCharacters(Class<? extends MutableDirectBuffer> bufferClass) {
         for (String value : Arrays.asList(
                 "23.5",
                 "+1",
@@ -244,15 +247,16 @@ public class MutableDirectBufferTests {
                 "+",
                 "1234%67890")) {
             final int index = 1;
-            final MutableDirectBuffer buffer = newBuffer(16);
+            final MutableDirectBuffer buffer = newBuffer(16, bufferClass);
             final int length = buffer.putStringWithoutLengthAscii(index, value);
 
             assertThrows(AsciiNumberFormatException.class, () -> buffer.parseNaturalIntAscii(index, length));
         }
     }
 
-    @Test
-    public void parseNaturalLongAsciiThrowsAsciiNumberFormatExceptionIfValueContainsInvalidCharacters() {
+    @ParameterizedTest
+    @MethodSource("buffers")
+    public void parseNaturalLongAsciiThrowsAsciiNumberFormatExceptionIfValueContainsInvalidCharacters(Class<? extends MutableDirectBuffer> bufferClass) {
         for (Pair<String, Integer> pair : Arrays.asList(
                 Pair.of("23.5", 2),
                 Pair.of("+1", 0),
@@ -267,10 +271,10 @@ public class MutableDirectBufferTests {
             final int baseIndex = pair.getRight();
 
             final int index = 8;
-            final MutableDirectBuffer buffer = newBuffer(32);
+            final MutableDirectBuffer buffer = newBuffer(32, bufferClass);
             final int length = buffer.putStringWithoutLengthAscii(index, value);
 
-            assertThrows("error parsing long: " + value, AsciiNumberFormatException.class, () -> buffer.parseNaturalLongAscii(index, length));
+            assertThrows(AsciiNumberFormatException.class, () -> buffer.parseNaturalLongAscii(index, length), "error parsing long: " + value);
         }
     }
 }

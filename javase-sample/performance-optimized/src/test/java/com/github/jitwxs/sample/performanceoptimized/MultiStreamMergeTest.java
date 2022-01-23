@@ -6,8 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.RandomUtils;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -29,7 +29,7 @@ public class MultiStreamMergeTest {
     static int limit;
     static boolean isAsc = false;
 
-    @Before
+    @BeforeEach
     public void initOrder() {
         sourceOrder = mockOrder(100_0000);
         startId = 10;

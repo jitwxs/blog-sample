@@ -1,10 +1,10 @@
 package com.github.jitwxs.sample.aeron.agrona;
 
 import org.agrona.BitUtil;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static java.lang.Integer.MIN_VALUE;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * @see org.agrona.BitUtil

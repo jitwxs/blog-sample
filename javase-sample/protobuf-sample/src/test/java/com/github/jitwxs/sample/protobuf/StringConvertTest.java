@@ -1,8 +1,7 @@
 package com.github.jitwxs.sample.protobuf;
 
 import org.apache.commons.lang3.RandomUtils;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -10,6 +9,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Protobuf <--> String
@@ -34,11 +35,11 @@ public class StringConvertTest extends BaseTest {
         // 序列化null
         final MessageProto.User nullUser = null;
         final String nullJson = ProtobufUtils.toJson(nullUser);
-        Assert.assertEquals("", nullJson);
+        assertEquals("", nullJson);
 
         // 反序列化null
         final MessageProto.User deserializeNull = ProtobufUtils.toBean(nullJson, MessageProto.User.class);
-        Assert.assertNull(deserializeNull);
+        assertNull(deserializeNull);
 
         // 序列化
         final MessageProto.User common = randomUser();
@@ -47,8 +48,8 @@ public class StringConvertTest extends BaseTest {
 
         // 反序列化
         final MessageProto.User deserializeCommon = ProtobufUtils.toBean(commonJson, MessageProto.User.class);
-        Assert.assertNotNull(deserializeCommon);
-        Assert.assertEquals(common, deserializeCommon);
+        assertNotNull(deserializeCommon);
+        assertEquals(common, deserializeCommon);
     }
 
     /**
@@ -59,31 +60,31 @@ public class StringConvertTest extends BaseTest {
         // 序列化null集合
         List<MessageProto.User> nullList = null;
         final String nullListJson = ProtobufUtils.toJson(nullList);
-        Assert.assertEquals("", nullListJson);
+        assertEquals("", nullListJson);
 
         // 反序列化null集合
         final List<MessageProto.User> deserializeNull = ProtobufUtils.toBeanList(nullListJson, MessageProto.User.class);
-        Assert.assertEquals(0, deserializeNull.size());
+        assertEquals(0, deserializeNull.size());
 
         // 序列化空集合
         final String emptyListJson = ProtobufUtils.toJson(Collections.emptyList());
-        Assert.assertEquals("[]", emptyListJson);
+        assertEquals("[]", emptyListJson);
 
         // 反序列化空集合
         final List<MessageProto.User> deserializeEmpty = ProtobufUtils.toBeanList(emptyListJson, MessageProto.User.class);
-        Assert.assertEquals(0, deserializeEmpty.size());
+        assertEquals(0, deserializeEmpty.size());
 
         // 序列化集合
         final List<MessageProto.User> commonList = IntStream.range(0, 3).boxed().map(e -> randomUser()).collect(Collectors.toList());
         final String commonListJson = ProtobufUtils.toJson(commonList);
-        Assert.assertNotEquals("[]", commonListJson);
+        assertNotEquals("[]", commonListJson);
         System.out.println(commonListJson);
 
         // 反序列化
         final List<MessageProto.User> deserializeCommon = ProtobufUtils.toBeanList(commonListJson, MessageProto.User.class);
-        Assert.assertEquals(commonList.size(), deserializeCommon.size());
+        assertEquals(commonList.size(), deserializeCommon.size());
         for (int i = 0; i < commonList.size(); i++) {
-            Assert.assertEquals(commonList.get(i), deserializeCommon.get(i));
+            assertEquals(commonList.get(i), deserializeCommon.get(i));
         }
     }
 
@@ -95,20 +96,20 @@ public class StringConvertTest extends BaseTest {
         // 序列化nullMap
         final Map<Integer, MessageProto.User> nullMap = null;
         final String nullMapJson = ProtobufUtils.toJson(nullMap);
-        Assert.assertEquals("", nullMapJson);
+        assertEquals("", nullMapJson);
         // 反序列化nullMap
         final Map<Integer, MessageProto.User> deserializeNull = ProtobufUtils
                 .toBeanMap(nullMapJson, Integer.class, MessageProto.User.class);
-        Assert.assertEquals(0, deserializeNull.size());
+        assertEquals(0, deserializeNull.size());
 
         // 序列化空Map
         final String emptyMapJson = ProtobufUtils.toJson(Collections.emptyMap());
-        Assert.assertEquals("{}", emptyMapJson);
+        assertEquals("{}", emptyMapJson);
 
         // 反序列化空Map
         final Map<Integer, MessageProto.User> deserializeEmpty = ProtobufUtils
                 .toBeanMap(emptyMapJson, Integer.class, MessageProto.User.class);
-        Assert.assertEquals(0, deserializeEmpty.size());
+        assertEquals(0, deserializeEmpty.size());
 
         // 序列化Map
         final Map<Integer, MessageProto.User> commonMap = new HashMap<Integer, MessageProto.User>() {{
@@ -117,13 +118,13 @@ public class StringConvertTest extends BaseTest {
             put(RandomUtils.nextInt(), randomUser());
         }};
         final String commonMapJson = ProtobufUtils.toJson(commonMap);
-        Assert.assertNotEquals("[]", commonMapJson);
+        assertNotEquals("[]", commonMapJson);
         System.out.println(commonMapJson);
 
         // 反序列化Map
         final Map<Integer, MessageProto.User> deserializeCommon = ProtobufUtils
                 .toBeanMap(commonMapJson, Integer.class, MessageProto.User.class);
-        Assert.assertEquals(commonMap.size(), deserializeCommon.size());
-        commonMap.forEach((k, v) -> Assert.assertEquals(v, deserializeCommon.get(k)));
+        assertEquals(commonMap.size(), deserializeCommon.size());
+        commonMap.forEach((k, v) -> assertEquals(v, deserializeCommon.get(k)));
     }
 }

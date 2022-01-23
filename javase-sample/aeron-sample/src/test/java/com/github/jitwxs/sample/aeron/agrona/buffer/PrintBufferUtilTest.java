@@ -2,10 +2,8 @@ package com.github.jitwxs.sample.aeron.agrona.buffer;
 
 import org.agrona.ExpandableArrayBuffer;
 import org.agrona.PrintBufferUtil;
-import org.junit.Test;
-
-import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.MatcherAssert.assertThat;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 /**
  * @see PrintBufferUtil
@@ -20,6 +18,7 @@ public class PrintBufferUtilTest {
 
         final StringBuilder builder = new StringBuilder();
         PrintBufferUtil.appendPrettyHexDump(builder, buffer);
-        assertThat(builder.toString(), containsString("0...Hello World!"));
+
+        Assertions.assertTrue(builder.toString().contains("0...Hello World!"));
     }
 }

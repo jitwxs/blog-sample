@@ -3,7 +3,7 @@ package com.github.jitwxs.sample.reflection;
 import com.github.jitwxs.sample.reflection.bean.User;
 import com.github.jitwxs.sample.reflection.generics.DataInfo;
 import com.github.jitwxs.sample.reflection.service.UserService;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;

@@ -5,7 +5,7 @@ import com.github.jitwxs.sample.reflection.bean.User;
 import com.github.jitwxs.sample.reflection.generics.StudentDataServiceImpl;
 import org.apache.commons.lang3.ClassUtils;
 import org.apache.commons.lang3.RandomStringUtils;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.beans.BeanInfo;
 import java.beans.Introspector;

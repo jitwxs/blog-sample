@@ -1,11 +1,11 @@
 package com.github.jitwxs.sample.aeron.agrona.concurrent;
 
 import org.agrona.concurrent.ManyToOneConcurrentLinkedQueue;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.Queue;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @see ManyToOneConcurrentLinkedQueue

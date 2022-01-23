@@ -5,13 +5,13 @@ import org.agrona.concurrent.CachedEpochClock;
 import org.agrona.concurrent.EpochClock;
 import org.agrona.concurrent.SnowflakeIdGenerator;
 import org.agrona.concurrent.SystemEpochClock;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import static org.agrona.concurrent.SnowflakeIdGenerator.*;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @see SnowflakeIdGenerator

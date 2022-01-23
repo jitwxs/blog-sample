@@ -1,23 +1,15 @@
 package com.github.jitwxs.sample.performanceoptimized;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author jitwxs
  * @date 2020年05月02日 10:30
  */
-@RunWith(Parameterized.class)
 public class PackagingTest {
     Integer startPackaging = 0;
     int startBasic = 0;
     static int count = 1000000;
-
-    @Parameterized.Parameters
-    public static Object[][] data() {
-        return new Object[3][0]; // repeat count which you want
-    }
 
     @Test
     public void testPackaging() {

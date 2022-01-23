@@ -2,16 +2,13 @@ package com.github.jitwxs.sample.aeron.agrona.collections;
 
 import org.agrona.BitUtil;
 import org.agrona.collections.BiInt2ObjectMap;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.HashSet;
 import java.util.Set;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.IsEqual.equalTo;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
  * @see BiInt2ObjectMap
@@ -26,12 +23,12 @@ public class BiInt2ObjectMapTest {
         final BiInt2ObjectMap<String> map = new BiInt2ObjectMap<>(initialCapacity, loadFactor);
 
         assertEquals(map.capacity(), BitUtil.findNextPositivePowerOfTwo(initialCapacity));
-        assertThat(map.loadFactor(), is(loadFactor));
+        assertEquals(map.loadFactor(), loadFactor);
     }
 
     @Test
     public void shouldReportEmpty() {
-        assertThat(map.isEmpty(), is(true));
+        assertEquals(map.isEmpty(), true);
     }
 
     @Test
@@ -41,7 +38,7 @@ public class BiInt2ObjectMapTest {
         final int keyPartB = 7;
 
         assertNull(map.put(keyPartA, keyPartB, testValue));
-        assertThat(map.size(), is(1));
+        assertEquals(map.size(), 1);
     }
 
     @Test
@@ -51,7 +48,7 @@ public class BiInt2ObjectMapTest {
         final int keyPartB = 7;
 
         assertNull(map.put(keyPartA, keyPartB, testValue));
-        assertThat(map.get(keyPartA, keyPartB), is(testValue));
+        assertEquals(map.get(keyPartA, keyPartB), testValue);
     }
 
     @Test
@@ -69,7 +66,7 @@ public class BiInt2ObjectMapTest {
         final int keyPartB = 7;
 
         map.put(keyPartA, keyPartB, testValue);
-        assertThat(map.remove(keyPartA, keyPartB), is(testValue));
+        assertEquals(map.remove(keyPartA, keyPartB), testValue);
         assertNull(map.get(keyPartA, keyPartB));
     }
 
@@ -88,7 +85,7 @@ public class BiInt2ObjectMapTest {
 
         map.forEach(actualSet::add);
 
-        assertThat(actualSet, equalTo(expectedSet));
+        assertEquals(actualSet, expectedSet);
     }
 
     @Test
@@ -106,7 +103,7 @@ public class BiInt2ObjectMapTest {
 
         map.forEach((keyPartA, keyPartB, value) -> actualSet.add(new EntryCapture<>(keyPartA, keyPartB, value)));
 
-        assertThat(actualSet, equalTo(expectedSet));
+        assertEquals(actualSet, expectedSet);
     }
 
     @Test
@@ -118,43 +115,43 @@ public class BiInt2ObjectMapTest {
             map.put(i, i + 97, value);
         }
 
-        assertThat(map.toString(), is("{0_97=0, 1_98=1, 4_101=4, 3_100=3, 5_102=5, 6_103=6, 2_99=2}"));
+        assertEquals(map.toString(), "{0_97=0, 1_98=1, 4_101=4, 3_100=3, 5_102=5, 6_103=6, 2_99=2}");
     }
 
     @Test
     public void shouldPutAndGetKeysOfNegativeValue() {
         map.put(721632679, 333118496, "a");
-        assertThat(map.get(721632679, 333118496), is("a"));
+        assertEquals(map.get(721632679, 333118496), "a");
 
         map.put(721632719, -659033725, "b");
-        assertThat(map.get(721632719, -659033725), is("b"));
+        assertEquals(map.get(721632719, -659033725), "b");
 
         map.put(721632767, -235401032, "c");
-        assertThat(map.get(721632767, -235401032), is("c"));
+        assertEquals(map.get(721632767, -235401032), "c");
 
         map.put(721632839, 1791470537, "d");
-        assertThat(map.get(721632839, 1791470537), is("d"));
+        assertEquals(map.get(721632839, 1791470537), "d");
 
         map.put(721633069, -939458690, "e");
-        assertThat(map.get(721633069, -939458690), is("e"));
+        assertEquals(map.get(721633069, -939458690), "e");
 
         map.put(721633127, 1620485039, "f");
-        assertThat(map.get(721633127, 1620485039), is("f"));
+        assertEquals(map.get(721633127, 1620485039), "f");
 
         map.put(721633163, -1503337805, "g");
-        assertThat(map.get(721633163, -1503337805), is("g"));
+        assertEquals(map.get(721633163, -1503337805), "g");
 
         map.put(721633229, -2073657736, "h");
-        assertThat(map.get(721633229, -2073657736), is("h"));
+        assertEquals(map.get(721633229, -2073657736), "h");
 
         map.put(721633255, -1278969172, "i");
-        assertThat(map.get(721633255, -1278969172), is("i"));
+        assertEquals(map.get(721633255, -1278969172), "i");
 
         map.put(721633257, -1230662585, "j");
-        assertThat(map.get(721633257, -1230662585), is("j"));
+        assertEquals(map.get(721633257, -1230662585), "j");
 
         map.put(721633319, -532637417, "k");
-        assertThat(map.get(721633319, -532637417), is("k"));
+        assertEquals(map.get(721633319, -532637417), "k");
     }
 
     public static class EntryCapture<V> {

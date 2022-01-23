@@ -3,8 +3,8 @@ package com.github.jitwxs.sample.performanceoptimized;
 import lombok.*;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.RandomUtils;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.BeanUtils;
 
 import java.util.ArrayList;
@@ -18,7 +18,7 @@ public class ShallowCopyTest {
     static Order order = null;
     static int times = 10;
 
-    @Before
+    @BeforeEach
     public void initOrder() {
         List<User> users = new ArrayList<User>() {{
             add(User.builder().email(RandomStringUtils.randomAlphanumeric(4)).tel(RandomUtils.nextLong(1000, 1000) + "").build());
