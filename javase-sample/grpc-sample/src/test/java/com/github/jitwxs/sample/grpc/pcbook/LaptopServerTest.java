@@ -15,6 +15,7 @@ import org.junit.Test;
 import java.util.LinkedList;
 import java.util.List;
 
+import static com.github.jitwxs.sample.grpc.common.Constant.RESOURCE_BATH_PATH;
 import static org.junit.Assert.*;
 
 public class LaptopServerTest {
@@ -34,7 +35,7 @@ public class LaptopServerTest {
         InProcessServerBuilder serverBuilder = InProcessServerBuilder.forName(serverName).directExecutor();
 
         laptopStore = new InMemoryLaptopStore();
-        imageStore = new DiskImageStore("tmp");
+        imageStore = new DiskImageStore(RESOURCE_BATH_PATH);
         ratingStore = new InMemoryRatingStore();
 
         server = new LaptopServer(serverBuilder, 0, laptopStore, imageStore, ratingStore);

@@ -3,7 +3,6 @@ package com.github.jitwxs.sample.grpc.pcbook;
 import com.github.jitwxs.sample.protobuf.grpc.pcbook.*;
 import com.google.protobuf.ByteString;
 import io.grpc.ManagedChannel;
-import io.grpc.ManagedChannelBuilder;
 import io.grpc.Status;
 import io.grpc.StatusRuntimeException;
 import io.grpc.netty.shaded.io.grpc.netty.GrpcSslContexts;
@@ -21,25 +20,28 @@ import java.util.Scanner;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
+import static com.github.jitwxs.sample.grpc.common.Constant.RESOURCE_BATH_PATH;
+import static com.github.jitwxs.sample.grpc.common.Constant.RUNNING_PORT;
+
 @Slf4j
 public class LaptopClient {
     private final ManagedChannel channel;
     private final LaptopServiceGrpc.LaptopServiceBlockingStub blockingStub;
     private final LaptopServiceGrpc.LaptopServiceStub asyncStub;
 
-    public LaptopClient(String host, int port) {
-        channel = ManagedChannelBuilder.forAddress(host, port)
-                .usePlaintext()
-                .build();
-
-        blockingStub = LaptopServiceGrpc.newBlockingStub(channel);
-        asyncStub = LaptopServiceGrpc.newStub(channel);
-    }
-
+    /**
+     * @param sslContext SSL 配置，未启用传空
+     */
     public LaptopClient(String host, int port, SslContext sslContext) {
-        channel = NettyChannelBuilder.forAddress(host, port)
-                .sslContext(sslContext)
-                .build();
+        final NettyChannelBuilder builder = NettyChannelBuilder.forAddress(host, port);
+
+        if (sslContext == null) {
+            builder.usePlaintext();
+        } else {
+            builder.sslContext(sslContext);
+        }
+
+        channel = builder.build();
 
         blockingStub = LaptopServiceGrpc.newBlockingStub(channel);
         asyncStub = LaptopServiceGrpc.newStub(channel);
@@ -236,7 +238,7 @@ public class LaptopClient {
     public static void testUploadImage(LaptopClient client, Generator generator) throws InterruptedException {
         Laptop laptop = generator.NewLaptop();
         client.createLaptop(laptop);
-        client.uploadImage(laptop.getId(), "tmp/laptop.jpg");
+        client.uploadImage(laptop.getId(), RESOURCE_BATH_PATH + "laptop.jpg");
     }
 
     public static void testRateLaptop(LaptopClient client, Generator generator) throws InterruptedException {
@@ -267,29 +269,25 @@ public class LaptopClient {
     }
 
     public static SslContext loadTLSCredentials() throws SSLException {
-        File serverCACertFile = new File("cert/ca-cert.pem");
-        File clientCertFile = new File("cert/client-cert.pem");
-        File clientKeyFile = new File("cert/client-key.pem");
+        File serverCACertFile = new File(RESOURCE_BATH_PATH + "cert/ca-cert.pem");
+        File clientCertFile = new File(RESOURCE_BATH_PATH + "cert/client-cert.pem");
+        File clientKeyFile = new File(RESOURCE_BATH_PATH + "cert/client-key.pem");
 
-        return GrpcSslContexts.forClient()
-                .keyManager(clientCertFile, clientKeyFile)
-                .trustManager(serverCACertFile)
-                .build();
+        if (serverCACertFile.exists() && clientCertFile.exists() && clientKeyFile.exists()) {
+            return GrpcSslContexts.forClient()
+                    .keyManager(clientCertFile, clientKeyFile)
+                    .trustManager(serverCACertFile)
+                    .build();
+        } else {
+            log.info("LaptopClient loadTLSCredentials failed, not exist cert file");
+            return null;
+        }
     }
 
     public static void main(String[] args) throws InterruptedException, SSLException {
-        LaptopClient client;
+        final SslContext sslContext = LaptopClient.loadTLSCredentials();
 
-        try {
-            SslContext sslContext = LaptopClient.loadTLSCredentials();
-            client = new LaptopClient("0.0.0.0", 8080, sslContext);
-
-            log.info("initial laptop client with ssl");
-        } catch (Exception ignored) {
-            client = new LaptopClient("0.0.0.0", 8080);
-
-            log.info("initial laptop client with not ssl");
-        }
+        final LaptopClient client = new LaptopClient("localhost", RUNNING_PORT, sslContext);
 
         Generator generator = new Generator();
 

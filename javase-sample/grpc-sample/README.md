@@ -1,6 +1,7 @@
 ## See Also
 
 - [gRPC 在 Java 中的入门实例](https://www.jitwxs.cn/d6535904.html)
+- [The complete gRPC course](https://www.youtube.com/watch?v=2Sm_O75I7H0&list=PLy_6D98if3UJd5hxWNfAqKMr15HZqFnqf)
 
 ### How to build protobuf class
 
